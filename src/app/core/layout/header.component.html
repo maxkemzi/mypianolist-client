@@ -1,0 +1,25 @@
+<header
+	class="py-7 bg-background"
+	[ngClass]="{'absolute top-0 left-0 w-full': absolute}"
+>
+	<app-container>
+		<div class="flex justify-between items-center">
+			<div class="flex gap-7">
+				<a routerLink="/">
+					<img src="./logo.svg" alt="logo" />
+				</a>
+				<nav>
+					<ul>
+						<li>
+							<a routerLink="/catalog">Catalog</a>
+						</li>
+					</ul>
+				</nav>
+			</div>
+			<div class="flex gap-4">
+				<app-button variant="secondary">Log in</app-button>
+				<app-button>Sign up</app-button>
+			</div>
+		</div>
+	</app-container>
+</header>

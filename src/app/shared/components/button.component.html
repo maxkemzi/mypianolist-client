@@ -1,0 +1,10 @@
+<button
+	class="py-2 px-7 font-semibold rounded-xl"
+	type="{{ submit ? 'submit' : 'button' }}"
+	[ngClass]="{
+		'bg-primary': variant === 'primary',
+		'bg-secondary': variant === 'secondary',
+	}"
+>
+	<ng-content />
+</button>
