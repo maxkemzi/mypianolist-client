@@ -1,13 +1,22 @@
 import {booleanAttribute, Component, Input} from '@angular/core';
-import {ContainerComponent} from '../../shared/components/container.component';
 import {RouterLink} from '@angular/router';
-import {ButtonComponent} from '../../shared/components/button.component';
 import {CommonModule} from '@angular/common';
+import {
+	ButtonComponent,
+	ContainerComponent,
+	TypographyComponent,
+} from '../../shared/components';
 
 @Component({
 	selector: 'app-header',
 	templateUrl: './header.component.html',
-	imports: [CommonModule, ContainerComponent, RouterLink, ButtonComponent],
+	imports: [
+		CommonModule,
+		ContainerComponent,
+		RouterLink,
+		ButtonComponent,
+		TypographyComponent,
+	],
 	standalone: true,
 })
 export class HeaderComponent {

@@ -6,5 +6,7 @@
 		'bg-secondary': variant === 'secondary',
 	}"
 >
-	<ng-content />
+	<app-typography as="span" weight="semibold">
+		<ng-content />
+	</app-typography>
 </button>
