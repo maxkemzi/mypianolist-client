@@ -1,12 +1,20 @@
-<button
-	class="py-2 px-7 font-semibold rounded-xl"
-	type="{{ submit ? 'submit' : 'button' }}"
-	[ngClass]="{
-		'bg-primary': variant === 'primary',
-		'bg-secondary': variant === 'secondary',
-	}"
->
-	<app-typography as="span" weight="semibold">
-		<ng-content />
-	</app-typography>
-</button>
+<ng-container [ngSwitch]="element">
+	<button
+		*ngSwitchCase="'button'"
+		[class]="classes"
+		type="{{ submit ? 'submit' : 'button' }}"
+	>
+		<app-typography as="span" weight="semibold">
+			<ng-container [ngTemplateOutlet]="content" />
+		</app-typography>
+	</button>
+	<a *ngSwitchCase="'navlink'" [class]="classes" [routerLink]="href">
+		<app-typography as="span" weight="semibold">
+			<ng-container [ngTemplateOutlet]="content" />
+		</app-typography>
+	</a>
+</ng-container>
+
+<ng-template #content>
+	<ng-content />
+</ng-template>

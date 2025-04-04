@@ -1,0 +1,14 @@
+<app-header absolute />
+
+<main>
+	<section class="relative h-screen overflow-hidden">
+		<app-container>
+			<div class="flex h-screen items-center justify-center">
+				<router-outlet />
+			</div>
+		</app-container>
+		<div
+			class="absolute top-0 bottom-0 left-0 right-0 z-[-1] bg-[url(/images/hero.jpg)] bg-cover bg-center before:absolute before:top-0 before:bottom-0 before:left-0 before:right-0 before:bg-background before:opacity-70"
+		></div>
+	</section>
+</main>
