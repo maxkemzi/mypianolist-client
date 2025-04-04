@@ -17,6 +17,6 @@ export class ButtonComponent {
 	@Input() href?: string;
 
 	get classes(): string {
-		return `py-2 px-7 font-semibold rounded-xl ${this.variant === 'primary' ? 'bg-primary' : 'bg-secondary'} ${this.class}`;
+		return `block py-2 px-7 font-semibold rounded-xl ${this.variant === 'primary' ? 'bg-primary' : 'bg-secondary'} ${this.class}`;
 	}
 }
