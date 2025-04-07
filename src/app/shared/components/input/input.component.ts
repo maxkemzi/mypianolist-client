@@ -1,4 +1,5 @@
 import {Component, Input} from '@angular/core';
+import {twMerge} from 'tailwind-merge';
 
 @Component({
 	selector: 'app-input',
@@ -11,6 +12,6 @@ export class InputComponent {
 	@Input() placeholder?: string;
 
 	get classes(): string {
-		return `px-4 py-3 bg-surface rounded-xl ${this.class}`;
+		return twMerge('px-4 py-3 bg-surface rounded-xl', this.class);
 	}
 }

@@ -1,6 +1,7 @@
 import {CommonModule} from '@angular/common';
 import {Component, Input} from '@angular/core';
 import {Tag, Size, Variant, Weight, Color} from './types';
+import {twMerge} from 'tailwind-merge';
 
 @Component({
 	selector: 'app-typography',
@@ -76,6 +77,6 @@ export class TypographyComponent {
 		const sizeClasses = sizeToClassesMapping[this.size || props.size];
 		const weightClasses = weightToClassesMapping[this.weight || props.weight];
 
-		return `${colorClasses} ${sizeClasses} ${weightClasses} ${this.class}`;
+		return twMerge(colorClasses, sizeClasses, weightClasses, this.class);
 	}
 }

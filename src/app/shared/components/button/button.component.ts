@@ -1,7 +1,8 @@
 import {CommonModule} from '@angular/common';
 import {booleanAttribute, Component, Input} from '@angular/core';
-import {TypographyComponent} from '../typography';
+import {TypographyColor, TypographyComponent} from '../typography';
 import {RouterLink} from '@angular/router';
+import {twMerge} from 'tailwind-merge';
 
 @Component({
 	selector: 'app-button',
@@ -18,6 +19,19 @@ export class ButtonComponent {
 	@Input() disabled?: boolean;
 
 	get classes(): string {
-		return `block py-2 px-7 font-semibold rounded-xl ${this.variant === 'primary' ? 'bg-primary' : 'bg-primary/15'} ${this.class}`;
+		return twMerge(
+			'block py-2 px-7 font-semibold rounded-xl',
+			this.variant === 'primary' && 'bg-primary',
+			this.variant === 'outline' && 'bg-primary/15',
+			this.class,
+		);
+	}
+
+	get textColor(): TypographyColor {
+		if (this.variant === 'outline') {
+			return 'primary';
+		}
+
+		return 'text';
 	}
 }

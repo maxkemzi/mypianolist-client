@@ -2,7 +2,7 @@
 	<button
 		*ngSwitchCase="'button'"
 		[class]="classes"
-		type="{{ submit ? 'submit' : 'button' }}"
+		[type]="submit ? 'submit' : 'button'"
 		[disabled]="disabled"
 	>
 		<ng-container [ngTemplateOutlet]="content" />
@@ -13,11 +13,7 @@
 </ng-container>
 
 <ng-template #content>
-	<app-typography
-		[color]="variant === 'outline' ? 'primary' : 'text'"
-		as="span"
-		weight="semibold"
-	>
+	<app-typography [color]="textColor" as="span" weight="semibold">
 		<ng-content />
 	</app-typography>
 </ng-template>
