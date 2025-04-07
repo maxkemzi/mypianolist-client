@@ -11,12 +11,13 @@ import {RouterLink} from '@angular/router';
 })
 export class ButtonComponent {
 	@Input() class: string = '';
-	@Input() variant: 'primary' | 'secondary' = 'primary';
+	@Input() variant: 'primary' | 'outline' = 'primary';
 	@Input({transform: booleanAttribute}) submit: boolean = false;
 	@Input() element: 'button' | 'navlink' = 'button';
 	@Input() href?: string;
+	@Input() disabled?: boolean;
 
 	get classes(): string {
-		return `block py-2 px-7 font-semibold rounded-xl ${this.variant === 'primary' ? 'bg-primary' : 'bg-secondary'} ${this.class}`;
+		return `block py-2 px-7 font-semibold rounded-xl ${this.variant === 'primary' ? 'bg-primary' : 'bg-primary/15'} ${this.class}`;
 	}
 }

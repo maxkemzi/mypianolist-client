@@ -3,18 +3,21 @@
 		*ngSwitchCase="'button'"
 		[class]="classes"
 		type="{{ submit ? 'submit' : 'button' }}"
+		[disabled]="disabled"
 	>
-		<app-typography as="span" weight="semibold">
-			<ng-container [ngTemplateOutlet]="content" />
-		</app-typography>
+		<ng-container [ngTemplateOutlet]="content" />
 	</button>
 	<a *ngSwitchCase="'navlink'" [class]="classes" [routerLink]="href">
-		<app-typography as="span" weight="semibold">
-			<ng-container [ngTemplateOutlet]="content" />
-		</app-typography>
+		<ng-container [ngTemplateOutlet]="content" />
 	</a>
 </ng-container>
 
 <ng-template #content>
-	<ng-content />
+	<app-typography
+		[color]="variant === 'outline' ? 'primary' : 'text'"
+		as="span"
+		weight="semibold"
+	>
+		<ng-content />
+	</app-typography>
 </ng-template>

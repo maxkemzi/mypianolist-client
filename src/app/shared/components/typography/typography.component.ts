@@ -1,6 +1,6 @@
 import {CommonModule} from '@angular/common';
 import {Component, Input} from '@angular/core';
-import {Tag, Size, Variant, Weight} from './types';
+import {Tag, Size, Variant, Weight, Color} from './types';
 
 @Component({
 	selector: 'app-typography',
@@ -11,6 +11,7 @@ import {Tag, Size, Variant, Weight} from './types';
 export class TypographyComponent {
 	@Input() class: string = '';
 	@Input() variant: Variant = 'body1';
+	@Input() color: Color = 'text';
 	@Input() as?: Tag;
 	@Input() size?: Size;
 	@Input() weight?: Weight;
@@ -27,6 +28,11 @@ export class TypographyComponent {
 	}
 
 	get classes(): string {
+		const colorToClassesMapping: Record<Color, string> = {
+			text: 'text-text',
+			primary: 'text-primary',
+		};
+
 		const sizeToClassesMapping: Record<Size, string> = {
 			sm: 'text-sm',
 			base: 'text-base',
@@ -64,13 +70,12 @@ export class TypographyComponent {
 			},
 		};
 
-		const baseClasses = 'text-text';
-
 		const props = variantToPropsMapping[this.variant];
 
+		const colorClasses = colorToClassesMapping[this.color || 'text'];
 		const sizeClasses = sizeToClassesMapping[this.size || props.size];
 		const weightClasses = weightToClassesMapping[this.weight || props.weight];
 
-		return `${baseClasses} ${sizeClasses} ${weightClasses} ${this.class}`;
+		return `${colorClasses} ${sizeClasses} ${weightClasses} ${this.class}`;
 	}
 }
