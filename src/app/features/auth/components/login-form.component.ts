@@ -1,5 +1,11 @@
 import {Component} from '@angular/core';
 import {
+	FormControl,
+	FormGroup,
+	ReactiveFormsModule,
+	Validators,
+} from '@angular/forms';
+import {
 	ButtonComponent,
 	InputComponent,
 	TypographyComponent,
@@ -8,7 +14,17 @@ import {
 @Component({
 	selector: 'app-login-form',
 	templateUrl: './login-form.component.html',
-	imports: [TypographyComponent, ButtonComponent, InputComponent],
+	imports: [
+		ReactiveFormsModule,
+		TypographyComponent,
+		ButtonComponent,
+		InputComponent,
+	],
 	standalone: true,
 })
-export default class LoginFormComponent {}
+export class LoginFormComponent {
+	form = new FormGroup({
+		username: new FormControl('', Validators.required),
+		password: new FormControl('', Validators.required),
+	});
+}

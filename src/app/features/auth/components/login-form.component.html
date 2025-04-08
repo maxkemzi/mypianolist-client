@@ -1,10 +1,12 @@
-<div class="bg-background px-12 py-7 rounded-xl">
+<div class="bg-background p-12 rounded-xl">
 	<app-typography class="mb-7 text-center" variant="h1">Login</app-typography>
 	<form>
 		<div class="flex flex-col gap-4">
 			<app-input placeholder="Username" />
-			<app-input placeholder="Password" />
+			<app-input placeholder="Password" type="password" />
 		</div>
-		<app-button class="block ml-auto mt-7" submit>Log In</app-button>
+		<app-button class="block ml-auto mt-7" submit [disabled]="!form.valid">
+			Log In
+		</app-button>
 	</form>
 </div>

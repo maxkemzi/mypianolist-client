@@ -11,4 +11,4 @@ import {
 	imports: [TypographyComponent, ButtonComponent, InputComponent],
 	standalone: true,
 })
-export default class SignupFormComponent {}
+export class SignupFormComponent {}
