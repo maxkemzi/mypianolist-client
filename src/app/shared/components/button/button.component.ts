@@ -1,8 +1,8 @@
 import {CommonModule} from '@angular/common';
 import {booleanAttribute, Component, Input} from '@angular/core';
-import {TypographyColor, TypographyComponent} from '../typography';
 import {RouterLink} from '@angular/router';
 import {twMerge} from 'tailwind-merge';
+import {TypographyColor, TypographyComponent} from '../typography';
 
 @Component({
 	selector: 'app-button',
@@ -11,10 +11,10 @@ import {twMerge} from 'tailwind-merge';
 	standalone: true,
 })
 export class ButtonComponent {
-	@Input() class: string = '';
 	@Input() variant: 'primary' | 'outline' = 'primary';
-	@Input({transform: booleanAttribute}) submit: boolean = false;
 	@Input() element: 'button' | 'navlink' = 'button';
+	@Input({transform: booleanAttribute}) submit: boolean = false;
+	@Input() class?: string;
 	@Input() href?: string;
 	@Input() disabled?: boolean;
 

@@ -1,0 +1,9 @@
+<a
+	[class]="classes"
+	[routerLink]="type === 'navigation' ? href : undefined"
+	[href]="type === 'external' ? href : undefined"
+>
+	<app-typography color="primary" as="span">
+		<ng-content />
+	</app-typography>
+</a>

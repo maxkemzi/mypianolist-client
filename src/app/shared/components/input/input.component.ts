@@ -7,8 +7,8 @@ import {twMerge} from 'tailwind-merge';
 	standalone: true,
 })
 export class InputComponent {
-	@Input() class: string = '';
 	@Input() type: 'text' | 'password' = 'text';
+	@Input() class?: string;
 	@Input() placeholder?: string;
 
 	get classes(): string {

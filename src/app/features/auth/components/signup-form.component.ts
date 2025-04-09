@@ -1,14 +1,22 @@
 import {Component} from '@angular/core';
 import {
 	ButtonComponent,
-	InputComponent,
+	FormComponent,
+	FormFieldComponent,
+	LinkComponent,
 	TypographyComponent,
 } from '../../../shared/components';
 
 @Component({
 	selector: 'app-signup-form',
 	templateUrl: './signup-form.component.html',
-	imports: [TypographyComponent, ButtonComponent, InputComponent],
+	imports: [
+		TypographyComponent,
+		ButtonComponent,
+		FormComponent,
+		FormFieldComponent,
+		LinkComponent,
+	],
 	standalone: true,
 })
 export class SignupFormComponent {}

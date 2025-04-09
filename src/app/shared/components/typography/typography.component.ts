@@ -10,9 +10,9 @@ import {twMerge} from 'tailwind-merge';
 	standalone: true,
 })
 export class TypographyComponent {
-	@Input() class: string = '';
 	@Input() variant: Variant = 'body1';
 	@Input() color: Color = 'text';
+	@Input() class?: string;
 	@Input() as?: Tag;
 	@Input() size?: Size;
 	@Input() weight?: Weight;

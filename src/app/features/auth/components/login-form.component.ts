@@ -1,13 +1,10 @@
 import {Component} from '@angular/core';
-import {
-	FormControl,
-	FormGroup,
-	ReactiveFormsModule,
-	Validators,
-} from '@angular/forms';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {
 	ButtonComponent,
-	InputComponent,
+	FormComponent,
+	FormFieldComponent,
+	LinkComponent,
 	TypographyComponent,
 } from '../../../shared/components';
 
@@ -15,10 +12,11 @@ import {
 	selector: 'app-login-form',
 	templateUrl: './login-form.component.html',
 	imports: [
-		ReactiveFormsModule,
 		TypographyComponent,
 		ButtonComponent,
-		InputComponent,
+		LinkComponent,
+		FormComponent,
+		FormFieldComponent,
 	],
 	standalone: true,
 })
