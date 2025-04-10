@@ -1,4 +1,18 @@
-<label [class]="classes">
-	<app-typography class="block mb-2" as="span">{{ label }}</app-typography>
-	<app-input [type]="type" [placeholder]="placeholder" />
-</label>
+<div [class]="classes">
+	<label>
+		<app-typography class="block mb-2" as="span">{{ label }}</app-typography>
+		<app-input
+			[value]="value"
+			[type]="type"
+			[placeholder]="placeholder"
+			[disabled]="disabled"
+			[onInput]="handleInput"
+			[onTouched]="onTouched"
+		/>
+	</label>
+	@if (error) {
+		<app-typography class="mt-1" variant="body2" color="danger">
+			{{ error }}
+		</app-typography>
+	}
+</div>

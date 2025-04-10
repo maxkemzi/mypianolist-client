@@ -1,1 +1,9 @@
-<input [class]="classes" [type]="type" [placeholder]="placeholder" />
+<input
+	[class]="classes"
+	[value]="value"
+	[type]="type"
+	[placeholder]="placeholder"
+	[disabled]="disabled"
+	(input)="onInput($event)"
+	(blur)="onTouched()"
+/>

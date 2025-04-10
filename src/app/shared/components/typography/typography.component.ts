@@ -23,6 +23,7 @@ export class TypographyComponent {
 			h2: 'h2',
 			h3: 'h3',
 			body1: 'p',
+			body2: 'p',
 		};
 
 		return this.as || variantToTagsMapping[this.variant];
@@ -32,6 +33,7 @@ export class TypographyComponent {
 		const colorToClassesMapping: Record<Color, string> = {
 			text: 'text-text',
 			primary: 'text-primary',
+			danger: 'text-danger',
 		};
 
 		const sizeToClassesMapping: Record<Size, string> = {
@@ -53,6 +55,10 @@ export class TypographyComponent {
 			Variant,
 			{size: Size; weight: Weight}
 		> = {
+			body2: {
+				size: 'sm',
+				weight: 'normal',
+			},
 			body1: {
 				size: 'base',
 				weight: 'normal',
