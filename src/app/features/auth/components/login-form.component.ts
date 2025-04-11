@@ -35,17 +35,25 @@ export class LoginFormComponent {
 		{updateOn: 'blur'},
 	);
 
-	get usernameError() {
-		if (this.form.get('username')?.errors?.['required']) {
-			return 'Username is required.';
+	get usernameError(): string | undefined {
+		const control = this.form.get('username');
+
+		if (control?.touched) {
+			if (control?.errors?.['required']) {
+				return 'Username is required.';
+			}
 		}
 
 		return undefined;
 	}
 
-	get passwordError() {
-		if (this.form.get('password')?.errors?.['required']) {
-			return 'Password is required.';
+	get passwordError(): string | undefined {
+		const control = this.form.get('password');
+
+		if (control?.touched) {
+			if (control?.errors?.['required']) {
+				return 'Password is required.';
+			}
 		}
 
 		return undefined;
