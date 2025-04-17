@@ -3,10 +3,19 @@
 		<app-typography weight="semibold">{{ username }}</app-typography>
 		<i class="ph-fill ph-caret-down"></i>
 	</div>
-	<img
-		class="block object-cover max-w-full rounded-full"
-		[src]="avatarSrc"
-		width="50"
-		height="50"
-	/>
+	@if (imageHasError) {
+		<div
+			class="flex items-center justify-center w-[50px] h-[50px] rounded-full bg-surface"
+		>
+			<i class="ph-fill ph-user text-2xl"></i>
+		</div>
+	} @else {
+		<img
+			class="block object-cover max-w-full rounded-full bg-surface"
+			[src]="avatarSrc"
+			(error)="handleImageError()"
+			width="50"
+			height="50"
+		/>
+	}
 </div>

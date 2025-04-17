@@ -10,8 +10,13 @@ import {TypographyComponent} from '../../shared/components';
 export class ProfileComponent {
 	@Input() username: string = 'username';
 	@Input() avatar: string | null = null;
+	imageHasError: boolean = false;
 
 	get avatarSrc() {
 		return `/images/${this.avatar}`;
+	}
+
+	handleImageError() {
+		this.imageHasError = true;
 	}
 }
