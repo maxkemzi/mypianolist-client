@@ -12,6 +12,8 @@ import {
 	LinkComponent,
 	TypographyComponent,
 } from '../../../shared/components';
+import {AuthService} from '../auth.service';
+import {Router} from '@angular/router';
 
 @Component({
 	selector: 'app-signup-form',
@@ -32,6 +34,11 @@ export class SignupFormComponent {
 		email: new FormControl('', [Validators.required, Validators.email]),
 		password: new FormControl('', Validators.required),
 	});
+
+	constructor(
+		private router: Router,
+		private service: AuthService,
+	) {}
 
 	get usernameError(): string | undefined {
 		const control = this.form.get('username');
@@ -70,4 +77,23 @@ export class SignupFormComponent {
 
 		return undefined;
 	}
+
+	onSubmit = () => {
+		if (this.form.invalid) {
+			return;
+		}
+
+		const {username, email, password} = this.form.value;
+
+		this.service
+			.signUp({username: username!, email: email!, password: password!})
+			.subscribe({
+				next: () => {
+					this.router.navigate(['/auth/login']);
+				},
+				error: () => {
+					console.error('Error signing up.');
+				},
+			});
+	};
 }

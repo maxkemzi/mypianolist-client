@@ -18,7 +18,7 @@ export class AuthApi extends Api {
 	}
 
 	signUp(body: {username: string; email: string; password: string}) {
-		return this.http.post(`${this.BASE_URL}/auth/signup`, body);
+		return this.http.post(`${this.BASE_URL}/auth/register`, body);
 	}
 
 	refresh() {

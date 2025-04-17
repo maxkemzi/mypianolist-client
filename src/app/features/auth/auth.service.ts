@@ -47,6 +47,10 @@ export class AuthService {
 		});
 	}
 
+	signUp(body: {username: string; email: string; password: string}) {
+		return this.api.signUp(body);
+	}
+
 	logIn(body: {username: string; password: string}) {
 		return this.api.logIn(body).pipe(tap(data => this.setAuthData(data)));
 	}
