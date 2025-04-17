@@ -12,6 +12,8 @@ import {
 	LinkComponent,
 	TypographyComponent,
 } from '../../../shared/components';
+import {Router} from '@angular/router';
+import {AuthService} from '../auth.service';
 
 @Component({
 	selector: 'app-login-form',
@@ -27,13 +29,15 @@ import {
 	standalone: true,
 })
 export class LoginFormComponent {
-	form = new FormGroup(
-		{
-			username: new FormControl('', Validators.required),
-			password: new FormControl('', Validators.required),
-		},
-		{updateOn: 'blur'},
-	);
+	form = new FormGroup({
+		username: new FormControl('', Validators.required),
+		password: new FormControl('', Validators.required),
+	});
+
+	constructor(
+		private router: Router,
+		private service: AuthService,
+	) {}
 
 	get usernameError(): string | undefined {
 		const control = this.form.get('username');
@@ -58,4 +62,21 @@ export class LoginFormComponent {
 
 		return undefined;
 	}
+
+	onSubmit = () => {
+		if (this.form.invalid) {
+			return;
+		}
+
+		const {username, password} = this.form.value;
+
+		this.service.logIn({username: username!, password: password!}).subscribe({
+			next: () => {
+				this.router.navigate(['/']);
+			},
+			error: () => {
+				console.error('Error logging in.');
+			},
+		});
+	};
 }

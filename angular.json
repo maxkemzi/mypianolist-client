@@ -63,6 +63,7 @@
 							"buildTarget": "mypianolist-frontend:build:production"
 						},
 						"development": {
+							"proxyConfig": "./src/proxy.conf.json",
 							"buildTarget": "mypianolist-frontend:build:development"
 						}
 					},

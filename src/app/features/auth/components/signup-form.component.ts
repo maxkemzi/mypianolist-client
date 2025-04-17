@@ -27,14 +27,11 @@ import {
 	standalone: true,
 })
 export class SignupFormComponent {
-	form = new FormGroup(
-		{
-			username: new FormControl('', Validators.required),
-			email: new FormControl('', Validators.required),
-			password: new FormControl('', Validators.required),
-		},
-		{updateOn: 'blur'},
-	);
+	form = new FormGroup({
+		username: new FormControl('', Validators.required),
+		email: new FormControl('', [Validators.required, Validators.email]),
+		password: new FormControl('', Validators.required),
+	});
 
 	get usernameError(): string | undefined {
 		const control = this.form.get('username');
@@ -54,6 +51,8 @@ export class SignupFormComponent {
 		if (control?.touched) {
 			if (control.errors?.['required']) {
 				return 'Email is required.';
+			} else if (control.errors?.['email']) {
+				return 'Email is invalid.';
 			}
 		}
 

@@ -1,7 +1,15 @@
 <app-header absolute>
 	<app-logo slot="left-1" />
 	<app-navbar slot="left-2" />
-	<app-header-profile slot="right" />
+	@if (authService.user$ | async; as user) {
+		<app-profile
+			slot="right"
+			[username]="user.username"
+			[avatar]="user.avatar"
+		/>
+	} @else {
+		<app-auth-buttons slot="right" />
+	}
 </app-header>
 
 <main>
