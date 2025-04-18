@@ -36,8 +36,6 @@ export class AuthService {
 				.pipe(finalize(() => this.loadingSubject.next(false)))
 				.subscribe({
 					next: data => {
-						this.setAuthData(data);
-						console.log(data);
 						resolve();
 					},
 					error: err => {
@@ -67,5 +65,9 @@ export class AuthService {
 			expires: 1,
 		});
 		this.userSubject.next(data.user);
+	}
+
+	getAuthToken(): string {
+		return this.cookieService.get('token');
 	}
 }
