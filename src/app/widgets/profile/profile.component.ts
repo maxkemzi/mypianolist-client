@@ -1,5 +1,6 @@
-import {Component, Input} from '@angular/core';
+import {Component, inject, Input, signal} from '@angular/core';
 import {TypographyComponent} from '../../shared/components';
+import {AuthService} from '../../features/auth';
 
 @Component({
 	selector: 'app-profile',
@@ -8,15 +9,25 @@ import {TypographyComponent} from '../../shared/components';
 	standalone: true,
 })
 export class ProfileComponent {
+	private auth = inject(AuthService);
 	@Input() username: string = 'username';
 	@Input() avatar: string | null = null;
-	imageHasError: boolean = false;
+	imageHasError = signal<boolean>(false);
+	dropdownIsOpen = signal<boolean>(false);
 
 	get avatarSrc() {
 		return `/images/${this.avatar}`;
 	}
 
-	handleImageError() {
-		this.imageHasError = true;
+	setImageHasError() {
+		this.imageHasError.set(true);
+	}
+
+	toggleDropdownIsOpen() {
+		this.dropdownIsOpen.update(value => !value);
+	}
+
+	logOut() {
+		this.auth.logOut().subscribe();
 	}
 }

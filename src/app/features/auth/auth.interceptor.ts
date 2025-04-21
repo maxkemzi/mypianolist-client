@@ -6,9 +6,9 @@ export function authInterceptor(
 	req: HttpRequest<unknown>,
 	next: HttpHandlerFn,
 ) {
-	const service = inject(AuthService);
+	const auth = inject(AuthService);
 
-	const token = service.getAuthToken();
+	const token = auth.getToken();
 	if (token) {
 		return next(req.clone({setHeaders: {Authorization: token}}));
 	}

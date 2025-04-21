@@ -23,4 +23,8 @@ export class AuthApi extends Api {
 	refresh() {
 		return this.http.post<LoginResponse>(`${this.BASE_URL}/auth/refresh`, {});
 	}
+
+	logOut() {
+		return this.http.delete(`${this.BASE_URL}/auth/logout`, {});
+	}
 }

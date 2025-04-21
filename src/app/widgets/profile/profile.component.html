@@ -1,9 +1,30 @@
 <div class="flex items-center gap-4">
-	<div class="flex items-center gap-2">
-		<app-typography weight="semibold">{{ username }}</app-typography>
-		<i class="ph-fill ph-caret-down"></i>
+	<div class="relative">
+		<button
+			class="flex items-center gap-2"
+			type="button"
+			(click)="toggleDropdownIsOpen()"
+		>
+			<app-typography weight="semibold">{{ username }}</app-typography>
+			<i class="ph-fill ph-caret-down"></i>
+		</button>
+		@if (dropdownIsOpen()) {
+			<div class="absolute top-full left-0 w-full pt-2">
+				<ul class="bg-surface rounded-xl py-3">
+					<li>
+						<button
+							class="w-full px-4 py-1.5 transition-colors ease-out hover:bg-primary"
+							type="button"
+							(click)="logOut()"
+						>
+							<app-typography class="text-left">Log out</app-typography>
+						</button>
+					</li>
+				</ul>
+			</div>
+		}
 	</div>
-	@if (imageHasError) {
+	@if (imageHasError()) {
 		<div
 			class="flex items-center justify-center w-[50px] h-[50px] rounded-full bg-surface"
 		>
@@ -13,7 +34,7 @@
 		<img
 			class="block object-cover max-w-full rounded-full bg-surface"
 			[src]="avatarSrc"
-			(error)="handleImageError()"
+			(error)="setImageHasError()"
 			width="50"
 			height="50"
 		/>

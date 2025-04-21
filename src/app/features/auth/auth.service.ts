@@ -19,13 +19,19 @@ export class AuthService {
 	}
 
 	logIn(body: {username: string; password: string}) {
-		return this.api.logIn(body).pipe(tap(data => this.setAuthData(data)));
+		return this.api.logIn(body).pipe(
+			tap(data => {
+				this.user.set(data.user);
+				this.setToken(data.accessToken);
+			}),
+		);
 	}
 
 	refresh() {
 		return this.api.refresh().pipe(
 			tap(data => {
-				this.setAuthData(data);
+				this.user.set(data.user);
+				this.setToken(data.accessToken);
 			}),
 			catchError(() => {
 				this.user.set(null);
@@ -35,17 +41,29 @@ export class AuthService {
 		);
 	}
 
-	private setAuthData(data: {user: User; accessToken: string}) {
-		this.cookies.set('token', data.accessToken, {
+	logOut() {
+		return this.api.logOut().pipe(
+			tap(() => {
+				this.user.set(null);
+				this.deleteToken();
+			}),
+		);
+	}
+
+	getToken(): string {
+		return this.cookies.get('token');
+	}
+
+	private setToken(token: string) {
+		this.cookies.set('token', token, {
 			path: '/',
 			secure: false,
 			sameSite: 'Lax',
 			expires: 1,
 		});
-		this.user.set(data.user);
 	}
 
-	getAuthToken(): string {
-		return this.cookies.get('token');
+	private deleteToken() {
+		this.cookies.delete('token', '/');
 	}
 }
