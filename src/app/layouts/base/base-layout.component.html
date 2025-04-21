@@ -1,15 +1,15 @@
 <app-header absolute>
 	<app-logo slot="left-1" />
 	<app-navbar slot="left-2" />
-	@if (authService.user$ | async; as user) {
-		<app-profile
-			slot="right"
-			[username]="user.username"
-			[avatar]="user.avatar"
-		/>
-	} @else {
-		<app-auth-buttons slot="right" />
-	}
+	<ng-container slot="right">
+		@if (auth.user(); as user) {
+			<app-profile [username]="user.username" [avatar]="user.avatar" />
+		}
+
+		@if (auth.user() === null) {
+			<app-auth-buttons />
+		}
+	</ng-container>
 </app-header>
 
 <main>

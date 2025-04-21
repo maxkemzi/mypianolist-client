@@ -1,5 +1,6 @@
-import {Component} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {
+	FormBuilder,
 	FormControl,
 	FormGroup,
 	ReactiveFormsModule,
@@ -29,15 +30,14 @@ import {AuthService} from '../auth.service';
 	standalone: true,
 })
 export class LoginFormComponent {
-	form = new FormGroup({
-		username: new FormControl('', Validators.required),
-		password: new FormControl('', Validators.required),
-	});
+	private formBuilder = inject(FormBuilder);
+	private router = inject(Router);
+	private service = inject(AuthService);
 
-	constructor(
-		private router: Router,
-		private service: AuthService,
-	) {}
+	form = this.formBuilder.nonNullable.group({
+		username: ['', Validators.required],
+		password: ['', Validators.required],
+	});
 
 	get usernameError(): string | undefined {
 		const control = this.form.get('username');
@@ -68,9 +68,7 @@ export class LoginFormComponent {
 			return;
 		}
 
-		const {username, password} = this.form.value;
-
-		this.service.logIn({username: username!, password: password!}).subscribe({
+		this.service.logIn(this.form.getRawValue()).subscribe({
 			next: () => {
 				this.router.navigate(['/']);
 			},

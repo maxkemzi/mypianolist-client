@@ -1,17 +1,16 @@
 import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {Api} from '../../lib';
 
 interface LoginResponse {
 	user: {username: string; avatar: string | null};
 	accessToken: string;
+	refreshToken: string;
 }
 
 @Injectable({providedIn: 'root'})
 export class AuthApi extends Api {
-	constructor(private http: HttpClient) {
-		super();
-	}
+	private http = inject(HttpClient);
 
 	logIn(body: {username: string; password: string}) {
 		return this.http.post<LoginResponse>(`${this.BASE_URL}/auth/login`, body);

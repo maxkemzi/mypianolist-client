@@ -1,7 +1,7 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable, signal} from '@angular/core';
+import {SsrCookieService} from 'ngx-cookie-service-ssr';
+import {catchError, of, tap} from 'rxjs';
 import {AuthApi} from './auth.api';
-import {CookieService} from 'ngx-cookie-service';
-import {BehaviorSubject, EMPTY, finalize, map, of, tap} from 'rxjs';
 
 interface User {
 	username: string;
@@ -10,40 +10,9 @@ interface User {
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
-	private userSubject = new BehaviorSubject<User | null>(null);
-	user$ = this.userSubject.asObservable();
-
-	isAuth$ = this.user$.pipe(map(user => !!user));
-
-	private loadingSubject = new BehaviorSubject(true);
-	loading$ = this.loadingSubject.asObservable();
-
-	constructor(
-		private readonly api: AuthApi,
-		private readonly cookieService: CookieService,
-	) {}
-
-	initAuth() {
-		const token = this.cookieService.get('token');
-		if (!token) {
-			this.userSubject.next(null);
-			this.loadingSubject.next(false);
-			return Promise.resolve();
-		}
-
-		return new Promise<void>((resolve, reject) => {
-			this.refresh()
-				.pipe(finalize(() => this.loadingSubject.next(false)))
-				.subscribe({
-					next: data => {
-						resolve();
-					},
-					error: err => {
-						reject(err);
-					},
-				});
-		});
-	}
+	private readonly api = inject(AuthApi);
+	private readonly cookies = inject(SsrCookieService);
+	user = signal<User | null | undefined>(undefined);
 
 	signUp(body: {username: string; email: string; password: string}) {
 		return this.api.signUp(body);
@@ -54,20 +23,29 @@ export class AuthService {
 	}
 
 	refresh() {
-		return this.api.refresh().pipe(tap(data => this.setAuthData(data)));
+		return this.api.refresh().pipe(
+			tap(data => {
+				this.setAuthData(data);
+			}),
+			catchError(() => {
+				this.user.set(null);
+
+				return of(null);
+			}),
+		);
 	}
 
 	private setAuthData(data: {user: User; accessToken: string}) {
-		this.cookieService.set('token', data.accessToken, {
+		this.cookies.set('token', data.accessToken, {
 			path: '/',
 			secure: false,
 			sameSite: 'Lax',
 			expires: 1,
 		});
-		this.userSubject.next(data.user);
+		this.user.set(data.user);
 	}
 
 	getAuthToken(): string {
-		return this.cookieService.get('token');
+		return this.cookies.get('token');
 	}
 }

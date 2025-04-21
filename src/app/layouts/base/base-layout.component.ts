@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
 import {
 	HeaderComponent,
@@ -25,5 +25,5 @@ import {CommonModule} from '@angular/common';
 	standalone: true,
 })
 export class BaseLayoutComponent {
-	constructor(public authService: AuthService) {}
+	auth = inject(AuthService);
 }

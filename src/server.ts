@@ -47,7 +47,11 @@ app.get('**', (req, res, next) => {
 			documentFilePath: indexHtml,
 			url: `${protocol}://${headers.host}${originalUrl}`,
 			publicPath: browserDistFolder,
-			providers: [{provide: APP_BASE_HREF, useValue: baseUrl}],
+			providers: [
+				{provide: APP_BASE_HREF, useValue: baseUrl},
+				{provide: 'REQUEST', useValue: req},
+				{provide: 'RESPONSE', useValue: res},
+			],
 		})
 		.then(html => res.send(html))
 		.catch(err => next(err));

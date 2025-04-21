@@ -1,10 +1,6 @@
-import {Component} from '@angular/core';
-import {
-	FormControl,
-	FormGroup,
-	ReactiveFormsModule,
-	Validators,
-} from '@angular/forms';
+import {Component, inject} from '@angular/core';
+import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
+import {Router} from '@angular/router';
 import {
 	ButtonComponent,
 	FormComponent,
@@ -13,7 +9,6 @@ import {
 	TypographyComponent,
 } from '../../../shared/components';
 import {AuthService} from '../auth.service';
-import {Router} from '@angular/router';
 
 @Component({
 	selector: 'app-signup-form',
@@ -29,16 +24,15 @@ import {Router} from '@angular/router';
 	standalone: true,
 })
 export class SignupFormComponent {
-	form = new FormGroup({
-		username: new FormControl('', Validators.required),
-		email: new FormControl('', [Validators.required, Validators.email]),
-		password: new FormControl('', Validators.required),
-	});
+	private formBuilder = inject(FormBuilder);
+	private router = inject(Router);
+	private service = inject(AuthService);
 
-	constructor(
-		private router: Router,
-		private service: AuthService,
-	) {}
+	form = this.formBuilder.nonNullable.group({
+		username: ['', Validators.required],
+		email: ['', Validators.email],
+		password: ['', Validators.required],
+	});
 
 	get usernameError(): string | undefined {
 		const control = this.form.get('username');
@@ -83,17 +77,13 @@ export class SignupFormComponent {
 			return;
 		}
 
-		const {username, email, password} = this.form.value;
-
-		this.service
-			.signUp({username: username!, email: email!, password: password!})
-			.subscribe({
-				next: () => {
-					this.router.navigate(['/auth/login']);
-				},
-				error: () => {
-					console.error('Error signing up.');
-				},
-			});
+		this.service.signUp(this.form.getRawValue()).subscribe({
+			next: () => {
+				this.router.navigate(['/auth/login']);
+			},
+			error: () => {
+				console.error('Error signing up.');
+			},
+		});
 	};
 }

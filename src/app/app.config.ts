@@ -11,18 +11,19 @@ import {
 	provideClientHydration,
 	withEventReplay,
 } from '@angular/platform-browser';
+import {firstValueFrom} from 'rxjs';
 import {routes} from './app.routes';
 import {authInterceptor, AuthService} from './features/auth';
 
 export const appConfig: ApplicationConfig = {
 	providers: [
-		provideAppInitializer(() => {
-			const authService = inject(AuthService);
-			return authService.initAuth();
-		}),
 		provideZoneChangeDetection({eventCoalescing: true}),
 		provideRouter(routes),
 		provideClientHydration(withEventReplay()),
 		provideHttpClient(withInterceptors([authInterceptor])),
+		provideAppInitializer(() => {
+			const auth = inject(AuthService);
+			return firstValueFrom(auth.refresh());
+		}),
 	],
 };
