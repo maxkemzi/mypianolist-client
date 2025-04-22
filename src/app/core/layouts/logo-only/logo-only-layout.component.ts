@@ -6,6 +6,5 @@ import {HeaderComponent, LogoComponent} from '@widgets';
 	selector: 'app-logo-only-layout',
 	templateUrl: './logo-only-layout.component.html',
 	imports: [RouterOutlet, HeaderComponent, LogoComponent],
-	standalone: true,
 })
 export class LogoOnlyLayoutComponent {}

@@ -6,7 +6,6 @@ import {ContainerComponent} from '@shared/components';
 	selector: 'app-header',
 	templateUrl: './header.component.html',
 	imports: [CommonModule, ContainerComponent],
-	standalone: true,
 })
 export class HeaderComponent {
 	@Input({transform: booleanAttribute}) absolute: boolean = false;

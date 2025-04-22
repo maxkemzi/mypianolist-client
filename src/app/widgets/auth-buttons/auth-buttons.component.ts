@@ -5,6 +5,5 @@ import {ButtonComponent} from '@shared/components';
 	selector: 'app-auth-buttons',
 	templateUrl: './auth-buttons.component.html',
 	imports: [ButtonComponent],
-	standalone: true,
 })
 export class AuthButtonsComponent {}

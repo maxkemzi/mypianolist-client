@@ -21,7 +21,6 @@ import {AuthService} from '../auth.service';
 		FormFieldComponent,
 		ReactiveFormsModule,
 	],
-	standalone: true,
 })
 export class LoginFormComponent {
 	private formBuilder = inject(FormBuilder);

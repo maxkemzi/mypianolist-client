@@ -4,7 +4,6 @@ import {twMerge} from 'tailwind-merge';
 @Component({
 	selector: 'app-input',
 	templateUrl: './input.component.html',
-	standalone: true,
 })
 export class InputComponent {
 	@Input() class?: string;

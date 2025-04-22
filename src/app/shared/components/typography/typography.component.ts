@@ -7,7 +7,6 @@ import {twMerge} from 'tailwind-merge';
 	selector: 'app-typography',
 	templateUrl: './typography.component.html',
 	imports: [CommonModule],
-	standalone: true,
 })
 export class TypographyComponent {
 	@Input() variant: Variant = 'body1';

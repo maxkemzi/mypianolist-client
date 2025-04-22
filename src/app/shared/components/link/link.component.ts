@@ -8,7 +8,6 @@ import {twMerge} from 'tailwind-merge';
 	selector: 'app-link',
 	templateUrl: './link.component.html',
 	imports: [CommonModule, TypographyComponent, RouterLink],
-	standalone: true,
 })
 export class LinkComponent {
 	@Input() type: 'external' | 'navigation' = 'navigation';

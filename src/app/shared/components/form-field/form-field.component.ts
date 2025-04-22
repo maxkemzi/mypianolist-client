@@ -9,7 +9,6 @@ import {TypographyComponent} from '../typography';
 	selector: 'app-form-field',
 	templateUrl: './form-field.component.html',
 	imports: [CommonModule, InputComponent, TypographyComponent],
-	standalone: true,
 	providers: [
 		{
 			provide: NG_VALUE_ACCESSOR,

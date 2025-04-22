@@ -6,7 +6,6 @@ import {twMerge} from 'tailwind-merge';
 	selector: 'app-container',
 	templateUrl: './container.component.html',
 	imports: [CommonModule],
-	standalone: true,
 })
 export class ContainerComponent {
 	@Input() class?: string;

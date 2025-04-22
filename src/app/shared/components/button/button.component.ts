@@ -8,7 +8,6 @@ import {TypographyColor, TypographyComponent} from '../typography';
 	selector: 'app-button',
 	templateUrl: './button.component.html',
 	imports: [CommonModule, TypographyComponent, RouterLink],
-	standalone: true,
 })
 export class ButtonComponent {
 	@Input() variant: 'primary' | 'outline' = 'primary';

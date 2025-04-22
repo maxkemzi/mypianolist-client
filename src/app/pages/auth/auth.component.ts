@@ -6,6 +6,5 @@ import {ContainerComponent} from '@shared/components';
 	selector: 'app-auth-page',
 	templateUrl: './auth.component.html',
 	imports: [ContainerComponent, RouterOutlet],
-	standalone: true,
 })
 export class AuthPageComponent {}

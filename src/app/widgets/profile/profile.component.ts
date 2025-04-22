@@ -6,7 +6,6 @@ import {AuthService} from '@features/auth';
 	selector: 'app-profile',
 	templateUrl: './profile.component.html',
 	imports: [TypographyComponent],
-	standalone: true,
 })
 export class ProfileComponent {
 	private auth = inject(AuthService);

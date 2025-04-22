@@ -6,7 +6,6 @@ import {twMerge} from 'tailwind-merge';
 	selector: 'app-form',
 	templateUrl: './form.component.html',
 	imports: [CommonModule],
-	standalone: true,
 })
 export class FormComponent {
 	@Input() class?: string;

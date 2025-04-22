@@ -22,7 +22,6 @@ import {
 		ProfileComponent,
 		AuthButtonsComponent,
 	],
-	standalone: true,
 })
 export class BaseLayoutComponent {
 	auth = inject(AuthService);
