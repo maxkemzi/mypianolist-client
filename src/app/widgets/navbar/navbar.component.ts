@@ -1,10 +1,11 @@
 import {Component} from '@angular/core';
-import {TypographyComponent} from '../../shared/components';
+import {TypographyComponent} from '@shared/components';
+import {RouterLink} from '@angular/router';
 
 @Component({
 	selector: 'app-navbar',
 	templateUrl: './navbar.component.html',
-	imports: [TypographyComponent],
+	imports: [TypographyComponent, RouterLink],
 	standalone: true,
 })
 export class NavbarComponent {}

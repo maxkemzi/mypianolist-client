@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
-import {ContainerComponent} from '../../shared/components';
+import {ContainerComponent} from '@shared/components';
 
 @Component({
 	selector: 'app-auth-page',

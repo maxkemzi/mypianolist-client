@@ -3,34 +3,35 @@ import {Routes} from '@angular/router';
 export const routes: Routes = [
 	{
 		path: '',
-		loadComponent: () => import('./layouts').then(m => m.BaseLayoutComponent),
+		loadComponent: () =>
+			import('@core/layouts').then(m => m.BaseLayoutComponent),
 		children: [
 			{
 				path: '',
 				loadComponent: () =>
-					import('./pages').then(m => m.HomePageComponent),
+					import('@pages').then(m => m.HomePageComponent),
 			},
 		],
 	},
 	{
 		path: '',
 		loadComponent: () =>
-			import('./layouts').then(m => m.LogoOnlyLayoutComponent),
+			import('@core/layouts').then(m => m.LogoOnlyLayoutComponent),
 		children: [
 			{
 				path: 'auth',
 				loadComponent: () =>
-					import('./pages').then(m => m.AuthPageComponent),
+					import('@pages').then(m => m.AuthPageComponent),
 				children: [
 					{
 						path: 'login',
 						loadComponent: () =>
-							import('./features/auth').then(m => m.LoginFormComponent),
+							import('@features/auth').then(m => m.LoginFormComponent),
 					},
 					{
 						path: 'signup',
 						loadComponent: () =>
-							import('./features/auth').then(m => m.SignupFormComponent),
+							import('@features/auth').then(m => m.SignupFormComponent),
 					},
 				],
 			},

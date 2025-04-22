@@ -13,7 +13,7 @@ import {
 } from '@angular/platform-browser';
 import {firstValueFrom} from 'rxjs';
 import {routes} from './app.routes';
-import {authInterceptor, AuthService} from './features/auth';
+import {authInterceptor, AuthService} from '@features/auth';
 
 export const appConfig: ApplicationConfig = {
 	providers: [

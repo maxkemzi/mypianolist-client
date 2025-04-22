@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {ContainerComponent, TypographyComponent} from '../../shared/components';
+import {ContainerComponent, TypographyComponent} from '@shared/components';
 
 @Component({
 	selector: 'app-home-page',

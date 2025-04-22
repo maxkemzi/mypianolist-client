@@ -1,6 +1,6 @@
 import {Component, inject, Input, signal} from '@angular/core';
-import {TypographyComponent} from '../../shared/components';
-import {AuthService} from '../../features/auth';
+import {TypographyComponent} from '@shared/components';
+import {AuthService} from '@features/auth';
 
 @Component({
 	selector: 'app-profile',

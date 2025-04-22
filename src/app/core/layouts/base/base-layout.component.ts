@@ -1,14 +1,14 @@
+import {CommonModule} from '@angular/common';
 import {Component, inject} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
+import {AuthService} from '@features/auth';
 import {
+	AuthButtonsComponent,
 	HeaderComponent,
-	ProfileComponent,
 	LogoComponent,
 	NavbarComponent,
-	AuthButtonsComponent,
-} from '../../widgets';
-import {AuthService} from '../../features/auth/auth.service';
-import {CommonModule} from '@angular/common';
+	ProfileComponent,
+} from '@widgets';
 
 @Component({
 	selector: 'app-base-layout',

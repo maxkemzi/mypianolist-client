@@ -1,6 +1,6 @@
 import {CommonModule} from '@angular/common';
 import {booleanAttribute, Component, Input} from '@angular/core';
-import {ContainerComponent} from '../../shared/components';
+import {ContainerComponent} from '@shared/components';
 
 @Component({
 	selector: 'app-header',

@@ -1,6 +1,6 @@
 import {HttpClient} from '@angular/common/http';
 import {inject, Injectable} from '@angular/core';
-import {Api} from '../../lib';
+import {Api} from '@shared/lib';
 
 interface LoginResponse {
 	user: {username: string; avatar: string | null};

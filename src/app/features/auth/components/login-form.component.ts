@@ -1,19 +1,13 @@
 import {Component, inject} from '@angular/core';
-import {
-	FormBuilder,
-	FormControl,
-	FormGroup,
-	ReactiveFormsModule,
-	Validators,
-} from '@angular/forms';
+import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
+import {Router} from '@angular/router';
 import {
 	ButtonComponent,
 	FormComponent,
 	FormFieldComponent,
 	LinkComponent,
 	TypographyComponent,
-} from '../../../shared/components';
-import {Router} from '@angular/router';
+} from '@shared/components';
 import {AuthService} from '../auth.service';
 
 @Component({

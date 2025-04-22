@@ -7,7 +7,7 @@ import {
 	FormFieldComponent,
 	LinkComponent,
 	TypographyComponent,
-} from '../../../shared/components';
+} from '@shared/components';
 import {AuthService} from '../auth.service';
 
 @Component({
