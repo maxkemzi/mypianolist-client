@@ -5,7 +5,7 @@
 			type="button"
 			(click)="toggleDropdownIsOpen()"
 		>
-			<app-typography weight="semibold">{{ username }}</app-typography>
+			<app-typography weight="semibold">{{ username() }}</app-typography>
 			<i class="ph-fill ph-caret-down"></i>
 		</button>
 		@if (dropdownIsOpen()) {
@@ -33,7 +33,7 @@
 	} @else {
 		<img
 			class="block object-cover max-w-full rounded-full bg-surface"
-			[src]="avatarSrc"
+			[src]="avatarPath()"
 			(error)="setImageHasError()"
 			width="50"
 			height="50"

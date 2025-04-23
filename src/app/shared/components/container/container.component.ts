@@ -1,5 +1,5 @@
 import {CommonModule} from '@angular/common';
-import {Component, Input} from '@angular/core';
+import {Component, input} from '@angular/core';
 import {twMerge} from 'tailwind-merge';
 
 @Component({
@@ -8,15 +8,15 @@ import {twMerge} from 'tailwind-merge';
 	imports: [CommonModule],
 })
 export class ContainerComponent {
-	@Input() class?: string;
-	@Input() size: 'md' | 'lg' = 'lg';
+	readonly class = input<string>();
+	readonly size = input<'md' | 'lg'>('lg');
 
 	get classes() {
 		return twMerge(
 			'mx-auto px-4',
-			this.size === 'lg' && 'max-w-[1472px]',
-			this.size === 'md' && 'max-w-[1058px]',
-			this.class,
+			this.size() === 'lg' && 'max-w-[1472px]',
+			this.size() === 'md' && 'max-w-[1058px]',
+			this.class(),
 		);
 	}
 }

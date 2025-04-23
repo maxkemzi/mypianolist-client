@@ -1,5 +1,5 @@
 import {CommonModule} from '@angular/common';
-import {Component, Input} from '@angular/core';
+import {Component, input} from '@angular/core';
 import {twMerge} from 'tailwind-merge';
 
 @Component({
@@ -8,9 +8,9 @@ import {twMerge} from 'tailwind-merge';
 	imports: [CommonModule],
 })
 export class FormComponent {
-	@Input() class?: string;
+	readonly class = input<string>();
 
 	get classes() {
-		return twMerge('bg-background p-12 rounded-xl', this.class);
+		return twMerge('bg-background p-12 rounded-xl', this.class());
 	}
 }

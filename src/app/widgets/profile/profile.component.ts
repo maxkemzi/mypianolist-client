@@ -1,6 +1,6 @@
-import {Component, inject, Input, signal} from '@angular/core';
-import {TypographyComponent} from '@shared/components';
+import {Component, computed, inject, input, signal} from '@angular/core';
 import {AuthService} from '@features/auth';
+import {TypographyComponent} from '@shared/components';
 
 @Component({
 	selector: 'app-profile',
@@ -9,14 +9,12 @@ import {AuthService} from '@features/auth';
 })
 export class ProfileComponent {
 	private auth = inject(AuthService);
-	@Input() username: string = 'username';
-	@Input() avatar: string | null = null;
-	imageHasError = signal<boolean>(false);
-	dropdownIsOpen = signal<boolean>(false);
+	readonly username = input<string>('username');
+	readonly avatar = input<string | null>(null);
+	readonly imageHasError = signal<boolean>(false);
+	readonly dropdownIsOpen = signal<boolean>(false);
 
-	get avatarSrc() {
-		return `/images/${this.avatar}`;
-	}
+	readonly avatarPath = computed(() => `/images/${this.avatar()}`);
 
 	setImageHasError() {
 		this.imageHasError.set(true);

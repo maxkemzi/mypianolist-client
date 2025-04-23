@@ -1,5 +1,5 @@
 import {CommonModule} from '@angular/common';
-import {Component, Input} from '@angular/core';
+import {Component, input} from '@angular/core';
 import {Tag, Size, Variant, Weight, Color} from './types';
 import {twMerge} from 'tailwind-merge';
 
@@ -9,12 +9,12 @@ import {twMerge} from 'tailwind-merge';
 	imports: [CommonModule],
 })
 export class TypographyComponent {
-	@Input() variant: Variant = 'body1';
-	@Input() color: Color = 'text';
-	@Input() class?: string;
-	@Input() as?: Tag;
-	@Input() size?: Size;
-	@Input() weight?: Weight;
+	readonly variant = input<Variant>('body1');
+	readonly color = input<Color>('text');
+	readonly class = input<string>();
+	readonly as = input<Tag>();
+	readonly size = input<Size>();
+	readonly weight = input<Weight>();
 
 	get tag(): Tag {
 		const variantToTagsMapping: Record<Variant, Tag> = {
@@ -25,7 +25,7 @@ export class TypographyComponent {
 			body2: 'p',
 		};
 
-		return this.as || variantToTagsMapping[this.variant];
+		return this.as() || variantToTagsMapping[this.variant()];
 	}
 
 	get classes(): string {
@@ -76,12 +76,13 @@ export class TypographyComponent {
 			},
 		};
 
-		const props = variantToPropsMapping[this.variant];
+		const props = variantToPropsMapping[this.variant()];
 
-		const colorClasses = colorToClassesMapping[this.color || 'text'];
-		const sizeClasses = sizeToClassesMapping[this.size || props.size];
-		const weightClasses = weightToClassesMapping[this.weight || props.weight];
+		const colorClasses = colorToClassesMapping[this.color() || 'text'];
+		const sizeClasses = sizeToClassesMapping[this.size() || props.size];
+		const weightClasses =
+			weightToClassesMapping[this.weight() || props.weight];
 
-		return twMerge(colorClasses, sizeClasses, weightClasses, this.class);
+		return twMerge(colorClasses, sizeClasses, weightClasses, this.class());
 	}
 }

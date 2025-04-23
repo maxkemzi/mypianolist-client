@@ -1,5 +1,5 @@
 import {CommonModule} from '@angular/common';
-import {booleanAttribute, Component, Input} from '@angular/core';
+import {booleanAttribute, Component, input} from '@angular/core';
 import {RouterLink} from '@angular/router';
 import {twMerge} from 'tailwind-merge';
 import {TypographyColor, TypographyComponent} from '../typography';
@@ -10,24 +10,26 @@ import {TypographyColor, TypographyComponent} from '../typography';
 	imports: [CommonModule, TypographyComponent, RouterLink],
 })
 export class ButtonComponent {
-	@Input() variant: 'primary' | 'outline' = 'primary';
-	@Input() element: 'button' | 'navlink' = 'button';
-	@Input({transform: booleanAttribute}) submit: boolean = false;
-	@Input() class?: string;
-	@Input() href?: string;
-	@Input() disabled?: boolean;
+	readonly variant = input<'primary' | 'outline'>('primary');
+	readonly element = input<'button' | 'navlink'>('button');
+	readonly submit = input<boolean, unknown>(false, {
+		transform: booleanAttribute,
+	});
+	readonly class = input<string>();
+	readonly href = input<string>();
+	readonly disabled = input<boolean>();
 
 	get classes(): string {
 		return twMerge(
 			'block py-2 px-7 font-semibold rounded-xl',
-			this.variant === 'primary' && 'bg-primary',
-			this.variant === 'outline' && 'bg-primary/15',
-			this.class,
+			this.variant() === 'primary' && 'bg-primary',
+			this.variant() === 'outline' && 'bg-primary/15',
+			this.class(),
 		);
 	}
 
 	get textColor(): TypographyColor {
-		if (this.variant === 'outline') {
+		if (this.variant() === 'outline') {
 			return 'primary';
 		}
 

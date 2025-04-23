@@ -1,5 +1,5 @@
 import {CommonModule} from '@angular/common';
-import {booleanAttribute, Component, Input} from '@angular/core';
+import {booleanAttribute, Component, input} from '@angular/core';
 import {ContainerComponent} from '@shared/components';
 
 @Component({
@@ -8,5 +8,7 @@ import {ContainerComponent} from '@shared/components';
 	imports: [CommonModule, ContainerComponent],
 })
 export class HeaderComponent {
-	@Input({transform: booleanAttribute}) absolute: boolean = false;
+	readonly absolute = input<boolean, unknown>(false, {
+		transform: booleanAttribute,
+	});
 }
