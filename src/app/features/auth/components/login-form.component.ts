@@ -23,9 +23,9 @@ import {AuthService} from '../auth.service';
 	],
 })
 export class LoginFormComponent {
-	private formBuilder = inject(FormBuilder);
-	private router = inject(Router);
-	private service = inject(AuthService);
+	private readonly formBuilder = inject(FormBuilder);
+	private readonly router = inject(Router);
+	private readonly service = inject(AuthService);
 
 	form = this.formBuilder.nonNullable.group({
 		username: ['', Validators.required],

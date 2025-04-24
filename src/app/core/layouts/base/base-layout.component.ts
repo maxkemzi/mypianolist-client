@@ -24,5 +24,5 @@ import {
 	],
 })
 export class BaseLayoutComponent {
-	auth = inject(AuthService);
+	readonly auth = inject(AuthService);
 }

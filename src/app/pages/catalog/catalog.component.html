@@ -1,0 +1,18 @@
+<div class="h-[88px] mb-10"></div>
+<section>
+	<app-container size="md">
+		<app-typography class="text-center mb-8" variant="h1"
+			>Catalog</app-typography
+		>
+		<div class="grid grid-cols-3 gap-4">
+			<a routerLink="/pieces">
+				<app-genre-card [genre]="allGenre" />
+			</a>
+			@for (genre of genres; track genre.id) {
+				<a [routerLink]="`/pieces/${genre.name}`">
+					<app-genre-card [genre]="genre" />
+				</a>
+			}
+		</div>
+	</app-container>
+</section>

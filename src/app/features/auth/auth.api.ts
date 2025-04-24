@@ -10,7 +10,7 @@ interface LoginResponse {
 
 @Injectable({providedIn: 'root'})
 export class AuthApi extends Api {
-	private http = inject(HttpClient);
+	private readonly http = inject(HttpClient);
 
 	logIn(body: {username: string; password: string}) {
 		return this.http.post<LoginResponse>(`${this.BASE_URL}/auth/login`, body);

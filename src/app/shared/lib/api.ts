@@ -1,3 +1,3 @@
 export class Api {
-	BASE_URL: string = '/api';
+	BASE_URL: string = '/server/api';
 }

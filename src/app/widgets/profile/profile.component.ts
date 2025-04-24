@@ -8,7 +8,7 @@ import {TypographyComponent} from '@shared/components';
 	imports: [TypographyComponent],
 })
 export class ProfileComponent {
-	private auth = inject(AuthService);
+	private readonly auth = inject(AuthService);
 	readonly username = input<string>('username');
 	readonly avatar = input<string | null>(null);
 	readonly imageHasError = signal<boolean>(false);
