@@ -1,3 +1,2 @@
-import {Api} from './api';
-
-export {Api};
+export {Api} from './api';
+export {ClickOutsideDirective} from './click-outside.directive';

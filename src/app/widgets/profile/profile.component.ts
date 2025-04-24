@@ -1,11 +1,12 @@
 import {Component, computed, inject, input, signal} from '@angular/core';
 import {AuthService} from '@features/auth';
 import {TypographyComponent} from '@shared/components';
+import {ClickOutsideDirective} from '@shared/lib';
 
 @Component({
 	selector: 'app-profile',
 	templateUrl: './profile.component.html',
-	imports: [TypographyComponent],
+	imports: [TypographyComponent, ClickOutsideDirective],
 })
 export class ProfileComponent {
 	private readonly auth = inject(AuthService);
@@ -16,7 +17,7 @@ export class ProfileComponent {
 
 	readonly avatarPath = computed(() => `/images/${this.avatar()}`);
 
-	setImageHasError() {
+	handleImageError() {
 		this.imageHasError.set(true);
 	}
 
@@ -24,7 +25,13 @@ export class ProfileComponent {
 		this.dropdownIsOpen.update(value => !value);
 	}
 
-	logOut() {
+	handleLogout() {
 		this.auth.logOut().subscribe();
+	}
+
+	handleOutsideClick() {
+		if (this.dropdownIsOpen()) {
+			this.dropdownIsOpen.set(false);
+		}
 	}
 }
