@@ -1,6 +1,7 @@
 import {inject, Injectable, makeStateKey, TransferState} from '@angular/core';
-import {GenreApi, Genre} from './genre.api';
+import {GenreApi} from './genre.api';
 import {map, Observable, of, tap} from 'rxjs';
+import {Genre} from './genre.model';
 
 @Injectable({providedIn: 'root'})
 export class GenreService {

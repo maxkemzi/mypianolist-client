@@ -1,12 +1,7 @@
 import {HttpClient} from '@angular/common/http';
 import {inject, Injectable} from '@angular/core';
 import {Api} from '@shared/lib';
-
-export interface Genre {
-	id: string;
-	name: string;
-	image: string | null;
-}
+import {Genre} from './genre.model';
 
 interface FetchAllGenresResponse {
 	content: Genre[];

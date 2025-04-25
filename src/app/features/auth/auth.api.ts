@@ -1,9 +1,10 @@
 import {HttpClient} from '@angular/common/http';
 import {inject, Injectable} from '@angular/core';
 import {Api} from '@shared/lib';
+import {AuthUser} from './auth.model';
 
-interface LoginResponse {
-	user: {username: string; avatar: string | null};
+interface AuthResponse {
+	user: AuthUser;
 	accessToken: string;
 	refreshToken: string;
 }
@@ -13,7 +14,7 @@ export class AuthApi extends Api {
 	private readonly http = inject(HttpClient);
 
 	logIn(body: {username: string; password: string}) {
-		return this.http.post<LoginResponse>(`${this.BASE_URL}/auth/login`, body);
+		return this.http.post<AuthResponse>(`${this.BASE_URL}/auth/login`, body);
 	}
 
 	signUp(body: {username: string; email: string; password: string}) {
@@ -21,7 +22,7 @@ export class AuthApi extends Api {
 	}
 
 	refresh() {
-		return this.http.post<LoginResponse>(`${this.BASE_URL}/auth/refresh`, {});
+		return this.http.post<AuthResponse>(`${this.BASE_URL}/auth/refresh`, {});
 	}
 
 	logOut() {

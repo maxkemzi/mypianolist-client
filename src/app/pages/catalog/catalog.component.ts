@@ -22,8 +22,4 @@ export class CatalogPageComponent implements OnInit {
 			this.genres = data;
 		});
 	}
-
-	get allGenre(): Genre {
-		return {id: crypto.randomUUID(), name: 'all', image: '/all.jpg'};
-	}
 }
