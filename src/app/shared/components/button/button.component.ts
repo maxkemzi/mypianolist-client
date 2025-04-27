@@ -2,7 +2,11 @@ import {CommonModule} from '@angular/common';
 import {booleanAttribute, Component, input} from '@angular/core';
 import {RouterLink} from '@angular/router';
 import {twMerge} from 'tailwind-merge';
-import {TypographyColor, TypographyComponent} from '../typography';
+import {
+	TypographyColor,
+	TypographyComponent,
+	TypographySize,
+} from '../typography';
 
 @Component({
 	selector: 'app-button',
@@ -11,6 +15,7 @@ import {TypographyColor, TypographyComponent} from '../typography';
 })
 export class ButtonComponent {
 	readonly variant = input<'primary' | 'outline'>('primary');
+	readonly size = input<'md' | 'sm'>('md');
 	readonly element = input<'button' | 'navlink'>('button');
 	readonly submit = input<boolean, unknown>(false, {
 		transform: booleanAttribute,
@@ -21,7 +26,9 @@ export class ButtonComponent {
 
 	get classes(): string {
 		return twMerge(
-			'block py-2 px-7 font-semibold rounded-xl',
+			'block font-semibold rounded-xl',
+			this.size() === 'md' && 'py-2 px-7',
+			this.size() === 'sm' && 'py-2 px-4',
 			this.variant() === 'primary' && 'bg-primary',
 			this.variant() === 'outline' && 'bg-primary/15',
 			this.class(),
@@ -34,5 +41,13 @@ export class ButtonComponent {
 		}
 
 		return 'text';
+	}
+
+	get textSize(): TypographySize {
+		if (this.size() === 'sm') {
+			return 'sm';
+		}
+
+		return 'base';
 	}
 }

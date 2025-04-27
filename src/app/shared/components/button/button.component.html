@@ -13,7 +13,12 @@
 </ng-container>
 
 <ng-template #content>
-	<app-typography [color]="textColor" as="span" weight="semibold">
+	<app-typography
+		[color]="textColor"
+		[size]="textSize"
+		as="span"
+		weight="semibold"
+	>
 		<ng-content />
 	</app-typography>
 </ng-template>

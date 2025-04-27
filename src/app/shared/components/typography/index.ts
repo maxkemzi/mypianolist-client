@@ -1,5 +1,5 @@
-import {Color} from './types';
+import {Color, Size} from './types';
 import {TypographyComponent} from './typography.component';
 
 export {TypographyComponent};
-export type {Color as TypographyColor};
+export type {Color as TypographyColor, Size as TypographySize};
