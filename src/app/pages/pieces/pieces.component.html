@@ -1,8 +1,19 @@
 <div class="h-[88px] mb-10"></div>
 <section class="relative h-screen overflow-hidden">
 	<app-container size="md">
+		<div class="flex justify-between items-center mb-7">
+			<app-typography
+				>Pieces
+				<app-typography as="span" weight="bold">{{
+					pieces.totalCount()
+				}}</app-typography>
+			</app-typography>
+			<div>
+				<button>Sort by</button>
+			</div>
+		</div>
 		<div class="rounded-lg overflow-hidden">
-			@for (piece of pieces; track piece.id; let i = $index) {
+			@for (piece of pieces.data(); track piece.id; let i = $index) {
 				<app-piece-card
 					[piece]="piece"
 					[variant]="(i + 1) % 2 === 0 ? 'even' : 'odd'"

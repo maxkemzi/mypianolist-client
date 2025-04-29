@@ -3,8 +3,13 @@ import {inject, Injectable} from '@angular/core';
 import {Api} from '@shared/lib';
 import {Piece} from './piece.model';
 
-interface FetchAllPiecesResponse {
+export interface FetchAllPiecesResponse {
 	content: Piece[];
+	page: number;
+	limit: number;
+	totalCount: number;
+	totalPages: number;
+	hasMore: boolean;
 }
 
 @Injectable({providedIn: 'root'})
