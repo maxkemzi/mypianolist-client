@@ -11,6 +11,6 @@ export class FormComponent {
 	readonly class = input<string>();
 
 	get classes() {
-		return twMerge('bg-background p-12 rounded-xl', this.class());
+		return twMerge('bg-background p-12 rounded-lg', this.class());
 	}
 }

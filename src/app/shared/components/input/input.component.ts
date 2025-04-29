@@ -17,6 +17,6 @@ export class InputComponent {
 	readonly onTouched = input<() => void>(() => {});
 
 	get classes(): string {
-		return twMerge('px-4 py-3 bg-surface rounded-xl', this.class());
+		return twMerge('px-4 py-3 bg-surface rounded-lg', this.class());
 	}
 }

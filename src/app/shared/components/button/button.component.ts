@@ -26,9 +26,9 @@ export class ButtonComponent {
 
 	get classes(): string {
 		return twMerge(
-			'block font-semibold rounded-xl',
+			'block font-semibold rounded-lg',
 			this.size() === 'md' && 'py-2 px-7',
-			this.size() === 'sm' && 'py-2 px-4',
+			this.size() === 'sm' && 'py-1.5 px-4',
 			this.variant() === 'primary' && 'bg-primary',
 			this.variant() === 'outline' && 'bg-primary/15',
 			this.class(),

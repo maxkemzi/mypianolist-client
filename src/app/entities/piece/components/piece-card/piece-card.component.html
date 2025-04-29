@@ -5,7 +5,7 @@
 >
 	<div class="shrink-0">
 		<img
-			class="w-[115px] rounded-xl"
+			class="w-[115px] rounded-lg"
 			[src]="photoPath()"
 			[alt]="piece().title"
 		/>
@@ -19,7 +19,7 @@
 				<app-typography class="text-nowrap"
 					>By
 					<app-typography as="span" color="primary">{{
-						piece().composer.lastName
+						composerName()
 					}}</app-typography></app-typography
 				>
 			</div>
@@ -31,17 +31,19 @@
 		<app-typography class="line-clamp-2">{{
 			piece().description
 		}}</app-typography>
-		<div class="flex items-end justify-between gap-4">
-			<div
-				class="py-2 px-4 rounded-xl"
-				[class.bg-surface]="variant() === 'odd'"
-				[class.bg-background]="variant() === 'even'"
-			>
-				<app-typography class="capitalize" size="sm">{{
-					piece().genre.name
-				}}</app-typography>
-			</div>
-			<app-button size="sm">Add to List</app-button>
+		<div class="flex items-end gap-4">
+			@if (!hideGenre()) {
+				<div
+					class="py-1.5 px-2.5 rounded-lg"
+					[class.bg-surface]="variant() === 'odd'"
+					[class.bg-background]="variant() === 'even'"
+				>
+					<app-typography class="capitalize" size="sm">{{
+						piece().genre.name
+					}}</app-typography>
+				</div>
+			}
+			<app-button class="ml-auto" size="sm">Add to List</app-button>
 		</div>
 	</div>
 </div>
