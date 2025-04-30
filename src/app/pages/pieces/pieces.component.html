@@ -8,8 +8,22 @@
 					pieces.totalCount()
 				}}</app-typography>
 			</app-typography>
-			<div>
-				<button>Sort by</button>
+			<div class="relative">
+				<button
+					class="flex items-center gap-2"
+					type="button"
+					(click)="toggleSortDropdownIsOpen()"
+				>
+					<app-typography as="span">Sort by</app-typography>
+
+					<i class="ph ph-caret-down"></i>
+				</button>
+				@if (sortDropdownIsOpen()) {
+					<app-dropdown class="absolute top-full left-0 pt-2">
+						<app-dropdown-item>Learners</app-dropdown-item>
+						<app-dropdown-item>Favorites</app-dropdown-item>
+					</app-dropdown>
+				}
 			</div>
 		</div>
 		<div class="rounded-lg overflow-hidden">
