@@ -4,8 +4,10 @@ import {
 	ContainerComponent,
 	DropdownComponent,
 	DropdownItemComponent,
+	InputComponent,
 	TypographyComponent,
 } from '@shared/components';
+import {ButtonComponent} from '../../shared/components/button/button.component';
 
 @Component({
 	selector: 'app-pieces-page',
@@ -16,6 +18,8 @@ import {
 		TypographyComponent,
 		DropdownComponent,
 		DropdownItemComponent,
+		InputComponent,
+		ButtonComponent,
 	],
 })
 export class PiecesPageComponent {

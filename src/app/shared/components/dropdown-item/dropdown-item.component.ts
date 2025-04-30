@@ -8,8 +8,4 @@ import {TypographyComponent} from '../typography';
 })
 export class DropdownItemComponent {
 	readonly click = output<void>();
-
-	handleClick() {
-		this.click.emit();
-	}
 }

@@ -14,24 +14,24 @@ import {
 	imports: [CommonModule, TypographyComponent, RouterLink],
 })
 export class ButtonComponent {
+	readonly buttonClass = input<string>();
 	readonly variant = input<'primary' | 'outline'>('primary');
 	readonly size = input<'md' | 'sm'>('md');
 	readonly element = input<'button' | 'navlink'>('button');
 	readonly submit = input<boolean, unknown>(false, {
 		transform: booleanAttribute,
 	});
-	readonly class = input<string>();
 	readonly href = input<string>();
 	readonly disabled = input<boolean>();
 
-	get classes(): string {
+	get buttonClasses(): string {
 		return twMerge(
 			'block font-semibold rounded-lg',
 			this.size() === 'md' && 'py-2 px-7',
 			this.size() === 'sm' && 'py-1.5 px-4',
 			this.variant() === 'primary' && 'bg-primary',
 			this.variant() === 'outline' && 'bg-primary/15',
-			this.class(),
+			this.buttonClass(),
 		);
 	}
 

@@ -1,13 +1,13 @@
 <ng-container [ngSwitch]="element()">
 	<button
 		*ngSwitchCase="'button'"
-		[class]="classes"
+		[class]="buttonClasses"
 		[type]="submit() ? 'submit' : 'button'"
 		[disabled]="disabled()"
 	>
 		<ng-container [ngTemplateOutlet]="content" />
 	</button>
-	<a *ngSwitchCase="'navlink'" [class]="classes" [routerLink]="href()">
+	<a *ngSwitchCase="'navlink'" [class]="buttonClasses" [routerLink]="href()">
 		<ng-container [ngTemplateOutlet]="content" />
 	</a>
 </ng-container>
