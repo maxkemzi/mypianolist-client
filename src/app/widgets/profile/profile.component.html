@@ -9,19 +9,11 @@
 			<i class="ph-fill ph-caret-down"></i>
 		</button>
 		@if (dropdownIsOpen()) {
-			<div class="absolute top-full left-0 w-full pt-2">
-				<ul class="bg-surface rounded-lg py-3">
-					<li>
-						<button
-							class="w-full px-4 py-1.5 transition-colors ease-out hover:bg-primary"
-							type="button"
-							(click)="handleLogout()"
-						>
-							<app-typography class="text-left">Log out</app-typography>
-						</button>
-					</li>
-				</ul>
-			</div>
+			<app-dropdown class="absolute top-full left-0 pt-2">
+				<app-dropdown-item (click)="handleLogout()">
+					Log out
+				</app-dropdown-item>
+			</app-dropdown>
 		}
 	</div>
 	@if (imageHasError()) {

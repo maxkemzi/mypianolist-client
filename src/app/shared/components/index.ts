@@ -5,3 +5,5 @@ export {ContainerComponent} from './container';
 export {TypographyComponent} from './typography';
 export {InputComponent} from './input';
 export {LinkComponent} from './link';
+export {DropdownComponent} from './dropdown';
+export {DropdownItemComponent} from './dropdown-item';
