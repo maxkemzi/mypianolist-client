@@ -8,8 +8,8 @@
 			[type]="type()"
 			[placeholder]="placeholder()"
 			[disabled]="disabled"
-			[onInput]="handleInput"
-			[onTouched]="onTouched"
+			(onInput)="handleInput($event)"
+			(onTouched)="onTouched()"
 		/>
 	</label>
 	@if (error()) {

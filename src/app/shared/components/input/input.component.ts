@@ -1,4 +1,4 @@
-import {booleanAttribute, Component, input} from '@angular/core';
+import {booleanAttribute, Component, input, output} from '@angular/core';
 import {twMerge} from 'tailwind-merge';
 
 @Component({
@@ -13,8 +13,8 @@ export class InputComponent {
 	readonly disabled = input<boolean, unknown>(undefined, {
 		transform: booleanAttribute,
 	});
-	readonly onInput = input<(event: Event) => void>(() => {});
-	readonly onTouched = input<() => void>(() => {});
+	readonly onInput = output<Event>();
+	readonly onTouched = output<Event>();
 
 	get inputClasses(): string {
 		return twMerge('px-4 py-3 bg-surface rounded-lg', this.inputClass());

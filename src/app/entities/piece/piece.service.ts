@@ -30,14 +30,16 @@ export class PieceService {
 	readonly totalPages = signal<number>(this.INITIAL_RESPONSE.totalPages);
 	readonly hasMore = signal<boolean>(this.INITIAL_RESPONSE.hasMore);
 
-	fetchAll(): Observable<FetchAllPiecesResponse> {
-		if (this.state.hasKey(this.DATA_KEY)) {
+	fetchAll({
+		search,
+	}: {search?: string} = {}): Observable<FetchAllPiecesResponse> {
+		if (search === undefined && this.state.hasKey(this.DATA_KEY)) {
 			const stored = this.state.get(this.DATA_KEY, this.INITIAL_RESPONSE);
 			this.setResponseData(stored);
 			return of(stored);
 		}
 
-		return this.api.fetchAll().pipe(
+		return this.api.fetchAll({search}).pipe(
 			tap(res => {
 				this.setResponseData(res);
 				this.state.set<any>(this.DATA_KEY, res);

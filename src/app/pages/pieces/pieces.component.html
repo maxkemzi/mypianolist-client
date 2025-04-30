@@ -1,11 +1,12 @@
 <div class="h-[88px] mb-10"></div>
 <section>
 	<app-container size="md">
-		<div class="flex justify-center mb-7">
+		<form class="flex justify-center mb-7" (ngSubmit)="handleSearch()">
 			<div class="relative">
 				<app-input
 					inputClass="pl-14 rounded-tr-none rounded-br-none"
 					placeholder="Search Pieces..."
+					(onInput)="handleSearchInput($event)"
 				/>
 
 				<i
@@ -16,10 +17,11 @@
 				<app-button
 					class="block h-full"
 					buttonClass="h-full rounded-tl-none rounded-bl-none"
+					submit
 					>Search</app-button
 				>
 			</div>
-		</div>
+		</form>
 		<div class="flex justify-between items-center mb-7">
 			<app-typography
 				>Pieces

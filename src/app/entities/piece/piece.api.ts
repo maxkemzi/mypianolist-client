@@ -1,4 +1,4 @@
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {inject, Injectable} from '@angular/core';
 import {Api} from '@shared/lib';
 import {Piece} from './piece.model';
@@ -16,7 +16,15 @@ export interface FetchAllPiecesResponse {
 export class PieceApi extends Api {
 	private readonly http = inject(HttpClient);
 
-	fetchAll() {
-		return this.http.get<FetchAllPiecesResponse>(`${this.BASE_URL}/pieces`);
+	fetchAll({search}: {search?: string} = {}) {
+		let params = new HttpParams();
+
+		if (search) {
+			params = params.set('search', search);
+		}
+
+		return this.http.get<FetchAllPiecesResponse>(`${this.BASE_URL}/pieces`, {
+			params,
+		});
 	}
 }
