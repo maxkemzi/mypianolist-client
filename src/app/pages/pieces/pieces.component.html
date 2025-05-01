@@ -40,7 +40,10 @@
 					<i class="ph ph-caret-down"></i>
 				</button>
 				@if (sortDropdownIsOpen()) {
-					<app-dropdown class="absolute top-full left-0 pt-2">
+					<app-dropdown
+						class="absolute top-full left-0 pt-2"
+						(onClickOutside)="handleClickOutside()"
+					>
 						<app-dropdown-item>Learners</app-dropdown-item>
 						<app-dropdown-item>Favorites</app-dropdown-item>
 					</app-dropdown>

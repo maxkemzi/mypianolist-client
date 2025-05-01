@@ -44,7 +44,7 @@ export class ProfileComponent {
 			.subscribe();
 	}
 
-	handleOutsideClick() {
+	handleClickOutside() {
 		if (this.dropdownIsOpen()) {
 			this.dropdownIsOpen.set(false);
 		}

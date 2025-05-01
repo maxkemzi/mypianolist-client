@@ -9,6 +9,7 @@ import {
 } from '@shared/components';
 import {ButtonComponent} from '../../shared/components/button/button.component';
 import {FormsModule} from '@angular/forms';
+import {ClickOutsideDirective} from '@shared/lib';
 
 @Component({
 	selector: 'app-pieces-page',
@@ -22,6 +23,7 @@ import {FormsModule} from '@angular/forms';
 		InputComponent,
 		ButtonComponent,
 		FormsModule,
+		ClickOutsideDirective,
 	],
 })
 export class PiecesPageComponent {
@@ -44,5 +46,11 @@ export class PiecesPageComponent {
 	handleSearchInput(event: Event) {
 		const value = (event.target as HTMLInputElement).value;
 		this.searchQuery.set(value);
+	}
+
+	handleClickOutside() {
+		if (this.sortDropdownIsOpen()) {
+			this.sortDropdownIsOpen.set(false);
+		}
 	}
 }
