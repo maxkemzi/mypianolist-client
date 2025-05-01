@@ -1,5 +1,5 @@
 <div class="flex items-center gap-4">
-	<div class="relative" (clickOutside)="handleOutsideClick()">
+	<div class="relative" (onClickOutside)="handleOutsideClick()">
 		<button
 			class="flex items-center gap-2"
 			type="button"
@@ -10,7 +10,10 @@
 		</button>
 		@if (dropdownIsOpen()) {
 			<app-dropdown class="absolute top-full left-0 pt-2">
-				<app-dropdown-item (click)="handleLogout()">
+				<app-dropdown-item
+					[disabled]="isLoggingOut()"
+					(onClick)="handleLogout()"
+				>
 					Log out
 				</app-dropdown-item>
 			</app-dropdown>

@@ -1,4 +1,4 @@
-import {Component, output} from '@angular/core';
+import {booleanAttribute, Component, input, output} from '@angular/core';
 import {TypographyComponent} from '../typography';
 
 @Component({
@@ -7,5 +7,8 @@ import {TypographyComponent} from '../typography';
 	imports: [TypographyComponent],
 })
 export class DropdownItemComponent {
-	readonly click = output<void>();
+	readonly disabled = input<boolean, unknown>(false, {
+		transform: booleanAttribute,
+	});
+	readonly onClick = output<void>();
 }

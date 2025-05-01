@@ -6,6 +6,7 @@ import {
 	TypographyComponent,
 } from '@shared/components';
 import {ClickOutsideDirective} from '@shared/lib';
+import {finalize} from 'rxjs';
 
 @Component({
 	selector: 'app-profile',
@@ -23,6 +24,7 @@ export class ProfileComponent {
 	readonly avatar = input<string | null>(null);
 	readonly imageHasError = signal<boolean>(false);
 	readonly dropdownIsOpen = signal<boolean>(false);
+	readonly isLoggingOut = signal<boolean>(false);
 
 	readonly avatarPath = computed(() => `/images/${this.avatar()}`);
 
@@ -35,7 +37,11 @@ export class ProfileComponent {
 	}
 
 	handleLogout() {
-		this.auth.logOut().subscribe();
+		this.isLoggingOut.set(true);
+		this.auth
+			.logOut()
+			.pipe(finalize(() => this.isLoggingOut.set(false)))
+			.subscribe();
 	}
 
 	handleOutsideClick() {
