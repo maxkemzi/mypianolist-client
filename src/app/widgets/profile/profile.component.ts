@@ -1,4 +1,5 @@
 import {Component, computed, inject, input, signal} from '@angular/core';
+import {Router} from '@angular/router';
 import {AuthService} from '@features/auth';
 import {
 	DropdownComponent,
@@ -20,6 +21,7 @@ import {finalize} from 'rxjs';
 })
 export class ProfileComponent {
 	private readonly auth = inject(AuthService);
+	private readonly router = inject(Router);
 	readonly username = input<string>('username');
 	readonly avatar = input<string | null>(null);
 	readonly imageHasError = signal<boolean>(false);
@@ -41,7 +43,9 @@ export class ProfileComponent {
 		this.auth
 			.logOut()
 			.pipe(finalize(() => this.isLoggingOut.set(false)))
-			.subscribe();
+			.subscribe(() => {
+				this.router.navigate(['/auth/login']);
+			});
 	}
 
 	handleClickOutside() {
