@@ -11,7 +11,6 @@ import {map, Observable, of, tap} from 'rxjs';
 
 @Injectable({providedIn: 'root'})
 export class PieceService {
-	private readonly DATA_KEY = makeStateKey<FetchAllPiecesResponse>('pieces');
 	private readonly INITIAL_RESPONSE: FetchAllPiecesResponse = {
 		content: [],
 		page: 0,
@@ -32,20 +31,30 @@ export class PieceService {
 
 	fetchAll({
 		search,
-	}: {search?: string} = {}): Observable<FetchAllPiecesResponse> {
-		if (search === undefined && this.state.hasKey(this.DATA_KEY)) {
-			const stored = this.state.get(this.DATA_KEY, this.INITIAL_RESPONSE);
+		genre,
+	}: {
+		search?: string;
+		genre?: string;
+	} = {}): Observable<FetchAllPiecesResponse> {
+		const key = this.getDataKey(genre);
+
+		if (search === undefined && this.state.hasKey(key)) {
+			const stored = this.state.get(key, this.INITIAL_RESPONSE);
 			this.setResponseData(stored);
 			return of(stored);
 		}
 
-		return this.api.fetchAll({search}).pipe(
+		return this.api.fetchAll({search, genre}).pipe(
 			tap(res => {
 				this.setResponseData(res);
-				this.state.set<any>(this.DATA_KEY, res);
+				this.state.set<any>(key, res);
 			}),
 			map(res => res),
 		);
+	}
+
+	private getDataKey(genre?: string) {
+		return makeStateKey<FetchAllPiecesResponse>('pieces_' + (genre ?? 'all'));
 	}
 
 	private setResponseData(res: FetchAllPiecesResponse) {

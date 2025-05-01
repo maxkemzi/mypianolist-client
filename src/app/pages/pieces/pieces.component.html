@@ -1,6 +1,9 @@
 <div class="h-[88px] mb-10"></div>
 <section>
 	<app-container size="md">
+		<app-typography class="text-center capitalize mb-7" variant="h1">{{
+			title()
+		}}</app-typography>
 		<form class="flex justify-center mb-7" (ngSubmit)="handleSearch()">
 			<div class="relative">
 				<app-input
@@ -55,6 +58,7 @@
 				<app-piece-card
 					[piece]="piece"
 					[variant]="(i + 1) % 2 === 0 ? 'even' : 'odd'"
+					[hideGenre]="!!genre()"
 				></app-piece-card>
 			}
 		</div>

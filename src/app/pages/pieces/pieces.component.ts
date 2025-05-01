@@ -1,4 +1,4 @@
-import {Component, inject, signal} from '@angular/core';
+import {Component, computed, inject, signal} from '@angular/core';
 import {PieceCardComponent, PieceService} from '@entities/piece';
 import {
 	ContainerComponent,
@@ -10,6 +10,7 @@ import {
 import {ButtonComponent} from '../../shared/components/button/button.component';
 import {FormsModule} from '@angular/forms';
 import {ClickOutsideDirective} from '@shared/lib';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
 	selector: 'app-pieces-page',
@@ -27,12 +28,21 @@ import {ClickOutsideDirective} from '@shared/lib';
 	],
 })
 export class PiecesPageComponent {
+	private readonly route = inject(ActivatedRoute);
 	readonly pieces = inject(PieceService);
 	readonly sortDropdownIsOpen = signal<boolean>(false);
 	readonly searchQuery = signal<string | undefined>(undefined);
+	readonly genre = signal<string | undefined>(undefined);
+
+	readonly title = computed(() => `${this.genre() ?? 'all'} pieces`);
 
 	ngOnInit(): void {
-		this.pieces.fetchAll().subscribe();
+		this.route.paramMap.subscribe(params => {
+			const genre = params.get('genre') ?? undefined;
+			this.genre.set(genre);
+
+			this.pieces.fetchAll({genre}).subscribe();
+		});
 	}
 
 	toggleSortDropdownIsOpen() {
@@ -40,7 +50,9 @@ export class PiecesPageComponent {
 	}
 
 	handleSearch() {
-		this.pieces.fetchAll({search: this.searchQuery()}).subscribe();
+		this.pieces
+			.fetchAll({search: this.searchQuery(), genre: this.genre()})
+			.subscribe();
 	}
 
 	handleSearchInput(event: Event) {

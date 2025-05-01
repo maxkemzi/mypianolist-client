@@ -16,11 +16,15 @@ export interface FetchAllPiecesResponse {
 export class PieceApi extends Api {
 	private readonly http = inject(HttpClient);
 
-	fetchAll({search}: {search?: string} = {}) {
+	fetchAll({search, genre}: {search?: string; genre?: string} = {}) {
 		let params = new HttpParams();
 
 		if (search) {
 			params = params.set('search', search);
+		}
+
+		if (genre) {
+			params = params.set('genre', genre);
 		}
 
 		return this.http.get<FetchAllPiecesResponse>(`${this.BASE_URL}/pieces`, {
