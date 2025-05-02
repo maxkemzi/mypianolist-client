@@ -8,9 +8,9 @@ import {twMerge} from 'tailwind-merge';
 	imports: [CommonModule],
 })
 export class FormComponent {
-	readonly class = input<string>();
+	readonly formClass = input<string>();
 
-	get classes() {
-		return twMerge('bg-background p-12 rounded-lg', this.class());
+	getFormClasses(classes: string) {
+		return twMerge(classes, this.formClass());
 	}
 }

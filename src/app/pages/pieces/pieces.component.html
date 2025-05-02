@@ -1,9 +1,12 @@
 <div class="h-[88px] mb-10"></div>
 <section>
 	<app-container size="md">
-		<app-typography class="text-center capitalize mb-7" variant="h1">{{
-			title()
-		}}</app-typography>
+		<app-typography
+			class="block mb-7"
+			textClass="text-center capitalize"
+			variant="h1"
+			>{{ title() }}</app-typography
+		>
 		<form class="flex justify-center mb-7" (ngSubmit)="handleSearch()">
 			<div class="relative">
 				@if (searchQuery().trim().length > 0) {
@@ -49,7 +52,7 @@
 				</button>
 				@if (sortDropdownIsOpen()) {
 					<app-dropdown
-						class="absolute top-full left-0 pt-2"
+						class="absolute top-full left-0 min-w-full pt-2"
 						(onClickOutside)="handleClickOutside()"
 					>
 						<app-dropdown-item>Learners</app-dropdown-item>

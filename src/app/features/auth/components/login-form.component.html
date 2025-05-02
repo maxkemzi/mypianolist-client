@@ -1,5 +1,7 @@
 <app-form [formGroup]="form" (ngSubmit)="onSubmit()">
-	<app-typography class="mb-7 text-center" variant="h1">Login</app-typography>
+	<app-typography class="block mb-7" textClass="text-center" variant="h1"
+		>Login</app-typography
+	>
 	<div class="flex flex-col gap-4 mb-7">
 		<app-form-field
 			formControlName="username"
@@ -15,10 +17,15 @@
 			[error]="passwordError"
 		/>
 	</div>
-	<app-button class="w-full mb-2" submit [disabled]="!form.valid">
+	<app-button
+		class="block mb-2"
+		buttonClass="w-full"
+		submit
+		[disabled]="!form.valid"
+	>
 		Log In
 	</app-button>
-	<p>
+	<app-typography>
 		Don't have an account? <app-link href="/auth/signup">Sign Up</app-link>
-	</p>
+	</app-typography>
 </app-form>

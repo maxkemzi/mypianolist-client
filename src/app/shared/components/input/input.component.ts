@@ -16,7 +16,7 @@ export class InputComponent {
 	readonly onInput = output<Event>();
 	readonly onTouched = output<Event>();
 
-	get inputClasses(): string {
-		return twMerge('px-4 py-3 bg-surface rounded-lg', this.inputClass());
+	getInputClasses(classes: string): string {
+		return twMerge(classes, this.inputClass());
 	}
 }

@@ -1,7 +1,6 @@
 import {CommonModule} from '@angular/common';
-import {Component, forwardRef, Input, input} from '@angular/core';
+import {Component, forwardRef, input} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
-import {twMerge} from 'tailwind-merge';
 import {InputComponent} from '../input';
 import {TypographyComponent} from '../typography';
 
@@ -18,17 +17,12 @@ import {TypographyComponent} from '../typography';
 	],
 })
 export class FormFieldComponent implements ControlValueAccessor {
-	readonly class = input<string>();
 	readonly type = input<'text' | 'password'>('text');
 	readonly label = input<string>('Label');
 	readonly placeholder = input<string>();
 	readonly error = input<string>();
 	value: string = '';
 	disabled: boolean = false;
-
-	get classes() {
-		return twMerge(this.class());
-	}
 
 	onChange = (value: any) => {};
 	onTouched = () => {};

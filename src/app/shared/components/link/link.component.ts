@@ -1,8 +1,8 @@
-import {Component, input} from '@angular/core';
-import {TypographyComponent} from '../typography';
-import {RouterLink} from '@angular/router';
 import {CommonModule} from '@angular/common';
+import {Component, input} from '@angular/core';
+import {RouterLink} from '@angular/router';
 import {twMerge} from 'tailwind-merge';
+import {TypographyComponent} from '../typography';
 
 @Component({
 	selector: 'app-link',
@@ -10,14 +10,11 @@ import {twMerge} from 'tailwind-merge';
 	imports: [CommonModule, TypographyComponent, RouterLink],
 })
 export class LinkComponent {
+	readonly linkClass = input<string>();
 	readonly type = input<'external' | 'navigation'>('navigation');
-	readonly class = input<string>();
 	readonly href = input<string>();
 
-	get classes() {
-		return twMerge(
-			'border-b-1 border-transparent pb-0.5 hover:border-primary',
-			this.class(),
-		);
+	getLinkClasses(classes: string) {
+		return twMerge(classes, this.linkClass());
 	}
 }

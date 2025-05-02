@@ -1,7 +1,7 @@
 import {CommonModule} from '@angular/common';
 import {Component, input} from '@angular/core';
-import {Tag, Size, Variant, Weight, Color} from './types';
 import {twMerge} from 'tailwind-merge';
+import {Color, Size, Tag, Variant, Weight} from './types';
 
 @Component({
 	selector: 'app-typography',
@@ -9,9 +9,9 @@ import {twMerge} from 'tailwind-merge';
 	imports: [CommonModule],
 })
 export class TypographyComponent {
+	readonly textClass = input<string>();
 	readonly variant = input<Variant>('body1');
 	readonly color = input<Color>('text');
-	readonly class = input<string>();
 	readonly as = input<Tag>();
 	readonly size = input<Size>();
 	readonly weight = input<Weight>();
@@ -83,6 +83,11 @@ export class TypographyComponent {
 		const weightClasses =
 			weightToClassesMapping[this.weight() || props.weight];
 
-		return twMerge(colorClasses, sizeClasses, weightClasses, this.class());
+		return twMerge(
+			colorClasses,
+			sizeClasses,
+			weightClasses,
+			this.textClass(),
+		);
 	}
 }
