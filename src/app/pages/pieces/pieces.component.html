@@ -6,15 +6,20 @@
 		}}</app-typography>
 		<form class="flex justify-center mb-7" (ngSubmit)="handleSearch()">
 			<div class="relative">
+				@if (searchQuery().trim().length > 0) {
+					<button type="button" (click)="handleClearSearch()">
+						<i [class]="'ph ph-x ' + iconClasses"></i>
+					</button>
+				} @else {
+					<i [class]="'ph ph-magnifying-glass ' + iconClasses"></i>
+				}
+
 				<app-input
 					inputClass="pl-14 rounded-tr-none rounded-br-none"
 					placeholder="Search Pieces..."
-					(onInput)="handleSearchInput($event)"
+					[value]="searchQuery()"
+					(onInput)="handleInputSearch($event)"
 				/>
-
-				<i
-					class="ph ph-magnifying-glass text-2xl text-primary absolute top-1/2 left-4 translate-y-[-50%]"
-				></i>
 			</div>
 			<div>
 				<app-button

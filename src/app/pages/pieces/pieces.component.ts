@@ -31,17 +31,21 @@ export class PiecesPageComponent {
 	private readonly route = inject(ActivatedRoute);
 	readonly pieces = inject(PieceService);
 	readonly sortDropdownIsOpen = signal<boolean>(false);
-	readonly searchQuery = signal<string | undefined>(undefined);
-	readonly genre = signal<string | undefined>(undefined);
+	readonly searchQuery = signal<string>('');
+	readonly genre = signal<string | null | undefined>(undefined);
 
 	readonly title = computed(() => `${this.genre() ?? 'all'} pieces`);
 
+	get iconClasses() {
+		return 'text-2xl text-primary absolute top-1/2 left-4 translate-y-[-50%]';
+	}
+
 	ngOnInit(): void {
 		this.route.paramMap.subscribe(params => {
-			const genre = params.get('genre') ?? undefined;
+			const genre = params.get('genre');
 			this.genre.set(genre);
 
-			this.pieces.fetchAll({genre}).subscribe();
+			this.pieces.fetchAll({genre: genre ?? undefined}).subscribe();
 		});
 	}
 
@@ -51,13 +55,21 @@ export class PiecesPageComponent {
 
 	handleSearch() {
 		this.pieces
-			.fetchAll({search: this.searchQuery(), genre: this.genre()})
+			.fetchAll({
+				search: this.searchQuery().trim(),
+				genre: this.genre() ?? undefined,
+			})
 			.subscribe();
 	}
 
-	handleSearchInput(event: Event) {
+	handleInputSearch(event: Event) {
 		const value = (event.target as HTMLInputElement).value;
 		this.searchQuery.set(value);
+	}
+
+	handleClearSearch() {
+		this.searchQuery.set('');
+		this.handleSearch();
 	}
 
 	handleClickOutside() {
