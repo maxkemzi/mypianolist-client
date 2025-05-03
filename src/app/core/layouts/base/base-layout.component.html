@@ -9,6 +9,10 @@
 		@if (auth.user() === null) {
 			<app-auth-buttons />
 		}
+
+		@if (auth.user() === undefined) {
+			Loading...
+		}
 	</ng-container>
 </app-header>
 

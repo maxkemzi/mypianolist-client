@@ -5,8 +5,7 @@ import {AuthUser} from './auth.model';
 
 interface AuthResponse {
 	user: AuthUser;
-	accessToken: string;
-	refreshToken: string;
+	tokens: {access: string; refresh: string};
 }
 
 @Injectable({providedIn: 'root'})

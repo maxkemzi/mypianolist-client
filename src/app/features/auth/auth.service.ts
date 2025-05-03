@@ -1,13 +1,15 @@
-import {inject, Injectable, signal} from '@angular/core';
-import {SsrCookieService} from 'ngx-cookie-service-ssr';
-import {catchError, of, tap} from 'rxjs';
+import {isPlatformBrowser} from '@angular/common';
+import {inject, Injectable, PLATFORM_ID, signal} from '@angular/core';
+import {CookieService} from 'ngx-cookie-service';
+import {catchError, map, of, tap} from 'rxjs';
 import {AuthApi} from './auth.api';
-import {AuthUser} from './auth.model';
+import {AuthTokens, AuthUser} from './auth.model';
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
 	private readonly api = inject(AuthApi);
-	private readonly cookies = inject(SsrCookieService);
+	private readonly cookies = inject(CookieService);
+	private readonly platformId = inject(PLATFORM_ID);
 	user = signal<AuthUser | null | undefined>(undefined);
 
 	signUp(body: {username: string; email: string; password: string}) {
@@ -18,19 +20,25 @@ export class AuthService {
 		return this.api.logIn(body).pipe(
 			tap(data => {
 				this.user.set(data.user);
-				this.setToken(data.accessToken);
+				this.setTokens(data.tokens);
 			}),
 		);
 	}
 
 	refresh() {
+		if (!isPlatformBrowser(this.platformId)) {
+			return of(null);
+		}
+
 		return this.api.refresh().pipe(
 			tap(data => {
 				this.user.set(data.user);
-				this.setToken(data.accessToken);
+				this.setTokens(data.tokens);
 			}),
+			map(data => data.user),
 			catchError(() => {
 				this.user.set(null);
+				this.deleteTokens();
 
 				return of(null);
 			}),
@@ -41,17 +49,18 @@ export class AuthService {
 		return this.api.logOut().pipe(
 			tap(() => {
 				this.user.set(null);
-				this.deleteToken();
+				this.deleteTokens();
 			}),
 		);
 	}
 
-	getToken(): string {
-		return this.cookies.get('token');
+	getTokens(): AuthTokens | null {
+		const cookie = this.cookies.get('tokens');
+		return cookie ? JSON.parse(cookie) : null;
 	}
 
-	private setToken(token: string) {
-		this.cookies.set('token', token, {
+	private setTokens(tokens: AuthTokens) {
+		this.cookies.set('tokens', JSON.stringify(tokens), {
 			path: '/',
 			secure: false,
 			sameSite: 'Lax',
@@ -59,7 +68,7 @@ export class AuthService {
 		});
 	}
 
-	private deleteToken() {
-		this.cookies.delete('token', '/');
+	private deleteTokens() {
+		this.cookies.delete('tokens', '/');
 	}
 }
