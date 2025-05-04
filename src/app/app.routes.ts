@@ -1,4 +1,7 @@
+import {inject} from '@angular/core';
 import {Routes} from '@angular/router';
+import {AuthService} from '@features/auth';
+import {authGuard} from '@shared/lib';
 
 export const routes: Routes = [
 	{
@@ -23,9 +26,9 @@ export const routes: Routes = [
 					import('@pages').then(m => m.PiecesPageComponent),
 			},
 			{
-				path: 'pieces/:genre',
+				path: 'pieces/:id',
 				loadComponent: () =>
-					import('@pages').then(m => m.PiecesPageComponent),
+					import('@pages').then(m => m.PiecePageComponent),
 			},
 		],
 	},

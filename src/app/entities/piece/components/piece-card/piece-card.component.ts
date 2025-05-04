@@ -5,6 +5,7 @@ import {
 	HostBinding,
 	input,
 } from '@angular/core';
+import {RouterLink} from '@angular/router';
 import {Piece} from '@entities/piece/piece.model';
 import {ButtonComponent, TypographyComponent} from '@shared/components';
 import {twMerge} from 'tailwind-merge';
@@ -12,7 +13,7 @@ import {twMerge} from 'tailwind-merge';
 @Component({
 	selector: 'app-piece-card',
 	templateUrl: './piece-card.component.html',
-	imports: [TypographyComponent, ButtonComponent],
+	imports: [TypographyComponent, ButtonComponent, RouterLink],
 })
 export class PieceCardComponent {
 	readonly class = input<string>();

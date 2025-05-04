@@ -13,12 +13,14 @@
 	<div class="grow flex flex-col justify-between gap-2">
 		<div class="flex items-start justify-between gap-4">
 			<div>
-				<app-typography
-					textClass="text-nowrap"
-					weight="bold"
-					color="primary"
-					>{{ piece().title }}</app-typography
-				>
+				<a [routerLink]="`/pieces/${piece().id}`">
+					<app-typography
+						textClass="text-nowrap"
+						weight="bold"
+						color="primary"
+						>{{ piece().title }}
+					</app-typography>
+				</a>
 				<app-typography textClass="text-nowrap"
 					>By
 					<app-typography as="span" color="primary">{{

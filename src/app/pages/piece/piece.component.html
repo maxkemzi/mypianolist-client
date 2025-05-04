@@ -1,0 +1,91 @@
+<div class="h-[88px] mb-10"></div>
+<section>
+	<app-container size="md">
+		@if (piece.data() === undefined) {
+			<app-typography>Loading...</app-typography>
+		}
+
+		@if (piece.data() === null) {
+			<app-typography>The piece doesn't exist.</app-typography>
+		}
+
+		@if (piece.data(); as piece) {
+			<app-typography variant="h2">{{ piece.title }}</app-typography>
+			<app-typography class="block mb-4" variant="h3" weight="normal"
+				>By {{ composerName() }}
+			</app-typography>
+			<ul class="flex gap-4 mb-4">
+				<li>
+					<app-typography
+						>Genre
+
+						<app-typography
+							as="span"
+							textClass="capitalize"
+							weight="bold"
+							>{{ piece.genre.name }}</app-typography
+						>
+					</app-typography>
+				</li>
+
+				<li>
+					<app-typography
+						>Year
+
+						<app-typography
+							as="span"
+							textClass="capitalize"
+							weight="bold"
+							>{{ composedDate() }}</app-typography
+						>
+					</app-typography>
+				</li>
+
+				<li>
+					<app-typography
+						>Learners
+
+						<app-typography as="span" textClass="capitalize" weight="bold"
+							>100,000</app-typography
+						>
+					</app-typography>
+				</li>
+
+				<li>
+					<app-typography
+						>Favorites
+
+						<app-typography as="span" textClass="capitalize" weight="bold"
+							>100,000</app-typography
+						>
+					</app-typography>
+				</li>
+			</ul>
+			<app-typography class="block mb-7">{{
+				piece.description
+			}}</app-typography>
+			<div>
+				<app-typography class="block mb-4" variant="h3" weight="bold"
+					>Composer</app-typography
+				>
+				<div class="flex gap-2">
+					<img
+						class="object-cover"
+						[src]="'/server' + piece.composer.photo"
+						width="80"
+						height="115"
+						[alt]="composerName()"
+					/>
+					<div>
+						<app-typography color="primary">{{
+							composerName()
+						}}</app-typography>
+						<app-typography size="sm">{{
+							composerLifeSpan()
+						}}</app-typography>
+					</div>
+				</div>
+			</div>
+		}
+	</app-container>
+</section>

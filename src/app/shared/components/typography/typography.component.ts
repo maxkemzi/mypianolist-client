@@ -38,7 +38,7 @@ export class TypographyComponent {
 		const sizeToClassesMapping: Record<Size, string> = {
 			sm: 'text-sm',
 			base: 'text-base',
-			lg: 'text-lg',
+			'2xl': 'text-2xl',
 			'4xl': 'text-4xl',
 			'5xl': 'text-5xl',
 		};
@@ -63,8 +63,8 @@ export class TypographyComponent {
 				weight: 'normal',
 			},
 			h3: {
-				size: 'lg',
-				weight: 'medium',
+				size: '2xl',
+				weight: 'semibold',
 			},
 			h2: {
 				size: '4xl',

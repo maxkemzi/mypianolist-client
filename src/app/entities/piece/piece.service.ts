@@ -5,64 +5,41 @@ import {
 	signal,
 	TransferState,
 } from '@angular/core';
-import {FetchAllPiecesResponse, PieceApi} from './piece.api';
+import {catchError, of, tap} from 'rxjs';
+import {PieceApi} from './piece.api';
 import {Piece} from './piece.model';
-import {map, Observable, of, tap} from 'rxjs';
 
 @Injectable({providedIn: 'root'})
 export class PieceService {
-	private readonly INITIAL_RESPONSE: FetchAllPiecesResponse = {
-		content: [],
-		page: 0,
-		limit: 10,
-		totalCount: 0,
-		totalPages: 1,
-		hasMore: true,
-	};
 	private readonly api = inject(PieceApi);
 	private readonly state = inject(TransferState);
 
-	readonly data = signal<Piece[]>(this.INITIAL_RESPONSE.content);
-	readonly page = signal<number>(this.INITIAL_RESPONSE.page);
-	readonly limit = signal<number>(this.INITIAL_RESPONSE.limit);
-	readonly totalCount = signal<number>(this.INITIAL_RESPONSE.totalCount);
-	readonly totalPages = signal<number>(this.INITIAL_RESPONSE.totalPages);
-	readonly hasMore = signal<boolean>(this.INITIAL_RESPONSE.hasMore);
+	readonly data = signal<Piece | null | undefined>(undefined);
 
-	fetchAll({
-		search,
-		genre,
-	}: {
-		search?: string;
-		genre?: string;
-	} = {}): Observable<FetchAllPiecesResponse> {
-		const key = this.getDataKey(genre);
+	fetchById(id: string) {
+		const key = this.getDataKey(id);
 
-		if (search === undefined && this.state.hasKey(key)) {
-			const stored = this.state.get(key, this.INITIAL_RESPONSE);
-			this.setResponseData(stored);
+		if (this.state.hasKey(key)) {
+			const stored = this.state.get(key, null);
+			this.data.set(stored);
 			return of(stored);
 		}
 
-		return this.api.fetchAll({search, genre}).pipe(
-			tap(res => {
-				this.setResponseData(res);
-				this.state.set<any>(key, res);
+		return this.api.fetchById(id).pipe(
+			tap(data => {
+				this.data.set(data);
+				this.state.set(key, data);
 			}),
-			map(res => res),
+			catchError(e => {
+				this.data.set(null);
+				this.state.set(key, null);
+
+				return of(null);
+			}),
 		);
 	}
 
-	private getDataKey(genre?: string) {
-		return makeStateKey<FetchAllPiecesResponse>('pieces_' + (genre ?? 'all'));
-	}
-
-	private setResponseData(res: FetchAllPiecesResponse) {
-		this.data.set(res.content);
-		this.page.set(res.page);
-		this.limit.set(res.limit);
-		this.totalCount.set(res.totalCount);
-		this.totalPages.set(res.totalPages);
-		this.hasMore.set(res.hasMore);
+	private getDataKey(id: string) {
+		return makeStateKey<Piece>('piece_' + id);
 	}
 }

@@ -31,4 +31,8 @@ export class PieceApi extends Api {
 			params,
 		});
 	}
+
+	fetchById(id: string) {
+		return this.http.get<Piece>(`${this.BASE_URL}/pieces/${id}`);
+	}
 }

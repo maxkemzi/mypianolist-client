@@ -1,5 +1,5 @@
 import {Component, computed, inject, signal} from '@angular/core';
-import {PieceCardComponent, PieceService} from '@entities/piece';
+import {PieceCardComponent, PiecesService} from '@entities/piece';
 import {
 	ContainerComponent,
 	DropdownComponent,
@@ -29,7 +29,7 @@ import {ActivatedRoute} from '@angular/router';
 })
 export class PiecesPageComponent {
 	private readonly route = inject(ActivatedRoute);
-	readonly pieces = inject(PieceService);
+	readonly pieces = inject(PiecesService);
 	readonly sortDropdownIsOpen = signal<boolean>(false);
 	readonly searchQuery = signal<string>('');
 	readonly genre = signal<string | null | undefined>(undefined);
@@ -41,7 +41,7 @@ export class PiecesPageComponent {
 	}
 
 	ngOnInit(): void {
-		this.route.paramMap.subscribe(params => {
+		this.route.queryParamMap.subscribe(params => {
 			const genre = params.get('genre');
 			this.genre.set(genre);
 
