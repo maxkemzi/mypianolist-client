@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, HostBinding} from '@angular/core';
 import {RouterLink} from '@angular/router';
 import {ButtonComponent} from '@shared/components';
 
@@ -7,4 +7,9 @@ import {ButtonComponent} from '@shared/components';
 	templateUrl: './auth-buttons.component.html',
 	imports: [ButtonComponent, RouterLink],
 })
-export class AuthButtonsComponent {}
+export class AuthButtonsComponent {
+	@HostBinding('class')
+	get classes(): string {
+		return 'flex gap-4';
+	}
+}

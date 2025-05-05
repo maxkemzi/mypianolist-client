@@ -1,13 +1,7 @@
 import {CommonModule} from '@angular/common';
-import {
-	Component,
-	computed,
-	ElementRef,
-	HostBinding,
-	inject,
-	input,
-} from '@angular/core';
-import {twMerge} from 'tailwind-merge';
+import {Component, computed, ElementRef, inject, input} from '@angular/core';
+import {ClassMergeDirective} from '@shared/lib';
+import {twJoin} from 'tailwind-merge';
 import {Color, Size, Tag, Variant, Weight} from './types';
 
 @Component({
@@ -15,9 +9,8 @@ import {Color, Size, Tag, Variant, Weight} from './types';
 	templateUrl: './typography.component.html',
 	imports: [CommonModule],
 })
-export class TypographyComponent {
+export class TypographyComponent extends ClassMergeDirective {
 	private readonly el = inject(ElementRef);
-	readonly class = input<string>();
 	readonly variant = input<Variant>();
 	readonly color = input<Color>('text');
 	readonly size = input<Size>();
@@ -35,8 +28,7 @@ export class TypographyComponent {
 		return this.variant() ?? TAG_TO_VARIANT_MAPPING[tag] ?? 'body1';
 	});
 
-	@HostBinding('class')
-	get classes(): string {
+	protected override defaultClass(): string {
 		const COLOR_TO_CLASSES_MAPPING: Record<Color, string> = {
 			text: 'text-text',
 			primary: 'text-primary',
@@ -90,6 +82,6 @@ export class TypographyComponent {
 		const sizeClasses = SIZE_TO_CLASSES_MAPPING[this.size() || size];
 		const weightClasses = WEIGHT_TO_CLASSES_MAPPING[this.weight() || weight];
 
-		return twMerge(colorClasses, sizeClasses, weightClasses, this.class());
+		return twJoin(colorClasses, sizeClasses, weightClasses);
 	}
 }

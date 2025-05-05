@@ -1,4 +1,11 @@
-import {Component, computed, inject, input, signal} from '@angular/core';
+import {
+	Component,
+	computed,
+	HostBinding,
+	inject,
+	input,
+	signal,
+} from '@angular/core';
 import {Router} from '@angular/router';
 import {AuthService} from '@features/auth';
 import {
@@ -29,6 +36,11 @@ export class ProfileComponent {
 	readonly isLoggingOut = signal<boolean>(false);
 
 	readonly avatarPath = computed(() => `/images/${this.avatar()}`);
+
+	@HostBinding('class')
+	get classes() {
+		return 'flex items-center gap-4';
+	}
 
 	handleImageError() {
 		this.imageHasError.set(true);

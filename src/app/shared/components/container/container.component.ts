@@ -1,23 +1,21 @@
 import {CommonModule} from '@angular/common';
-import {Component, HostBinding, input} from '@angular/core';
-import {twMerge} from 'tailwind-merge';
+import {Component, input} from '@angular/core';
+import {ClassMergeDirective} from '@shared/lib';
+import {twJoin} from 'tailwind-merge';
 
 @Component({
 	selector: 'div[appContainer]',
 	templateUrl: './container.component.html',
 	imports: [CommonModule],
 })
-export class ContainerComponent {
-	readonly class = input<string>();
+export class ContainerComponent extends ClassMergeDirective {
 	readonly size = input<'md' | 'lg'>('lg');
 
-	@HostBinding('class')
-	get classes() {
-		return twMerge(
+	protected override defaultClass(): string {
+		return twJoin(
 			'mx-auto px-4',
 			this.size() === 'lg' && 'max-w-[1472px]',
 			this.size() === 'md' && 'max-w-[1058px]',
-			this.class(),
 		);
 	}
 }

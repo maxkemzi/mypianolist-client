@@ -1,37 +1,35 @@
-<div class="flex items-center gap-4">
-	<div class="relative" (onClickOutside)="handleClickOutside()">
-		<button
-			class="flex items-center gap-2"
-			type="button"
-			(click)="toggleDropdownIsOpen()"
-		>
-			<span weight="semibold">{{ username() }}</span>
-			<i class="ph-fill ph-caret-down"></i>
-		</button>
-		@if (dropdownIsOpen()) {
-			<app-dropdown class="absolute top-full left-0 min-w-full pt-2">
-				<app-dropdown-item
-					[disabled]="isLoggingOut()"
-					(onClick)="handleLogout()"
-				>
-					Log out
-				</app-dropdown-item>
-			</app-dropdown>
-		}
-	</div>
-	@if (imageHasError()) {
-		<div
-			class="flex items-center justify-center w-[50px] h-[50px] rounded-full bg-surface"
-		>
-			<i class="ph-fill ph-user text-2xl"></i>
-		</div>
-	} @else {
-		<img
-			class="block object-cover max-w-full rounded-full bg-surface"
-			[src]="avatarPath()"
-			(error)="handleImageError()"
-			width="50"
-			height="50"
-		/>
+<div class="relative" (onClickOutside)="handleClickOutside()">
+	<button
+		class="flex items-center gap-2"
+		type="button"
+		(click)="toggleDropdownIsOpen()"
+	>
+		<span weight="semibold">{{ username() }}</span>
+		<i class="ph-fill ph-caret-down"></i>
+	</button>
+	@if (dropdownIsOpen()) {
+		<app-dropdown class="absolute top-full left-0 min-w-full pt-2">
+			<app-dropdown-item
+				[isDisabled]="isLoggingOut()"
+				(onClick)="handleLogout()"
+			>
+				Log out
+			</app-dropdown-item>
+		</app-dropdown>
 	}
 </div>
+@if (imageHasError()) {
+	<div
+		class="flex items-center justify-center w-[50px] h-[50px] rounded-full bg-surface"
+	>
+		<i class="ph-fill ph-user text-2xl"></i>
+	</div>
+} @else {
+	<img
+		class="block object-cover max-w-full rounded-full bg-surface"
+		[src]="avatarPath()"
+		(error)="handleImageError()"
+		width="50"
+		height="50"
+	/>
+}

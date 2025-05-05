@@ -1,22 +1,16 @@
-import {
-	booleanAttribute,
-	Component,
-	computed,
-	HostBinding,
-	input,
-} from '@angular/core';
+import {booleanAttribute, Component, computed, input} from '@angular/core';
 import {RouterLink} from '@angular/router';
 import {Piece} from '@entities/piece/piece.model';
 import {ButtonComponent, TypographyComponent} from '@shared/components';
-import {twMerge} from 'tailwind-merge';
+import {ClassMergeDirective} from '@shared/lib';
+import {twJoin} from 'tailwind-merge';
 
 @Component({
 	selector: 'app-piece-card',
 	templateUrl: './piece-card.component.html',
 	imports: [TypographyComponent, ButtonComponent, RouterLink],
 })
-export class PieceCardComponent {
-	readonly class = input<string>();
+export class PieceCardComponent extends ClassMergeDirective {
 	readonly piece = input.required<Piece>();
 	readonly hideGenre = input<boolean, unknown>(false, {
 		transform: booleanAttribute,
@@ -29,8 +23,11 @@ export class PieceCardComponent {
 		return nickname ?? `${firstName.charAt(0)}. ${lastName}`;
 	});
 
-	@HostBinding('class')
-	get classes() {
-		return twMerge('block', this.class());
+	protected override defaultClass(): string {
+		return twJoin(
+			'flex p-4 gap-4',
+			this.variant() === 'odd' && 'bg-background',
+			this.variant() === 'even' && 'bg-surface',
+		);
 	}
 }

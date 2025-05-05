@@ -1,16 +1,14 @@
 import {CommonModule} from '@angular/common';
-import {Component, input} from '@angular/core';
-import {twMerge} from 'tailwind-merge';
+import {Component} from '@angular/core';
+import {ClassMergeDirective} from '@shared/lib';
 
 @Component({
-	selector: 'app-form',
+	selector: 'form[appForm]',
 	templateUrl: './form.component.html',
 	imports: [CommonModule],
 })
-export class FormComponent {
-	readonly formClass = input<string>();
-
-	getFormClasses(classes: string) {
-		return twMerge(classes, this.formClass());
+export class FormComponent extends ClassMergeDirective {
+	protected override defaultClass() {
+		return 'bg-background p-12 rounded-lg';
 	}
 }
