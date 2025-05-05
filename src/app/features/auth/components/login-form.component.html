@@ -17,14 +17,9 @@
 			[error]="passwordError"
 		/>
 	</div>
-	<app-button
-		class="block mb-2"
-		buttonClass="w-full"
-		submit
-		[disabled]="!form.valid"
-	>
+	<button appButton class="mb-2 w-full" type="submit" [disabled]="!form.valid">
 		Log In
-	</app-button>
+	</button>
 	<app-typography>
 		Don't have an account? <app-link href="/auth/signup">Sign Up</app-link>
 	</app-typography>

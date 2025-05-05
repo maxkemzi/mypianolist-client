@@ -1,24 +1,8 @@
-<ng-container [ngSwitch]="element()">
-	<button
-		*ngSwitchCase="'button'"
-		[class]="buttonClasses"
-		[type]="submit() ? 'submit' : 'button'"
-		[disabled]="disabled()"
-	>
-		<ng-container [ngTemplateOutlet]="content" />
-	</button>
-	<a *ngSwitchCase="'navlink'" [class]="buttonClasses" [routerLink]="href()">
-		<ng-container [ngTemplateOutlet]="content" />
-	</a>
-</ng-container>
-
-<ng-template #content>
-	<app-typography
-		[color]="textColor"
-		[size]="textSize"
-		as="span"
-		weight="semibold"
-	>
-		<ng-content />
-	</app-typography>
-</ng-template>
+<app-typography
+	[color]="textColor"
+	[size]="textSize"
+	as="span"
+	weight="semibold"
+>
+	<ng-content />
+</app-typography>
