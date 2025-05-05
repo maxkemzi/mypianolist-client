@@ -5,8 +5,6 @@
 		[disabled]="disabled()"
 		(click)="onClick.emit()"
 	>
-		<app-typography textClass="text-left text-nowrap"
-			><ng-content
-		/></app-typography>
+		<span class="text-left text-nowrap"><ng-content /></span>
 	</button>
 </li>

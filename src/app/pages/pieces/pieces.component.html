@@ -1,12 +1,7 @@
 <div class="h-[88px] mb-10"></div>
 <section>
 	<app-container size="md">
-		<app-typography
-			class="block mb-7"
-			textClass="text-center capitalize"
-			variant="h1"
-			>{{ title() }}</app-typography
-		>
+		<h1 class="mb-7 text-center capitalize">{{ title() }}</h1>
 		<form class="flex justify-center mb-7" (ngSubmit)="handleSearch()">
 			<div class="relative">
 				@if (searchQuery().trim().length > 0) {
@@ -36,19 +31,17 @@
 			</div>
 		</form>
 		<div class="flex justify-between items-center mb-7">
-			<app-typography
-				>Pieces
-				<app-typography as="span" weight="bold">{{
-					pieces.totalCount()
-				}}</app-typography>
-			</app-typography>
+			<p>
+				Pieces
+				<span weight="bold">{{ pieces.totalCount() }}</span>
+			</p>
 			<div class="relative">
 				<button
 					class="flex items-center gap-2"
 					type="button"
 					(click)="toggleSortDropdownIsOpen()"
 				>
-					<app-typography as="span">Sort by</app-typography>
+					<span>Sort by</span>
 
 					<i class="ph ph-caret-down"></i>
 				</button>

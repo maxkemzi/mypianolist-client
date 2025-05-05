@@ -2,72 +2,56 @@
 <section>
 	<app-container size="md">
 		@if (piece.data() === undefined) {
-			<app-typography>Loading...</app-typography>
+			<p>Loading...</p>
 		}
 
 		@if (piece.data() === null) {
-			<app-typography>The piece doesn't exist.</app-typography>
+			<p>The piece doesn't exist.</p>
 		}
 
 		@if (piece.data(); as piece) {
-			<app-typography variant="h2">{{ piece.title }}</app-typography>
-			<app-typography class="block mb-4" variant="h3" weight="normal"
-				>By {{ composerName() }}
-			</app-typography>
+			<h2>{{ piece.title }}</h2>
+			<h3 class="mb-4" weight="normal">By {{ composerName() }}</h3>
 			<ul class="flex gap-4 mb-4">
 				<li>
-					<app-typography
-						>Genre
+					<p>
+						Genre
 
-						<app-typography
-							as="span"
-							textClass="capitalize"
-							weight="bold"
-							>{{ piece.genre.name }}</app-typography
-						>
-					</app-typography>
+						<span class="capitalize" weight="bold">{{
+							piece.genre.name
+						}}</span>
+					</p>
 				</li>
 
 				<li>
-					<app-typography
-						>Year
+					<p>
+						Year
 
-						<app-typography
-							as="span"
-							textClass="capitalize"
-							weight="bold"
-							>{{ composedDate() }}</app-typography
-						>
-					</app-typography>
+						<span class="capitalize" weight="bold">{{
+							composedDate()
+						}}</span>
+					</p>
 				</li>
 
 				<li>
-					<app-typography
-						>Learners
+					<p>
+						Learners
 
-						<app-typography as="span" textClass="capitalize" weight="bold"
-							>100,000</app-typography
-						>
-					</app-typography>
+						<span class="capitalize" weight="bold">100,000</span>
+					</p>
 				</li>
 
 				<li>
-					<app-typography
-						>Favorites
+					<p>
+						Favorites
 
-						<app-typography as="span" textClass="capitalize" weight="bold"
-							>100,000</app-typography
-						>
-					</app-typography>
+						<span class="capitalize" weight="bold">100,000</span>
+					</p>
 				</li>
 			</ul>
-			<app-typography class="block mb-7">{{
-				piece.description
-			}}</app-typography>
+			<p class="mb-7">{{ piece.description }}</p>
 			<div>
-				<app-typography class="block mb-4" variant="h3" weight="bold"
-					>Composer</app-typography
-				>
+				<h3 class="mb-4" weight="bold">Composer</h3>
 				<div class="flex gap-2">
 					<img
 						class="object-cover"
@@ -77,12 +61,8 @@
 						[alt]="composerName()"
 					/>
 					<div>
-						<app-typography color="primary">{{
-							composerName()
-						}}</app-typography>
-						<app-typography size="sm">{{
-							composerLifeSpan()
-						}}</app-typography>
+						<p color="primary">{{ composerName() }}</p>
+						<p variant="body2">{{ composerLifeSpan() }}</p>
 					</div>
 				</div>
 			</div>

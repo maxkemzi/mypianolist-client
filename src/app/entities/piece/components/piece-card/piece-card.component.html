@@ -14,28 +14,20 @@
 		<div class="flex items-start justify-between gap-4">
 			<div>
 				<a [routerLink]="`/pieces/${piece().id}`">
-					<app-typography
-						textClass="text-nowrap"
-						weight="bold"
-						color="primary"
-						>{{ piece().title }}
-					</app-typography>
+					<p class="text-nowrap" weight="bold" color="primary">
+						{{ piece().title }}
+					</p>
 				</a>
-				<app-typography textClass="text-nowrap"
-					>By
-					<app-typography as="span" color="primary">{{
-						composerName()
-					}}</app-typography></app-typography
-				>
+				<p class="text-nowrap">
+					By <span color="primary">{{ composerName() }}</span>
+				</p>
 			</div>
 			<div class="flex items-center gap-1">
-				<app-typography>1,000,000</app-typography>
+				<p>1,000,000</p>
 				<i class="ph-fill ph-user text-xl"></i>
 			</div>
 		</div>
-		<app-typography textClass="line-clamp-2">{{
-			piece().description
-		}}</app-typography>
+		<p class="line-clamp-2">{{ piece().description }}</p>
 		<div class="flex items-end gap-4">
 			@if (!hideGenre()) {
 				<div
@@ -43,9 +35,9 @@
 					[class.bg-surface]="variant() === 'odd'"
 					[class.bg-background]="variant() === 'even'"
 				>
-					<app-typography textClass="capitalize" size="sm">{{
-						piece().genre.name
-					}}</app-typography>
+					<p class="capitalize" variant="body2">
+						{{ piece().genre.name }}
+					</p>
 				</div>
 			}
 			<button appButton class="ml-auto" size="sm">Add to List</button>

@@ -1,5 +1,5 @@
 <label>
-	<app-typography class="block mb-2" as="span">{{ label() }}</app-typography>
+	<span class="block mb-2">{{ label() }}</span>
 	<input
 		appInput
 		[value]="value"
@@ -11,7 +11,7 @@
 	/>
 </label>
 @if (error()) {
-	<app-typography class="block mt-1" variant="body2" color="danger">
+	<p class="mt-1" variant="body2" color="danger">
 		{{ error() }}
-	</app-typography>
+	</p>
 }

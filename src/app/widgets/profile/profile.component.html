@@ -5,7 +5,7 @@
 			type="button"
 			(click)="toggleDropdownIsOpen()"
 		>
-			<app-typography weight="semibold">{{ username() }}</app-typography>
+			<span weight="semibold">{{ username() }}</span>
 			<i class="ph-fill ph-caret-down"></i>
 		</button>
 		@if (dropdownIsOpen()) {

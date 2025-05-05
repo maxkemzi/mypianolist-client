@@ -1,41 +1,49 @@
 import {CommonModule} from '@angular/common';
-import {Component, input} from '@angular/core';
+import {
+	Component,
+	computed,
+	ElementRef,
+	HostBinding,
+	inject,
+	input,
+} from '@angular/core';
 import {twMerge} from 'tailwind-merge';
 import {Color, Size, Tag, Variant, Weight} from './types';
 
 @Component({
-	selector: 'app-typography',
+	selector: 'h1, h2, h3, h4, h5, h6, p, span, [appTypography]',
 	templateUrl: './typography.component.html',
 	imports: [CommonModule],
 })
 export class TypographyComponent {
-	readonly textClass = input<string>();
-	readonly variant = input<Variant>('body1');
+	private readonly el = inject(ElementRef);
+	readonly class = input<string>();
+	readonly variant = input<Variant>();
 	readonly color = input<Color>('text');
-	readonly as = input<Tag>();
 	readonly size = input<Size>();
 	readonly weight = input<Weight>();
 
-	get tag(): Tag {
-		const variantToTagsMapping: Record<Variant, Tag> = {
+	readonly finalVariant = computed(() => {
+		const TAG_TO_VARIANT_MAPPING: Record<Tag, Variant> = {
 			h1: 'h1',
 			h2: 'h2',
 			h3: 'h3',
-			body1: 'p',
-			body2: 'p',
+			p: 'body1',
 		};
 
-		return this.as() || variantToTagsMapping[this.variant()];
-	}
+		const tag = this.el.nativeElement.tagName.toLowerCase() as Tag;
+		return this.variant() ?? TAG_TO_VARIANT_MAPPING[tag] ?? 'body1';
+	});
 
+	@HostBinding('class')
 	get classes(): string {
-		const colorToClassesMapping: Record<Color, string> = {
+		const COLOR_TO_CLASSES_MAPPING: Record<Color, string> = {
 			text: 'text-text',
 			primary: 'text-primary',
 			danger: 'text-danger',
 		};
 
-		const sizeToClassesMapping: Record<Size, string> = {
+		const SIZE_TO_CLASSES_MAPPING: Record<Size, string> = {
 			sm: 'text-sm',
 			base: 'text-base',
 			'2xl': 'text-2xl',
@@ -43,14 +51,14 @@ export class TypographyComponent {
 			'5xl': 'text-5xl',
 		};
 
-		const weightToClassesMapping: Record<Weight, string> = {
+		const WEIGHT_TO_CLASSES_MAPPING: Record<Weight, string> = {
 			normal: 'font-normal',
 			medium: 'font-medium',
 			semibold: 'font-semibold',
 			bold: 'font-bold',
 		};
 
-		const variantToPropsMapping: Record<
+		const VARIANT_TO_PROPS_MAPPING: Record<
 			Variant,
 			{size: Size; weight: Weight}
 		> = {
@@ -76,18 +84,12 @@ export class TypographyComponent {
 			},
 		};
 
-		const props = variantToPropsMapping[this.variant()];
+		const {size, weight} = VARIANT_TO_PROPS_MAPPING[this.finalVariant()];
 
-		const colorClasses = colorToClassesMapping[this.color() || 'text'];
-		const sizeClasses = sizeToClassesMapping[this.size() || props.size];
-		const weightClasses =
-			weightToClassesMapping[this.weight() || props.weight];
+		const colorClasses = COLOR_TO_CLASSES_MAPPING[this.color()];
+		const sizeClasses = SIZE_TO_CLASSES_MAPPING[this.size() || size];
+		const weightClasses = WEIGHT_TO_CLASSES_MAPPING[this.weight() || weight];
 
-		return twMerge(
-			colorClasses,
-			sizeClasses,
-			weightClasses,
-			this.textClass(),
-		);
+		return twMerge(colorClasses, sizeClasses, weightClasses, this.class());
 	}
 }
