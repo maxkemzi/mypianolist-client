@@ -1,12 +1,13 @@
 <label>
 	<app-typography class="block mb-2" as="span">{{ label() }}</app-typography>
-	<app-input
+	<input
+		appInput
 		[value]="value"
 		[type]="type()"
 		[placeholder]="placeholder()"
 		[disabled]="disabled"
-		(onInput)="handleInput($event)"
-		(onTouched)="onTouched()"
+		(input)="handleInput($event)"
+		(blur)="onTouched()"
 	/>
 </label>
 @if (error()) {

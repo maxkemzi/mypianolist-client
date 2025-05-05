@@ -1,22 +1,15 @@
-import {booleanAttribute, Component, input, output} from '@angular/core';
+import {Component, HostBinding, input} from '@angular/core';
 import {twMerge} from 'tailwind-merge';
 
 @Component({
-	selector: 'app-input',
-	templateUrl: './input.component.html',
+	selector: 'input[appInput]',
+	template: '',
 })
 export class InputComponent {
-	readonly inputClass = input<string>();
-	readonly value = input<string>('');
-	readonly type = input<'text' | 'password'>('text');
-	readonly placeholder = input<string>();
-	readonly disabled = input<boolean, unknown>(undefined, {
-		transform: booleanAttribute,
-	});
-	readonly onInput = output<Event>();
-	readonly onTouched = output<Event>();
+	readonly class = input<string>();
 
-	getInputClasses(classes: string): string {
-		return twMerge(classes, this.inputClass());
+	@HostBinding('class')
+	get classes(): string {
+		return twMerge('px-4 py-3 bg-surface rounded-lg', this.class());
 	}
 }

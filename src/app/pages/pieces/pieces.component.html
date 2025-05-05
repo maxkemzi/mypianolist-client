@@ -17,11 +17,12 @@
 					<i [class]="'ph ph-magnifying-glass ' + iconClasses"></i>
 				}
 
-				<app-input
-					inputClass="pl-14 rounded-tr-none rounded-br-none"
+				<input
+					appInput
+					class="pl-14 rounded-tr-none rounded-br-none"
 					placeholder="Search Pieces..."
 					[value]="searchQuery()"
-					(onInput)="handleInputSearch($event)"
+					(input)="handleInputSearch($event)"
 				/>
 			</div>
 			<div>
