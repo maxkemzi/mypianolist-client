@@ -25,6 +25,7 @@
 					appButton
 					class="h-full rounded-tl-none rounded-bl-none"
 					type="submit"
+					[disabled]="pieces.isLoading()"
 				>
 					Search
 				</button>
@@ -33,7 +34,9 @@
 		<div class="flex justify-between items-center mb-7">
 			<p>
 				Pieces
-				<span weight="bold">{{ pieces.totalCount() }}</span>
+				<span weight="bold">{{
+					pieces.isLoading() ? '...' : pieces.totalCount()
+				}}</span>
 			</p>
 			<div class="relative">
 				<button
@@ -56,14 +59,23 @@
 				}
 			</div>
 		</div>
-		<div class="rounded-lg overflow-hidden">
-			@for (piece of pieces.data(); track piece.id; let i = $index) {
-				<app-piece-card
-					[piece]="piece"
-					[variant]="(i + 1) % 2 === 0 ? 'even' : 'odd'"
-					[hideGenre]="!!genre()"
-				></app-piece-card>
-			}
-		</div>
+
+		@if (pieces.isLoading()) {
+			<p>Loading...</p>
+		} @else if (pieces.hasError()) {
+			<p>Something went wrong.</p>
+		} @else if (pieces.data().length === 0) {
+			<p>There are no pieces.</p>
+		} @else {
+			<div class="rounded-lg overflow-hidden">
+				@for (piece of pieces.data(); track piece.id; let i = $index) {
+					<app-piece-card
+						[piece]="piece"
+						[variant]="(i + 1) % 2 === 0 ? 'even' : 'odd'"
+						[hideGenre]="!!genre()"
+					></app-piece-card>
+				}
+			</div>
+		}
 	</div>
 </section>
