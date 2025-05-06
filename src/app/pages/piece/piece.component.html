@@ -14,39 +14,19 @@
 			<h3 class="mb-4" weight="normal">By {{ composerName() }}</h3>
 			<ul class="flex gap-4 mb-4">
 				<li>
-					<p>
-						Genre
-
-						<span class="capitalize" weight="bold">{{
-							piece.genre.name
-						}}</span>
-					</p>
+					<app-info-item title="Genre" [value]="piece.genre.name" />
 				</li>
 
 				<li>
-					<p>
-						Year
-
-						<span class="capitalize" weight="bold">{{
-							composedDate()
-						}}</span>
-					</p>
+					<app-info-item title="Year" [value]="composedDate()" />
 				</li>
 
 				<li>
-					<p>
-						Learners
-
-						<span class="capitalize" weight="bold">100,000</span>
-					</p>
+					<app-info-item title="Learners" value="100,000" />
 				</li>
 
 				<li>
-					<p>
-						Favorites
-
-						<span class="capitalize" weight="bold">100,000</span>
-					</p>
+					<app-info-item title="Favorites" value="100,000" />
 				</li>
 			</ul>
 			<p class="mb-7">{{ piece.description }}</p>

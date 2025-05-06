@@ -1,13 +1,22 @@
 import {Component, computed, inject, OnInit} from '@angular/core';
 import {ActivatedRoute, RouterLink} from '@angular/router';
-import {Piece, PieceService} from '@entities/piece';
-import {ContainerComponent, TypographyComponent} from '@shared/components';
+import {PieceService} from '@entities/piece';
+import {
+	ContainerComponent,
+	InfoItemComponent,
+	TypographyComponent,
+} from '@shared/components';
 import {filter, map} from 'rxjs';
 
 @Component({
 	selector: 'app-piece-page',
 	templateUrl: './piece.component.html',
-	imports: [ContainerComponent, TypographyComponent, RouterLink],
+	imports: [
+		ContainerComponent,
+		TypographyComponent,
+		RouterLink,
+		InfoItemComponent,
+	],
 })
 export class PiecePageComponent implements OnInit {
 	private readonly route = inject(ActivatedRoute);
@@ -17,7 +26,7 @@ export class PiecePageComponent implements OnInit {
 		const piece = this.piece.data();
 		if (!piece) return '';
 
-		return new Date(piece.composedAt).getFullYear();
+		return new Date(piece.composedAt).getFullYear().toString();
 	});
 
 	readonly composerName = computed(() => {

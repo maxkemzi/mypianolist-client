@@ -1,13 +1,17 @@
 import {Component, computed, inject, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {ComposerService} from '@entities/composer';
-import {ContainerComponent, TypographyComponent} from '@shared/components';
+import {
+	ContainerComponent,
+	InfoItemComponent,
+	TypographyComponent,
+} from '@shared/components';
 import {filter, map} from 'rxjs';
 
 @Component({
 	selector: 'app-composer-page',
 	templateUrl: './composer.component.html',
-	imports: [ContainerComponent, TypographyComponent],
+	imports: [ContainerComponent, TypographyComponent, InfoItemComponent],
 })
 export class ComposerPageComponent implements OnInit {
 	private readonly route = inject(ActivatedRoute);
