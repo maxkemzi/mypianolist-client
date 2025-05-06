@@ -3,3 +3,4 @@ export {HomePageComponent} from './home/home.component';
 export {CatalogPageComponent} from './catalog/catalog.component';
 export {PiecesPageComponent} from './pieces/pieces.component';
 export {PiecePageComponent} from './piece/piece.component';
+export {ComposerPageComponent} from './composer/composer.component';

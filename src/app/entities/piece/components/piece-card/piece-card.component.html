@@ -14,7 +14,10 @@
 				</p>
 			</a>
 			<p class="text-nowrap">
-				By <span color="primary">{{ composerName() }}</span>
+				By
+				<a [routerLink]="`/composers/${piece().composer.id}`">
+					<span color="primary">{{ composerName() }}</span>
+				</a>
 			</p>
 		</div>
 		<div class="flex items-center gap-1">

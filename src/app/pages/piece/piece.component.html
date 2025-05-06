@@ -52,19 +52,24 @@
 			<p class="mb-7">{{ piece.description }}</p>
 			<div>
 				<h3 class="mb-4" weight="bold">Composer</h3>
-				<div class="flex gap-2">
-					<img
-						class="object-cover"
-						[src]="'/server' + piece.composer.photo"
-						width="80"
-						height="115"
-						[alt]="composerName()"
-					/>
-					<div>
-						<p color="primary">{{ composerName() }}</p>
-						<p variant="body2">{{ composerLifeSpan() }}</p>
+				<a
+					class="inline-block"
+					[routerLink]="`/composers/${piece.composer.id}`"
+				>
+					<div class="flex gap-2">
+						<img
+							class="object-cover"
+							[src]="'/server' + piece.composer.photo"
+							width="80"
+							height="115"
+							[alt]="composerName()"
+						/>
+						<div>
+							<p color="primary">{{ composerName() }}</p>
+							<p variant="body2">{{ composerLifeSpan() }}</p>
+						</div>
 					</div>
-				</div>
+				</a>
 			</div>
 		}
 	</div>

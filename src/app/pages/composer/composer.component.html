@@ -1,0 +1,38 @@
+<div class="h-[88px] mb-10"></div>
+<section>
+	<div appContainer size="md">
+		@if (composer.data() === undefined) {
+			<p>Loading...</p>
+		}
+
+		@if (composer.data() === null) {
+			<p>The composer doesn't exist.</p>
+		}
+
+		@if (composer.data(); as composer) {
+			<div class="flex gap-4">
+				<img
+					class="shrink-0 object-cover rounded-lg"
+					[src]="'/server' + composer.photo"
+					width="210"
+					height="301"
+					[alt]="fullName()"
+				/>
+				<div>
+					<h2>{{ fullName() }}</h2>
+					<h3 class="mb-4" weight="normal">{{ lifeSpan() }}</h3>
+					<ul class="flex gap-4 mb-4">
+						<li>
+							<p>
+								Favorites
+
+								<span class="capitalize" weight="bold">100,000</span>
+							</p>
+						</li>
+					</ul>
+					<p class="mb-7">{{ composer.biography }}</p>
+				</div>
+			</div>
+		}
+	</div>
+</section>

@@ -30,6 +30,11 @@ export const routes: Routes = [
 				loadComponent: () =>
 					import('@pages').then(m => m.PiecePageComponent),
 			},
+			{
+				path: 'composers/:id',
+				loadComponent: () =>
+					import('@pages').then(m => m.ComposerPageComponent),
+			},
 		],
 	},
 	{
