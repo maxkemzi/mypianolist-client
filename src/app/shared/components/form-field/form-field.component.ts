@@ -1,4 +1,3 @@
-import {CommonModule} from '@angular/common';
 import {Component, forwardRef, input} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {InputComponent} from '../input';
@@ -7,7 +6,7 @@ import {TypographyComponent} from '../typography';
 @Component({
 	selector: 'app-form-field',
 	templateUrl: './form-field.component.html',
-	imports: [CommonModule, InputComponent, TypographyComponent],
+	imports: [InputComponent, TypographyComponent],
 	providers: [
 		{
 			provide: NG_VALUE_ACCESSOR,

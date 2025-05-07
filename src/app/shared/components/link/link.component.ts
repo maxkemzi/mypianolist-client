@@ -1,4 +1,3 @@
-import {CommonModule} from '@angular/common';
 import {Component} from '@angular/core';
 import {ClassMergeDirective} from '@shared/lib';
 import {TypographyComponent} from '../typography';
@@ -6,7 +5,7 @@ import {TypographyComponent} from '../typography';
 @Component({
 	selector: 'a[appLink]',
 	templateUrl: './link.component.html',
-	imports: [CommonModule, TypographyComponent],
+	imports: [TypographyComponent],
 })
 export class LinkComponent extends ClassMergeDirective {
 	protected override defaultClass(): string {

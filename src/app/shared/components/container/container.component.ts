@@ -1,4 +1,3 @@
-import {CommonModule} from '@angular/common';
 import {Component, input} from '@angular/core';
 import {ClassMergeDirective} from '@shared/lib';
 import {twJoin} from 'tailwind-merge';
@@ -6,7 +5,6 @@ import {twJoin} from 'tailwind-merge';
 @Component({
 	selector: 'div[appContainer]',
 	templateUrl: './container.component.html',
-	imports: [CommonModule],
 })
 export class ContainerComponent extends ClassMergeDirective {
 	readonly size = input<'md' | 'lg'>('lg');

@@ -1,4 +1,3 @@
-import {CommonModule} from '@angular/common';
 import {Component, input} from '@angular/core';
 import {ClassMergeDirective} from '@shared/lib';
 import {twJoin} from 'tailwind-merge';
@@ -11,7 +10,7 @@ import {
 @Component({
 	selector: 'button[appButton], a[appButton]',
 	templateUrl: './button.component.html',
-	imports: [CommonModule, TypographyComponent],
+	imports: [TypographyComponent],
 })
 export class ButtonComponent extends ClassMergeDirective {
 	readonly variant = input<'primary' | 'outline'>('primary');
