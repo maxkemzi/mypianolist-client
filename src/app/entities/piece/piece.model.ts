@@ -9,4 +9,6 @@ export interface Piece {
 	composedAt: string;
 	genre: Genre;
 	composer: Composer;
+	favorites: number;
+	learners: number;
 }

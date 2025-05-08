@@ -22,11 +22,17 @@
 				</li>
 
 				<li>
-					<app-info-item title="Learners" value="100,000" />
+					<app-info-item
+						title="Learners"
+						[value]="piece.learners.toLocaleString()"
+					/>
 				</li>
 
 				<li>
-					<app-info-item title="Favorites" value="100,000" />
+					<app-info-item
+						title="Favorites"
+						[value]="piece.favorites.toLocaleString()"
+					/>
 				</li>
 			</ul>
 			<p class="mb-7">{{ piece.description }}</p>
