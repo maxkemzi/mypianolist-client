@@ -10,53 +10,7 @@
 		}
 
 		@if (piece.data(); as piece) {
-			<h2>{{ piece.title }}</h2>
-			<h3 class="mb-4" weight="normal">By {{ composerName() }}</h3>
-			<ul class="flex gap-4 mb-4">
-				<li>
-					<app-info-item title="Genre" [value]="piece.genre.name" />
-				</li>
-
-				<li>
-					<app-info-item title="Year" [value]="composedDate()" />
-				</li>
-
-				<li>
-					<app-info-item
-						title="Learners"
-						[value]="piece.learners.toLocaleString()"
-					/>
-				</li>
-
-				<li>
-					<app-info-item
-						title="Favorites"
-						[value]="piece.favorites.toLocaleString()"
-					/>
-				</li>
-			</ul>
-			<p class="mb-7">{{ piece.description }}</p>
-			<div>
-				<h3 class="mb-4" weight="bold">Composer</h3>
-				<a
-					class="inline-block"
-					[routerLink]="`/composers/${piece.composer.id}`"
-				>
-					<div class="flex gap-2">
-						<img
-							class="object-cover"
-							[src]="'/server' + piece.composer.photo"
-							width="80"
-							height="115"
-							[alt]="composerName()"
-						/>
-						<div>
-							<p color="primary">{{ composerName() }}</p>
-							<p variant="body2">{{ composerLifeSpan() }}</p>
-						</div>
-					</div>
-				</a>
-			</div>
+			<app-piece-details [piece]="piece" />
 		}
 	</div>
 </section>
