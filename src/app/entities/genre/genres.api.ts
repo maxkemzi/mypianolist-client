@@ -8,7 +8,7 @@ interface FetchAllGenresResponse {
 }
 
 @Injectable({providedIn: 'root'})
-export class GenreApi extends Api {
+export class GenresApi extends Api {
 	private readonly http = inject(HttpClient);
 
 	fetchAll() {

@@ -6,7 +6,7 @@ import {
 	TransferState,
 } from '@angular/core';
 import {catchError, finalize, Observable, of, tap} from 'rxjs';
-import {FetchAllPiecesResponse, PieceApi} from './piece.api';
+import {FetchAllPiecesResponse, PiecesApi} from './pieces.api';
 import {Piece} from './piece.model';
 
 @Injectable({providedIn: 'root'})
@@ -19,7 +19,7 @@ export class PiecesService {
 		TOTAL_PAGES: 1,
 		HAS_MORE: false,
 	};
-	private readonly api = inject(PieceApi);
+	private readonly api = inject(PiecesApi);
 	private readonly state = inject(TransferState);
 
 	readonly data = signal<Piece[]>(this.InitialValue.DATA);

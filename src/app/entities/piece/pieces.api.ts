@@ -13,7 +13,7 @@ export interface FetchAllPiecesResponse {
 }
 
 @Injectable({providedIn: 'root'})
-export class PieceApi extends Api {
+export class PiecesApi extends Api {
 	private readonly http = inject(HttpClient);
 
 	fetchAll({search, genre}: {search?: string; genre?: string} = {}) {
