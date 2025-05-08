@@ -10,25 +10,7 @@
 		}
 
 		@if (composer.data(); as composer) {
-			<div class="flex gap-4">
-				<img
-					class="shrink-0 object-cover rounded-lg"
-					[src]="'/server' + composer.photo"
-					width="210"
-					height="301"
-					[alt]="fullName()"
-				/>
-				<div>
-					<h2>{{ fullName() }}</h2>
-					<h3 class="mb-4" weight="normal">{{ lifeSpan() }}</h3>
-					<ul class="flex gap-4 mb-4">
-						<li>
-							<app-info-item title="Favorites" value="100,000" />
-						</li>
-					</ul>
-					<p class="mb-7">{{ composer.biography }}</p>
-				</div>
-			</div>
+			<app-composer-details [composer]="composer" />
 		}
 	</div>
 </section>

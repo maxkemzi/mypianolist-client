@@ -1,52 +1,17 @@
-import {Component, computed, inject, OnInit} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {ComposerService} from '@entities/composer';
-import {
-	ContainerComponent,
-	InfoItemComponent,
-	TypographyComponent,
-} from '@shared/components';
+import {ComposerDetailsComponent, ComposerService} from '@entities/composer';
+import {ContainerComponent, TypographyComponent} from '@shared/components';
 import {filter, map} from 'rxjs';
 
 @Component({
 	selector: 'app-composer-page',
 	templateUrl: './composer.component.html',
-	imports: [ContainerComponent, TypographyComponent, InfoItemComponent],
+	imports: [ContainerComponent, TypographyComponent, ComposerDetailsComponent],
 })
 export class ComposerPageComponent implements OnInit {
 	private readonly route = inject(ActivatedRoute);
 	readonly composer = inject(ComposerService);
-
-	readonly fullName = computed(() => {
-		const composer = this.composer.data();
-		if (!composer) return '';
-
-		const {nickname, firstName, lastName} = composer;
-		let result = `${firstName} ${lastName}`;
-
-		if (nickname) {
-			result += ` (${nickname})`;
-		}
-
-		return result;
-	});
-
-	readonly lifeSpan = computed(() => {
-		const composer = this.composer.data();
-		if (!composer) return '';
-
-		const {bornAt, diedAt} = composer;
-		const bornDate = new Date(bornAt);
-		const diedDate = diedAt ? new Date(diedAt) : null;
-
-		if (!diedDate) {
-			const diff = Date.now() - bornDate.getTime();
-			const age = Math.abs(new Date(diff).getUTCFullYear() - 1970);
-			return `${bornDate.getFullYear()} (age ${age})`;
-		}
-
-		return `${bornDate.getFullYear()} - ${diedDate.getFullYear()}`;
-	});
 
 	ngOnInit() {
 		this.route.paramMap
