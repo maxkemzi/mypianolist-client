@@ -3,7 +3,7 @@ import {inject, Injectable, PLATFORM_ID, signal} from '@angular/core';
 import {CookieService} from 'ngx-cookie-service';
 import {catchError, map, of, tap} from 'rxjs';
 import {AuthApi} from './auth.api';
-import {AuthTokens, AuthUser} from './auth.model';
+import {AuthUser} from './auth.model';
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
@@ -20,7 +20,7 @@ export class AuthService {
 		return this.api.logIn(body).pipe(
 			tap(data => {
 				this.user.set(data.user);
-				this.setTokens(data.tokens);
+				this.setAccessToken(data.accessToken);
 			}),
 		);
 	}
@@ -33,12 +33,12 @@ export class AuthService {
 		return this.api.refresh().pipe(
 			tap(data => {
 				this.user.set(data.user);
-				this.setTokens(data.tokens);
+				this.setAccessToken(data.accessToken);
 			}),
 			map(data => data.user),
 			catchError(() => {
 				this.user.set(null);
-				this.deleteTokens();
+				this.deleteAccessToken();
 
 				return of(null);
 			}),
@@ -49,18 +49,18 @@ export class AuthService {
 		return this.api.logOut().pipe(
 			tap(() => {
 				this.user.set(null);
-				this.deleteTokens();
+				this.deleteAccessToken();
 			}),
 		);
 	}
 
-	getTokens(): AuthTokens | null {
-		const cookie = this.cookies.get('tokens');
-		return cookie ? JSON.parse(cookie) : null;
+	getAccessToken(): string | undefined {
+		const cookie = this.cookies.get('accessToken');
+		return cookie || undefined;
 	}
 
-	private setTokens(tokens: AuthTokens) {
-		this.cookies.set('tokens', JSON.stringify(tokens), {
+	private setAccessToken(token: string) {
+		this.cookies.set('accessToken', token, {
 			path: '/',
 			secure: false,
 			sameSite: 'Lax',
@@ -68,7 +68,7 @@ export class AuthService {
 		});
 	}
 
-	private deleteTokens() {
-		this.cookies.delete('tokens', '/');
+	private deleteAccessToken() {
+		this.cookies.delete('accessToken', '/');
 	}
 }
