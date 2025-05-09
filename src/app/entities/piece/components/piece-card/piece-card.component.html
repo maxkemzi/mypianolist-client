@@ -30,8 +30,8 @@
 		@if (!hideGenre()) {
 			<div
 				class="py-1.5 px-2.5 rounded-lg"
-				[class.bg-surface]="variant() === 'odd'"
-				[class.bg-background]="variant() === 'even'"
+				[class.bg-surface]="!isEven()"
+				[class.bg-background]="isEven()"
 			>
 				<p class="capitalize" variant="body2">
 					{{ piece().genre.name }}

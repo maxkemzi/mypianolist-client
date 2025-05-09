@@ -15,7 +15,9 @@ export class PieceCardComponent extends ClassMergeDirective {
 	readonly hideGenre = input<boolean, unknown>(false, {
 		transform: booleanAttribute,
 	});
-	readonly variant = input<'odd' | 'even'>('odd');
+	readonly isEven = input<boolean, unknown>(false, {
+		transform: booleanAttribute,
+	});
 
 	readonly photoPath = computed(() => `/server${this.piece().composer.photo}`);
 	readonly composerName = computed(() => {
@@ -26,8 +28,7 @@ export class PieceCardComponent extends ClassMergeDirective {
 	protected override defaultClass(): string {
 		return twJoin(
 			'flex p-4 gap-4',
-			this.variant() === 'odd' && 'bg-background',
-			this.variant() === 'even' && 'bg-surface',
+			this.isEven() ? 'bg-surface' : 'bg-background',
 		);
 	}
 }

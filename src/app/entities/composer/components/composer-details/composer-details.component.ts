@@ -1,12 +1,11 @@
 import {Component, computed, input} from '@angular/core';
-import {RouterLink} from '@angular/router';
 import {Composer} from '@entities/composer/composer.model';
 import {InfoItemComponent, TypographyComponent} from '@shared/components';
 
 @Component({
 	selector: 'app-composer-details',
 	templateUrl: './composer-details.component.html',
-	imports: [TypographyComponent, RouterLink, InfoItemComponent],
+	imports: [TypographyComponent, InfoItemComponent],
 })
 export class ComposerDetailsComponent {
 	readonly composer = input.required<Composer>();

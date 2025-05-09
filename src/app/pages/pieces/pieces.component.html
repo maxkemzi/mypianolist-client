@@ -68,10 +68,10 @@
 			<p>There are no pieces.</p>
 		} @else {
 			<div class="rounded-lg overflow-hidden">
-				@for (piece of pieces.data(); track piece.id; let i = $index) {
+				@for (piece of pieces.data(); track piece.id) {
 					<app-piece-card
 						[piece]="piece"
-						[variant]="(i + 1) % 2 === 0 ? 'even' : 'odd'"
+						[isEven]="$odd"
 						[hideGenre]="!!genre()"
 					></app-piece-card>
 				}
