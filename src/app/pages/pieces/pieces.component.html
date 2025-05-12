@@ -67,7 +67,7 @@
 		} @else if (pieces.data().length === 0) {
 			<p>There are no pieces.</p>
 		} @else {
-			<div class="rounded-lg overflow-hidden">
+			<div class="rounded-lg overflow-hidden mb-7">
 				@for (piece of pieces.data(); track piece.id) {
 					<app-piece-card
 						[piece]="piece"
@@ -76,6 +76,12 @@
 					></app-piece-card>
 				}
 			</div>
+			<app-pagination
+				class="flex justify-center"
+				[page]="pieces.page()"
+				[totalPages]="pieces.totalPages()"
+				(onPageChange)="handlePageChange($event)"
+			/>
 		}
 	</div>
 </section>

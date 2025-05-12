@@ -1,0 +1,22 @@
+<nav class="flex gap-4">
+	<button (click)="prevPage()" [disabled]="page() === 1">Prev</button>
+
+	@for (page of pages; track page) {
+		@if (page === '...') {
+			<span>...</span>
+		} @else {
+			<button
+				class="px-2.5 py-1 rounded-lg"
+				[class.bg-surface]="page !== this.page()"
+				[class.bg-primary]="page === this.page()"
+				(click)="goToPage(page)"
+			>
+				{{ page }}
+			</button>
+		}
+	}
+
+	<button (click)="nextPage()" [disabled]="this.page() === this.totalPages()">
+		Next
+	</button>
+</nav>

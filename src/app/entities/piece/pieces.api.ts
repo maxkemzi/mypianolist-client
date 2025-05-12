@@ -16,7 +16,12 @@ export interface FetchAllPiecesResponse {
 export class PiecesApi extends Api {
 	private readonly http = inject(HttpClient);
 
-	fetchAll({search, genre}: {search?: string; genre?: string} = {}) {
+	fetchAll({
+		search,
+		genre,
+		page,
+		limit,
+	}: {search?: string; genre?: string; page?: number; limit?: number} = {}) {
 		let params = new HttpParams();
 
 		if (search) {
@@ -25,6 +30,14 @@ export class PiecesApi extends Api {
 
 		if (genre) {
 			params = params.set('genre', genre);
+		}
+
+		if (page) {
+			params = params.set('page', page);
+		}
+
+		if (limit) {
+			params = params.set('limit', limit);
 		}
 
 		return this.http.get<FetchAllPiecesResponse>(`${this.BASE_URL}/pieces`, {

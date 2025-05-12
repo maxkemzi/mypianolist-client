@@ -1,4 +1,4 @@
-import {Component, computed, inject, signal} from '@angular/core';
+import {Component, computed, effect, inject, signal} from '@angular/core';
 import {PieceCardComponent, PiecesService} from '@entities/piece';
 import {
 	ContainerComponent,
@@ -11,6 +11,7 @@ import {ButtonComponent} from '../../shared/components/button/button.component';
 import {FormsModule} from '@angular/forms';
 import {ClickOutsideDirective} from '@shared/lib';
 import {ActivatedRoute} from '@angular/router';
+import {PaginationComponent} from '@features/pagination';
 
 @Component({
 	selector: 'app-pieces-page',
@@ -25,6 +26,7 @@ import {ActivatedRoute} from '@angular/router';
 		ButtonComponent,
 		FormsModule,
 		ClickOutsideDirective,
+		PaginationComponent,
 	],
 })
 export class PiecesPageComponent {
@@ -49,11 +51,17 @@ export class PiecesPageComponent {
 		});
 	}
 
+	handlePageChange(page: number) {
+		this.pieces.page.set(page);
+		this.pieces.fetchAll({genre: this.genre() ?? undefined}).subscribe();
+	}
+
 	toggleSortDropdownIsOpen() {
 		this.sortDropdownIsOpen.update(value => !value);
 	}
 
 	handleSearch() {
+		this.pieces.page.set(1);
 		this.pieces
 			.fetchAll({
 				search: this.searchQuery().trim(),

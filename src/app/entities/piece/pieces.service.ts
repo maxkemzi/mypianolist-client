@@ -5,7 +5,7 @@ import {
 	signal,
 	TransferState,
 } from '@angular/core';
-import {catchError, finalize, Observable, of, tap} from 'rxjs';
+import {catchError, finalize, map, Observable, of, tap} from 'rxjs';
 import {FetchAllPiecesResponse, PiecesApi} from './pieces.api';
 import {Piece} from './piece.model';
 
@@ -13,7 +13,7 @@ import {Piece} from './piece.model';
 export class PiecesService {
 	private readonly InitialValue = {
 		DATA: [],
-		PAGE: 0,
+		PAGE: 1,
 		LIMIT: 10,
 		TOTAL_COUNT: 0,
 		TOTAL_PAGES: 1,
@@ -38,6 +38,7 @@ export class PiecesService {
 	}: {
 		search?: string;
 		genre?: string;
+		page?: number;
 	} = {}): Observable<FetchAllPiecesResponse | null> {
 		const key = this.getDataKey(genre);
 
@@ -51,25 +52,43 @@ export class PiecesService {
 
 		this.hasError.set(false);
 		this.isLoading.set(true);
-		return this.api.fetchAll({search, genre}).pipe(
-			tap(res => {
-				this.setValues(res);
-				this.state.set(key, res);
-			}),
-			catchError(() => {
-				this.hasError.set(true);
-				this.resetValues();
-				this.state.remove(key);
-				return of(null);
-			}),
-			finalize(() => {
-				this.isLoading.set(false);
-			}),
-		);
+		return this.api
+			.fetchAll({
+				search,
+				genre,
+				page: this.toApiPage(this.page()),
+				limit: this.limit(),
+			})
+			.pipe(
+				map(res => ({...res, page: this.toUiPage(res.page)})),
+				tap(res => {
+					this.setValues(res);
+					this.state.set(key, res);
+				}),
+				catchError(() => {
+					this.hasError.set(true);
+					this.resetValues();
+					this.state.remove(key);
+					return of(null);
+				}),
+				finalize(() => {
+					this.isLoading.set(false);
+				}),
+			);
 	}
 
 	private getDataKey(genre?: string) {
-		return makeStateKey<FetchAllPiecesResponse>('pieces_' + (genre ?? 'all'));
+		return makeStateKey<FetchAllPiecesResponse>(
+			'pieces_' + (genre ?? 'all') + '_' + this.page(),
+		);
+	}
+
+	private toApiPage(page: number) {
+		return page - 1;
+	}
+
+	private toUiPage(page: number) {
+		return page + 1;
 	}
 
 	private setValues(res: FetchAllPiecesResponse) {
