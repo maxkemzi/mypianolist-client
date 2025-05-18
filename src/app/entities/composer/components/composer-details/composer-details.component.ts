@@ -10,6 +10,11 @@ import {InfoItemComponent, TypographyComponent} from '@shared/components';
 export class ComposerDetailsComponent {
 	readonly composer = input.required<Composer>();
 
+	readonly photo = computed(() => {
+		const {photo} = this.composer();
+		return photo ? `/server${photo}` : null;
+	});
+
 	readonly fullName = computed(() => {
 		const {nickname, firstName, lastName} = this.composer();
 		let result = `${firstName} ${lastName}`;
