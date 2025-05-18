@@ -19,7 +19,10 @@ export class PieceCardComponent extends ClassMergeDirective {
 		transform: booleanAttribute,
 	});
 
-	readonly photoPath = computed(() => `/server${this.piece().composer.photo}`);
+	readonly composerPhotoPath = computed(() => {
+		const {photo} = this.piece().composer;
+		return photo ? `/server${photo}` : null;
+	});
 	readonly composerName = computed(() => {
 		const {nickname, firstName, lastName} = this.piece().composer;
 		return nickname ?? `${firstName.charAt(0)}. ${lastName}`;

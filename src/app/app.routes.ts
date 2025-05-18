@@ -1,7 +1,4 @@
-import {inject} from '@angular/core';
 import {Routes} from '@angular/router';
-import {AuthService} from '@features/auth';
-import {authGuard} from '@shared/lib';
 
 export const routes: Routes = [
 	{

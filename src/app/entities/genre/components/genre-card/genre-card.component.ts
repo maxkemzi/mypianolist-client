@@ -14,7 +14,10 @@ export class GenreCardComponent extends ClassMergeDirective {
 		name: 'all',
 		image: '/images/genres/all.jpg',
 	});
-	readonly imagePath = computed(() => `/server${this.genre().image}`);
+	readonly imagePath = computed(() => {
+		const image = this.genre().image;
+		return image ? `/server${this.genre().image}` : null;
+	});
 
 	protected override defaultClass(): string {
 		return 'relative h-[200px] flex items-center justify-center rounded-lg overflow-hidden';
