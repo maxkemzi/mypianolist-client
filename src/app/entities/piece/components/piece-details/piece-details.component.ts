@@ -15,9 +15,9 @@ export class PieceDetailsComponent {
 		return new Date(this.piece().composedAt).getFullYear().toString();
 	});
 
-	readonly composerPhoto = computed(() => {
-		const {photo} = this.piece().composer;
-		return photo ? `/server${photo}` : null;
+	readonly composerImage = computed(() => {
+		const {image} = this.piece().composer;
+		return image ? `/server${image}` : null;
 	});
 
 	readonly composerName = computed(() => {

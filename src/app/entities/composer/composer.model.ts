@@ -4,7 +4,7 @@ export interface Composer {
 	lastName: string;
 	nickname: string | null;
 	biography: string;
-	photo: string | null;
+	image: string | null;
 	bornAt: string;
 	diedAt: string | null;
 }
