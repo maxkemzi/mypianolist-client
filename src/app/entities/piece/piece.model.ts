@@ -12,3 +12,9 @@ export interface Piece {
 	favorites: number;
 	learners: number;
 }
+
+export type PieceStatus =
+	| 'currently_learning'
+	| 'completed'
+	| 'dropped'
+	| 'plan_to_learn';

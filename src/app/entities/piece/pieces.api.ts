@@ -1,7 +1,7 @@
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {inject, Injectable} from '@angular/core';
 import {Api} from '@shared/lib';
-import {Piece} from './piece.model';
+import {Piece, PieceStatus} from './piece.model';
 
 export interface FetchAllPiecesResponse {
 	content: Piece[];
@@ -47,5 +47,11 @@ export class PiecesApi extends Api {
 
 	fetchById(id: string) {
 		return this.http.get<Piece>(`${this.BASE_URL}/pieces/${id}`);
+	}
+
+	fetchStatuses() {
+		return this.http.get<PieceStatus[]>(
+			`${this.BASE_URL}/users/pieces/statuses`,
+		);
 	}
 }

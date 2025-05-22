@@ -108,4 +108,8 @@ export class PiecesService {
 		this.totalPages.set(this.InitialValue.TOTAL_PAGES);
 		this.hasMore.set(this.InitialValue.HAS_MORE);
 	}
+
+	fetchStatuses() {
+		return this.api.fetchStatuses();
+	}
 }

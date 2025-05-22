@@ -32,6 +32,11 @@ export const routes: Routes = [
 				loadComponent: () =>
 					import('@pages').then(m => m.ComposerPageComponent),
 			},
+			{
+				path: 'list',
+				loadComponent: () =>
+					import('@pages').then(m => m.ListPageComponent),
+			},
 		],
 	},
 	{

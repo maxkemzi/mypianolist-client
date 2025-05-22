@@ -39,6 +39,7 @@ export class TypographyComponent extends ClassMergeDirective {
 			inherit: 'text-[length:inherit]',
 			sm: 'text-sm',
 			base: 'text-base',
+			xl: 'text-xl',
 			'2xl': 'text-2xl',
 			'4xl': 'text-4xl',
 			'5xl': 'text-5xl',

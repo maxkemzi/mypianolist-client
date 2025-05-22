@@ -8,3 +8,4 @@ export {LinkComponent} from './link';
 export {DropdownComponent} from './dropdown';
 export {DropdownItemComponent} from './dropdown-item';
 export {InfoItemComponent} from './info-item';
+export {TabComponent} from './tab';

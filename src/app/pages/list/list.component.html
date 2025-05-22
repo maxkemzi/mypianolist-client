@@ -1,0 +1,24 @@
+<div class="h-[88px] mb-10"></div>
+<section>
+	<div appContainer size="md">
+		<h1 class="mb-7 text-center capitalize">MyPianoList</h1>
+		<ul class="flex justify-center items-center gap-4">
+			<li>
+				<app-tab
+					[isActive]="activeStatus() === 'all_pieces'"
+					(onClick)="handleTabClick('all_pieces')"
+					>All pieces</app-tab
+				>
+			</li>
+			@for (status of statuses(); track status) {
+				<li>
+					<app-tab
+						[isActive]="activeStatus() === status"
+						(onClick)="handleTabClick(status)"
+						>{{ piecesUtils.statusToText(status) }}</app-tab
+					>
+				</li>
+			}
+		</ul>
+	</div>
+</section>
