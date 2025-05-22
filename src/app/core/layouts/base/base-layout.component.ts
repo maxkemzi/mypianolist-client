@@ -4,6 +4,7 @@ import {AuthService} from '@features/auth';
 import {
 	AuthButtonsComponent,
 	HeaderComponent,
+	ListButtonComponent,
 	LogoComponent,
 	NavbarComponent,
 	ProfileComponent,
@@ -19,6 +20,7 @@ import {
 		NavbarComponent,
 		ProfileComponent,
 		AuthButtonsComponent,
+		ListButtonComponent,
 	],
 })
 export class BaseLayoutComponent {

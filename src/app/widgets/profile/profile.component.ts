@@ -39,7 +39,7 @@ export class ProfileComponent {
 
 	@HostBinding('class')
 	get classes() {
-		return 'flex items-center gap-4';
+		return 'flex items-center gap-3';
 	}
 
 	handleImageError() {
