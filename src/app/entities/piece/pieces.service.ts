@@ -6,8 +6,8 @@ import {
 	TransferState,
 } from '@angular/core';
 import {catchError, finalize, map, Observable, of, tap} from 'rxjs';
-import {FetchAllPiecesResponse, PiecesApi} from './pieces.api';
 import {Piece} from './piece.model';
+import {FetchAllPiecesResponse, PiecesApi} from './pieces.api';
 
 @Injectable({providedIn: 'root'})
 export class PiecesService {
@@ -50,8 +50,8 @@ export class PiecesService {
 			}
 		}
 
-		this.hasError.set(false);
 		this.isLoading.set(true);
+		this.hasError.set(false);
 		return this.api
 			.fetchAll({
 				search,
@@ -107,9 +107,5 @@ export class PiecesService {
 		this.totalCount.set(this.InitialValue.TOTAL_COUNT);
 		this.totalPages.set(this.InitialValue.TOTAL_PAGES);
 		this.hasMore.set(this.InitialValue.HAS_MORE);
-	}
-
-	fetchStatuses() {
-		return this.api.fetchStatuses();
 	}
 }

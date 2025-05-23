@@ -1,5 +1,5 @@
 import {Component, inject, OnInit, signal} from '@angular/core';
-import {PiecesService, PieceStatus, PiecesUtils} from '@entities/piece';
+import {PieceStatus, PieceStatusesService, PiecesUtils} from '@entities/piece';
 import {TabComponent, TypographyComponent} from '@shared/components';
 
 @Component({
@@ -8,15 +8,13 @@ import {TabComponent, TypographyComponent} from '@shared/components';
 	imports: [TypographyComponent, TabComponent],
 })
 export class ListPageComponent implements OnInit {
-	private pieces = inject(PiecesService);
-	piecesUtils = inject(PiecesUtils);
-	statuses = signal<PieceStatus[]>([]);
+	readonly pieceStatuses = inject(PieceStatusesService);
+	readonly piecesUtils = inject(PiecesUtils);
+
 	activeStatus = signal<'all_pieces' | PieceStatus>('all_pieces');
 
 	ngOnInit() {
-		this.pieces.fetchStatuses().subscribe(data => {
-			this.statuses.set(data);
-		});
+		this.pieceStatuses.fetchStatuses().subscribe();
 	}
 
 	handleTabClick(status: 'all_pieces' | PieceStatus) {
