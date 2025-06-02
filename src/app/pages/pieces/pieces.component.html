@@ -73,7 +73,12 @@
 						[piece]="piece"
 						[isEven]="$odd"
 						[hideGenre]="!!genre()"
-					></app-piece-card>
+					>
+						<app-add-to-list-button
+							slot="bottom-right"
+							[pieceId]="piece.id"
+						/>
+					</app-piece-card>
 				}
 			</div>
 			<app-pagination

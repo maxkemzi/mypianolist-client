@@ -12,22 +12,47 @@
 		} @else {
 			<ul class="flex justify-center items-center gap-4">
 				<li>
-					<app-tab
-						[isActive]="activeStatus() === 'all_pieces'"
-						(onClick)="handleTabClick('all_pieces')"
-						>All pieces</app-tab
-					>
+					<a routerLink="/list">
+						<app-tab [isActive]="activeStatus() === null"
+							>All pieces</app-tab
+						>
+					</a>
 				</li>
 				@for (status of pieceStatuses.data(); track status) {
 					<li>
-						<app-tab
-							[isActive]="activeStatus() === status"
-							(onClick)="handleTabClick(status)"
-							>{{ piecesUtils.statusToText(status) }}</app-tab
-						>
+						<a routerLink="/list" [queryParams]="{status}">
+							<app-tab [isActive]="activeStatus() === status">{{
+								piecesUtils.statusToText(status)
+							}}</app-tab>
+						</a>
 					</li>
 				}
 			</ul>
 		}
+
+		<table>
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>Title</th>
+					<th>Composer</th>
+					<th>Genre</th>
+					<th>Score</th>
+					<th>Status</th>
+				</tr>
+			</thead>
+			<tbody>
+				@for (piece of pieceList.data(); track piece.id; let i = $index) {
+					<tr>
+						<td>{{ i + 1 }}</td>
+						<td>{{ piece.title }}</td>
+						<td>{{ piece.composer.firstName }}</td>
+						<td>{{ piece.genre.name }}</td>
+						<td>{{ piece.score || '-' }}</td>
+						<td>{{ piece.status }}</td>
+					</tr>
+				}
+			</tbody>
+		</table>
 	</div>
 </section>

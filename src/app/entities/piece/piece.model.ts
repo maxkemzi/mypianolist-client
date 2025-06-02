@@ -9,6 +9,9 @@ export interface Piece {
 	composedAt: string;
 	genre: Genre;
 	composer: Composer;
+}
+
+export interface CompletePiece extends Piece {
 	favorites: number;
 	learners: number;
 }
@@ -18,3 +21,8 @@ export type PieceStatus =
 	| 'completed'
 	| 'dropped'
 	| 'plan_to_learn';
+
+export interface UserPiece extends Piece {
+	score: number | null;
+	status: PieceStatus;
+}

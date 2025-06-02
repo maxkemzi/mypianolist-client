@@ -1,10 +1,9 @@
-<button
+<div
 	class="py-2 px-4 rounded-lg"
 	[class.bg-surface]="!isActive()"
 	[class.bg-primary]="isActive()"
-	(click)="onClick.emit()"
 >
 	<span class="capitalize" size="xl">
 		<ng-content />
 	</span>
-</button>
+</div>

@@ -1,4 +1,4 @@
-import {booleanAttribute, Component, input, output} from '@angular/core';
+import {booleanAttribute, Component, input} from '@angular/core';
 
 @Component({
 	selector: 'app-tab',
@@ -6,5 +6,4 @@ import {booleanAttribute, Component, input, output} from '@angular/core';
 })
 export class TabComponent {
 	isActive = input<boolean, unknown>(false, {transform: booleanAttribute});
-	onClick = output<void>();
 }

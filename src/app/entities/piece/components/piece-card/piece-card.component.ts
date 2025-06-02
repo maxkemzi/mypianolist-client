@@ -1,14 +1,14 @@
 import {booleanAttribute, Component, computed, input} from '@angular/core';
 import {RouterLink} from '@angular/router';
 import {Piece} from '@entities/piece/piece.model';
-import {ButtonComponent, TypographyComponent} from '@shared/components';
+import {TypographyComponent} from '@shared/components';
 import {ClassMergeDirective} from '@shared/lib';
 import {twJoin} from 'tailwind-merge';
 
 @Component({
 	selector: 'app-piece-card',
 	templateUrl: './piece-card.component.html',
-	imports: [TypographyComponent, ButtonComponent, RouterLink],
+	imports: [TypographyComponent, RouterLink],
 })
 export class PieceCardComponent extends ClassMergeDirective {
 	readonly piece = input.required<Piece>();

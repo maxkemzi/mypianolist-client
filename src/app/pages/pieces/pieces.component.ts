@@ -12,6 +12,7 @@ import {FormsModule} from '@angular/forms';
 import {ClickOutsideDirective} from '@shared/lib';
 import {ActivatedRoute} from '@angular/router';
 import {PaginationComponent} from '@features/pagination';
+import {AddToListButtonComponent} from '@features/piece/addToList';
 
 @Component({
 	selector: 'app-pieces-page',
@@ -27,6 +28,7 @@ import {PaginationComponent} from '@features/pagination';
 		FormsModule,
 		ClickOutsideDirective,
 		PaginationComponent,
+		AddToListButtonComponent,
 	],
 })
 export class PiecesPageComponent {
