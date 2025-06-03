@@ -1,14 +1,6 @@
 <label>
 	<span class="block mb-2">{{ label() }}</span>
-	<input
-		appInput
-		[value]="value"
-		[type]="type()"
-		[placeholder]="placeholder()"
-		[disabled]="disabled"
-		(input)="handleInput($event)"
-		(blur)="onTouched()"
-	/>
+	<ng-content select="[input, textarea]" />
 </label>
 @if (error()) {
 	<p class="mt-1" variant="body2" color="danger">

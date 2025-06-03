@@ -5,6 +5,7 @@ import {
 	ButtonComponent,
 	FormComponent,
 	FormFieldComponent,
+	InputComponent,
 	LinkComponent,
 	TypographyComponent,
 } from '@shared/components';
@@ -21,6 +22,7 @@ import {AuthService} from '../auth.service';
 		LinkComponent,
 		ReactiveFormsModule,
 		RouterLink,
+		InputComponent,
 	],
 })
 export class SignupFormComponent {

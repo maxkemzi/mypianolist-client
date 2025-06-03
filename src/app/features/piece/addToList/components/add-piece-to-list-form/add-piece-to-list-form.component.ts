@@ -5,6 +5,7 @@ import {
 	ButtonComponent,
 	FormComponent,
 	FormFieldComponent,
+	InputComponent,
 	TypographyComponent,
 } from '@shared/components';
 
@@ -17,6 +18,7 @@ import {
 		FormComponent,
 		FormFieldComponent,
 		ReactiveFormsModule,
+		InputComponent,
 	],
 })
 export class AddPieceToListFormComponent {
@@ -31,11 +33,11 @@ export class AddPieceToListFormComponent {
 	});
 
 	get statusError(): string | undefined {
-		const control = this.form.get('username');
+		const control = this.form.get('status');
 
 		if (control?.touched) {
 			if (control?.errors?.['required']) {
-				return 'Username is required.';
+				return 'Status is required.';
 			}
 		}
 

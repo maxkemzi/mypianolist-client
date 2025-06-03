@@ -6,26 +6,17 @@
 	<p class="text-center mb-4">By F. F. Chopin</p>
 
 	<div class="flex flex-col gap-4 mb-7">
-		<app-form-field
-			formControlName="status"
-			label="Status"
-			placeholder="Select Status"
-			[error]="statusError"
-		/>
+		<app-form-field label="Status" [error]="statusError">
+			<input appInput formControlName="status" placeholder="Select Status" />
+		</app-form-field>
 
-		<app-form-field
-			formControlName="startDate"
-			label="Start Date"
-			placeholder="DD/MM/YY"
-			[error]="startDateError"
-		/>
+		<app-form-field label="Start Date" [error]="startDateError">
+			<input appInput formControlName="startDate" placeholder="DD/MM/YY" />
+		</app-form-field>
 
-		<app-form-field
-			formControlName="finishDate"
-			label="Finish Date"
-			placeholder="DD/MM/YY"
-			[error]="finishDateError"
-		/>
+		<app-form-field label="Finish Date" [error]="finishDateError">
+			<input appInput formControlName="finishDate" placeholder="DD/MM/YY" />
+		</app-form-field>
 	</div>
 
 	<button appButton class="w-full" type="submit" [disabled]="!form.valid">
