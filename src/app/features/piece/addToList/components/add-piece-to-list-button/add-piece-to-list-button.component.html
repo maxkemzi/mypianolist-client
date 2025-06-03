@@ -1,0 +1,8 @@
+<button
+	appButton
+	size="sm"
+	[disabled]="isDisabled() || service.isLoading()"
+	(click)="appClick.emit()"
+>
+	Add to List
+</button>

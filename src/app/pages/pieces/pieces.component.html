@@ -51,7 +51,7 @@
 				@if (sortDropdownIsOpen()) {
 					<app-dropdown
 						class="absolute top-full left-0 min-w-full pt-2"
-						(appClickOutside)="handleClickOutside()"
+						(appClickOutside)="sortDropdownIsOpen.set(false)"
 					>
 						<app-dropdown-item>Learners</app-dropdown-item>
 						<app-dropdown-item>Favorites</app-dropdown-item>
@@ -74,10 +74,21 @@
 						[isEven]="$odd"
 						[hideGenre]="!!genre()"
 					>
-						<app-add-piece-to-list-button
-							slot="bottom-right"
-							[pieceId]="piece.id"
-						/>
+						<ng-container slot="bottom-right">
+							<app-add-piece-to-list-button
+								(appClick)="addToListModalIsOpen.set(true)"
+							/>
+							@if (addToListModalIsOpen()) {
+								<div appModalContainer>
+									<app-add-piece-to-list-form
+										[piece]="piece"
+										(appClickOutside)="
+											addToListModalIsOpen.set(false)
+										"
+									/>
+								</div>
+							}
+						</ng-container>
 					</app-piece-card>
 				}
 			</div>

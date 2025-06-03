@@ -14,7 +14,7 @@ export class HeaderComponent {
 
 	get classes() {
 		return twJoin(
-			'h-[88px] py-6 bg-background z-50',
+			'h-[88px] py-6 bg-background z-20',
 			this.absolute() && 'absolute top-0 left-0 w-full',
 		);
 	}

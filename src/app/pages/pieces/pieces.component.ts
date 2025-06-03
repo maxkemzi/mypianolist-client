@@ -3,13 +3,17 @@ import {FormsModule} from '@angular/forms';
 import {ActivatedRoute} from '@angular/router';
 import {PieceCardComponent} from '@entities/piece';
 import {PaginationComponent} from '@features/pagination';
-import {AddPieceToListButtonComponent} from '@features/piece/addToList';
+import {
+	AddPieceToListButtonComponent,
+	AddPieceToListFormComponent,
+} from '@features/piece/addToList';
 import {FetchAllPiecesService} from '@features/piece/fetchAll';
 import {
 	ContainerComponent,
 	DropdownComponent,
 	DropdownItemComponent,
 	InputComponent,
+	ModalContainerComponent,
 	TypographyComponent,
 } from '@shared/components';
 import {ClickOutsideDirective} from '@shared/lib';
@@ -30,6 +34,8 @@ import {ButtonComponent} from '../../shared/components/button/button.component';
 		ClickOutsideDirective,
 		PaginationComponent,
 		AddPieceToListButtonComponent,
+		AddPieceToListFormComponent,
+		ModalContainerComponent,
 	],
 })
 export class PiecesPageComponent {
@@ -38,6 +44,7 @@ export class PiecesPageComponent {
 	readonly sortDropdownIsOpen = signal<boolean>(false);
 	readonly searchQuery = signal<string>('');
 	readonly genre = signal<string | null | undefined>(undefined);
+	readonly addToListModalIsOpen = signal<boolean>(false);
 
 	readonly title = computed(() => `${this.genre() ?? 'all'} pieces`);
 
@@ -81,11 +88,5 @@ export class PiecesPageComponent {
 	handleClearSearch() {
 		this.searchQuery.set('');
 		this.handleSearch();
-	}
-
-	handleClickOutside() {
-		if (this.sortDropdownIsOpen()) {
-			this.sortDropdownIsOpen.set(false);
-		}
 	}
 }
