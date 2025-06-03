@@ -6,11 +6,11 @@ import {
 	TransferState,
 } from '@angular/core';
 import {catchError, finalize, map, Observable, of, tap} from 'rxjs';
-import {Piece} from './piece.model';
-import {FetchAllPiecesResponse, PiecesApi} from './pieces.api';
+import {FetchAllPiecesApi, FetchResponse} from './fetch-all-pieces.api';
+import {CompletePiece} from '@entities/piece';
 
 @Injectable({providedIn: 'root'})
-export class PiecesService {
+export class FetchAllPiecesService {
 	private readonly InitialValue = {
 		DATA: [],
 		PAGE: 1,
@@ -19,10 +19,10 @@ export class PiecesService {
 		TOTAL_PAGES: 1,
 		HAS_MORE: false,
 	};
-	private readonly api = inject(PiecesApi);
+	private readonly api = inject(FetchAllPiecesApi);
 	private readonly state = inject(TransferState);
 
-	readonly data = signal<Piece[]>(this.InitialValue.DATA);
+	readonly data = signal<CompletePiece[]>(this.InitialValue.DATA);
 	readonly page = signal<number>(this.InitialValue.PAGE);
 	readonly limit = signal<number>(this.InitialValue.LIMIT);
 	readonly totalCount = signal<number>(this.InitialValue.TOTAL_COUNT);
@@ -32,14 +32,14 @@ export class PiecesService {
 	readonly isLoading = signal<boolean>(false);
 	readonly hasError = signal<boolean>(false);
 
-	fetchAll({
+	fetch({
 		search,
 		genre,
 	}: {
 		search?: string;
 		genre?: string;
 		page?: number;
-	} = {}): Observable<FetchAllPiecesResponse | null> {
+	} = {}): Observable<FetchResponse | null> {
 		const key = this.getDataKey(genre);
 
 		if (search === undefined) {
@@ -53,7 +53,7 @@ export class PiecesService {
 		this.isLoading.set(true);
 		this.hasError.set(false);
 		return this.api
-			.fetchAll({
+			.fetch({
 				search,
 				genre,
 				page: this.toApiPage(this.page()),
@@ -78,7 +78,7 @@ export class PiecesService {
 	}
 
 	private getDataKey(genre?: string) {
-		return makeStateKey<FetchAllPiecesResponse>(
+		return makeStateKey<FetchResponse>(
 			'pieces_' + (genre ?? 'all') + '_' + this.page(),
 		);
 	}
@@ -91,7 +91,7 @@ export class PiecesService {
 		return page + 1;
 	}
 
-	private setValues(res: FetchAllPiecesResponse) {
+	private setValues(res: FetchResponse) {
 		this.data.set(res.content);
 		this.page.set(res.page);
 		this.limit.set(res.limit);

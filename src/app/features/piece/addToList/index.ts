@@ -1,1 +1,1 @@
-export {AddToListButtonComponent} from './components/add-to-list-button.component';
+export {AddPieceToListButtonComponent} from './components/add-piece-to-list-button.component';

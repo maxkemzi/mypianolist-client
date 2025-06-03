@@ -1,6 +1,7 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {PieceDetailsComponent, PieceService} from '@entities/piece';
+import {PieceDetailsComponent} from '@entities/piece';
+import {FetchPieceByIdService} from '@features/piece/fetchById';
 import {ContainerComponent, TypographyComponent} from '@shared/components';
 import {filter, map} from 'rxjs';
 
@@ -11,7 +12,7 @@ import {filter, map} from 'rxjs';
 })
 export class PiecePageComponent implements OnInit {
 	private readonly route = inject(ActivatedRoute);
-	readonly piece = inject(PieceService);
+	readonly fetchPieceById = inject(FetchPieceByIdService);
 
 	ngOnInit() {
 		this.route.paramMap
@@ -20,7 +21,7 @@ export class PiecePageComponent implements OnInit {
 				filter((id): id is string => !!id),
 			)
 			.subscribe(id => {
-				this.piece.fetchById(id).subscribe();
+				this.fetchPieceById.fetch(id).subscribe();
 			});
 	}
 }

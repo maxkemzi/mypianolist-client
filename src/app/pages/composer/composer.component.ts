@@ -1,6 +1,7 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {ComposerDetailsComponent, ComposerService} from '@entities/composer';
+import {ComposerDetailsComponent} from '@entities/composer';
+import {FetchComposerByIdService} from '@features/composer/fetchById';
 import {ContainerComponent, TypographyComponent} from '@shared/components';
 import {filter, map} from 'rxjs';
 
@@ -11,7 +12,7 @@ import {filter, map} from 'rxjs';
 })
 export class ComposerPageComponent implements OnInit {
 	private readonly route = inject(ActivatedRoute);
-	readonly composer = inject(ComposerService);
+	readonly fetchComposerById = inject(FetchComposerByIdService);
 
 	ngOnInit() {
 		this.route.paramMap
@@ -20,7 +21,7 @@ export class ComposerPageComponent implements OnInit {
 				filter((id): id is string => !!id),
 			)
 			.subscribe(id => {
-				this.composer.fetchById(id).subscribe();
+				this.fetchComposerById.fetch(id).subscribe();
 			});
 	}
 }

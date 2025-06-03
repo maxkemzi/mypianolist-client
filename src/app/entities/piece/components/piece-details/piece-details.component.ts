@@ -1,6 +1,6 @@
 import {Component, computed, input} from '@angular/core';
 import {RouterLink} from '@angular/router';
-import {Piece} from '@entities/piece/piece.model';
+import {CompletePiece} from '@entities/piece/piece.model';
 import {InfoItemComponent, TypographyComponent} from '@shared/components';
 
 @Component({
@@ -9,7 +9,7 @@ import {InfoItemComponent, TypographyComponent} from '@shared/components';
 	imports: [TypographyComponent, RouterLink, InfoItemComponent],
 })
 export class PieceDetailsComponent {
-	readonly piece = input.required<Piece>();
+	readonly piece = input.required<CompletePiece>();
 
 	readonly composedDate = computed(() => {
 		return new Date(this.piece().composedAt).getFullYear().toString();

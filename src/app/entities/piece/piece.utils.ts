@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {PieceStatus} from './piece.model';
 
 @Injectable({providedIn: 'root'})
-export class PiecesUtils {
+export class PieceUtils {
 	statusToText(status: PieceStatus): string {
 		switch (status) {
 			case 'currently_learning':

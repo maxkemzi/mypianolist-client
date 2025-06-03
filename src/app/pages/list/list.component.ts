@@ -1,11 +1,8 @@
 import {Component, effect, inject, OnInit, signal} from '@angular/core';
 import {ActivatedRoute, RouterLink} from '@angular/router';
-import {
-	PieceListService,
-	PieceStatus,
-	PieceStatusesService,
-	PiecesUtils,
-} from '@entities/piece';
+import {PieceStatus, PieceUtils} from '@entities/piece';
+import {FetchPieceListService} from '@features/piece/fetchList';
+import {FetchPieceStatusesService} from '@features/piece/fetchStatuses';
 import {
 	ContainerComponent,
 	TabComponent,
@@ -19,9 +16,9 @@ import {
 })
 export class ListPageComponent implements OnInit {
 	private readonly route = inject(ActivatedRoute);
-	readonly pieceList = inject(PieceListService);
-	readonly pieceStatuses = inject(PieceStatusesService);
-	readonly piecesUtils = inject(PiecesUtils);
+	readonly fetchPieceList = inject(FetchPieceListService);
+	readonly fetchPieceStatuses = inject(FetchPieceStatusesService);
+	readonly pieceUtils = inject(PieceUtils);
 
 	activeStatus = signal<PieceStatus | null | undefined>(undefined);
 
@@ -30,13 +27,15 @@ export class ListPageComponent implements OnInit {
 			const status = params.get('status');
 			this.activeStatus.set(status as PieceStatus);
 		});
-		this.pieceStatuses.fetchStatuses().subscribe();
+		this.fetchPieceStatuses.fetch().subscribe();
 	}
 
 	constructor() {
 		effect(() => {
-			this.pieceList
-				.fetch({status: (this.activeStatus() as PieceStatus) ?? undefined})
+			this.fetchPieceList
+				.fetch({
+					status: (this.activeStatus() as PieceStatus) ?? undefined,
+				})
 				.subscribe();
 		});
 	}

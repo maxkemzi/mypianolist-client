@@ -3,11 +3,11 @@
 	<div appContainer size="md">
 		<h1 class="mb-7 text-center capitalize">MyPianoList</h1>
 
-		@if (pieceStatuses.isLoading()) {
+		@if (fetchPieceStatuses.isLoading()) {
 			<p>Loading...</p>
-		} @else if (pieceStatuses.hasError()) {
+		} @else if (fetchPieceStatuses.hasError()) {
 			<p>Something went wrong.</p>
-		} @else if (pieceStatuses.data().length === 0) {
+		} @else if (fetchPieceStatuses.data().length === 0) {
 			<p>There are no piece statuses.</p>
 		} @else {
 			<ul class="flex justify-center items-center gap-4">
@@ -18,11 +18,11 @@
 						>
 					</a>
 				</li>
-				@for (status of pieceStatuses.data(); track status) {
+				@for (status of fetchPieceStatuses.data(); track status) {
 					<li>
 						<a routerLink="/list" [queryParams]="{status}">
 							<app-tab [isActive]="activeStatus() === status">{{
-								piecesUtils.statusToText(status)
+								pieceUtils.statusToText(status)
 							}}</app-tab>
 						</a>
 					</li>
@@ -42,7 +42,11 @@
 				</tr>
 			</thead>
 			<tbody>
-				@for (piece of pieceList.data(); track piece.id; let i = $index) {
+				@for (
+					piece of fetchPieceList.data();
+					track piece.id;
+					let i = $index
+				) {
 					<tr>
 						<td>{{ i + 1 }}</td>
 						<td>{{ piece.title }}</td>

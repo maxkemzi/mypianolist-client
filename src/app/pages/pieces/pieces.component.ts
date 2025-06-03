@@ -1,5 +1,10 @@
-import {Component, computed, effect, inject, signal} from '@angular/core';
-import {PieceCardComponent, PiecesService} from '@entities/piece';
+import {Component, computed, inject, signal} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
+import {PieceCardComponent} from '@entities/piece';
+import {PaginationComponent} from '@features/pagination';
+import {AddPieceToListButtonComponent} from '@features/piece/addToList';
+import {FetchAllPiecesService} from '@features/piece/fetchAll';
 import {
 	ContainerComponent,
 	DropdownComponent,
@@ -7,12 +12,8 @@ import {
 	InputComponent,
 	TypographyComponent,
 } from '@shared/components';
-import {ButtonComponent} from '../../shared/components/button/button.component';
-import {FormsModule} from '@angular/forms';
 import {ClickOutsideDirective} from '@shared/lib';
-import {ActivatedRoute} from '@angular/router';
-import {PaginationComponent} from '@features/pagination';
-import {AddToListButtonComponent} from '@features/piece/addToList';
+import {ButtonComponent} from '../../shared/components/button/button.component';
 
 @Component({
 	selector: 'app-pieces-page',
@@ -28,12 +29,12 @@ import {AddToListButtonComponent} from '@features/piece/addToList';
 		FormsModule,
 		ClickOutsideDirective,
 		PaginationComponent,
-		AddToListButtonComponent,
+		AddPieceToListButtonComponent,
 	],
 })
 export class PiecesPageComponent {
 	private readonly route = inject(ActivatedRoute);
-	readonly pieces = inject(PiecesService);
+	readonly fetchAllPieces = inject(FetchAllPiecesService);
 	readonly sortDropdownIsOpen = signal<boolean>(false);
 	readonly searchQuery = signal<string>('');
 	readonly genre = signal<string | null | undefined>(undefined);
@@ -49,13 +50,13 @@ export class PiecesPageComponent {
 			const genre = params.get('genre');
 			this.genre.set(genre);
 
-			this.pieces.fetchAll({genre: genre ?? undefined}).subscribe();
+			this.fetchAllPieces.fetch({genre: genre ?? undefined}).subscribe();
 		});
 	}
 
 	handlePageChange(page: number) {
-		this.pieces.page.set(page);
-		this.pieces.fetchAll({genre: this.genre() ?? undefined}).subscribe();
+		this.fetchAllPieces.page.set(page);
+		this.fetchAllPieces.fetch({genre: this.genre() ?? undefined}).subscribe();
 	}
 
 	toggleSortDropdownIsOpen() {
@@ -63,9 +64,9 @@ export class PiecesPageComponent {
 	}
 
 	handleSearch() {
-		this.pieces.page.set(1);
-		this.pieces
-			.fetchAll({
+		this.fetchAllPieces.page.set(1);
+		this.fetchAllPieces
+			.fetch({
 				search: this.searchQuery().trim(),
 				genre: this.genre() ?? undefined,
 			})

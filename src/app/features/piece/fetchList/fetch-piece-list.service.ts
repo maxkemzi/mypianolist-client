@@ -6,11 +6,11 @@ import {
 	TransferState,
 } from '@angular/core';
 import {catchError, finalize, map, Observable, of, tap} from 'rxjs';
-import {PieceStatus, UserPiece} from './piece.model';
-import {FetchUserPiecesResponse, PiecesApi} from './pieces.api';
+import {FetchAllResponse, FetchPieceListApi} from './fetch-piece-list.api';
+import {PieceStatus, UserPiece} from '@entities/piece';
 
 @Injectable({providedIn: 'root'})
-export class PieceListService {
+export class FetchPieceListService {
 	private readonly InitialValue = {
 		DATA: [],
 		PAGE: 1,
@@ -19,7 +19,7 @@ export class PieceListService {
 		TOTAL_PAGES: 1,
 		HAS_MORE: false,
 	};
-	private readonly api = inject(PiecesApi);
+	private readonly api = inject(FetchPieceListApi);
 	private readonly state = inject(TransferState);
 
 	readonly data = signal<UserPiece[]>(this.InitialValue.DATA);
@@ -41,7 +41,7 @@ export class PieceListService {
 		genre?: string;
 		status?: PieceStatus;
 		page?: number;
-	} = {}): Observable<FetchUserPiecesResponse | null> {
+	} = {}): Observable<FetchAllResponse | null> {
 		const key = this.getDataKey(status);
 
 		if (search === undefined) {
@@ -55,7 +55,7 @@ export class PieceListService {
 		this.isLoading.set(true);
 		this.hasError.set(false);
 		return this.api
-			.fetchUserPieces({
+			.fetchAll({
 				search,
 				genre,
 				page: this.toApiPage(this.page()),
@@ -80,7 +80,7 @@ export class PieceListService {
 	}
 
 	private getDataKey(status?: PieceStatus) {
-		return makeStateKey<FetchUserPiecesResponse>(
+		return makeStateKey<FetchAllResponse>(
 			'piece_list_' + (status ?? 'all') + '_' + this.page(),
 		);
 	}
@@ -93,7 +93,7 @@ export class PieceListService {
 		return page + 1;
 	}
 
-	private setValues(res: FetchUserPiecesResponse) {
+	private setValues(res: FetchAllResponse) {
 		this.data.set(res.content);
 		this.page.set(res.page);
 		this.limit.set(res.limit);
@@ -109,9 +109,5 @@ export class PieceListService {
 		this.totalCount.set(this.InitialValue.TOTAL_COUNT);
 		this.totalPages.set(this.InitialValue.TOTAL_PAGES);
 		this.hasMore.set(this.InitialValue.HAS_MORE);
-	}
-
-	add(id: string) {
-		return this.api.createUserPiece(id);
 	}
 }

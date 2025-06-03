@@ -1,6 +1,6 @@
 import {booleanAttribute, Component, computed, input} from '@angular/core';
 import {RouterLink} from '@angular/router';
-import {Piece} from '@entities/piece/piece.model';
+import {CompletePiece} from '@entities/piece/piece.model';
 import {TypographyComponent} from '@shared/components';
 import {ClassMergeDirective} from '@shared/lib';
 import {twJoin} from 'tailwind-merge';
@@ -11,7 +11,7 @@ import {twJoin} from 'tailwind-merge';
 	imports: [TypographyComponent, RouterLink],
 })
 export class PieceCardComponent extends ClassMergeDirective {
-	readonly piece = input.required<Piece>();
+	readonly piece = input.required<CompletePiece>();
 	readonly hideGenre = input<boolean, unknown>(false, {
 		transform: booleanAttribute,
 	});

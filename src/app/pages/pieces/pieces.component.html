@@ -25,7 +25,7 @@
 					appButton
 					class="h-full rounded-tl-none rounded-bl-none"
 					type="submit"
-					[disabled]="pieces.isLoading()"
+					[disabled]="fetchAllPieces.isLoading()"
 				>
 					Search
 				</button>
@@ -35,7 +35,7 @@
 			<p>
 				Pieces
 				<span weight="bold">{{
-					pieces.isLoading() ? '...' : pieces.totalCount()
+					fetchAllPieces.isLoading() ? '...' : fetchAllPieces.totalCount()
 				}}</span>
 			</p>
 			<div class="relative">
@@ -60,21 +60,21 @@
 			</div>
 		</div>
 
-		@if (pieces.isLoading()) {
+		@if (fetchAllPieces.isLoading()) {
 			<p>Loading...</p>
-		} @else if (pieces.hasError()) {
+		} @else if (fetchAllPieces.hasError()) {
 			<p>Something went wrong.</p>
-		} @else if (pieces.data().length === 0) {
+		} @else if (fetchAllPieces.data().length === 0) {
 			<p>There are no pieces.</p>
 		} @else {
 			<div class="rounded-lg overflow-hidden mb-7">
-				@for (piece of pieces.data(); track piece.id) {
+				@for (piece of fetchAllPieces.data(); track piece.id) {
 					<app-piece-card
 						[piece]="piece"
 						[isEven]="$odd"
 						[hideGenre]="!!genre()"
 					>
-						<app-add-to-list-button
+						<app-add-piece-to-list-button
 							slot="bottom-right"
 							[pieceId]="piece.id"
 						/>
@@ -83,8 +83,8 @@
 			</div>
 			<app-pagination
 				class="flex justify-center"
-				[page]="pieces.page()"
-				[totalPages]="pieces.totalPages()"
+				[page]="fetchAllPieces.page()"
+				[totalPages]="fetchAllPieces.totalPages()"
 				(onPageChange)="handlePageChange($event)"
 			/>
 		}

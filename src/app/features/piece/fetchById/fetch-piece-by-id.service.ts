@@ -5,18 +5,18 @@ import {
 	signal,
 	TransferState,
 } from '@angular/core';
-import {catchError, of, tap} from 'rxjs';
-import {PiecesApi} from './pieces.api';
-import {Piece} from './piece.model';
+import {CompletePiece} from '@entities/piece';
+import {of, tap, catchError} from 'rxjs';
+import {FetchPieceByIdApi} from './fetch-piece-by-id.api';
 
 @Injectable({providedIn: 'root'})
-export class PieceService {
-	private readonly api = inject(PiecesApi);
+export class FetchPieceByIdService {
+	private readonly api = inject(FetchPieceByIdApi);
 	private readonly state = inject(TransferState);
 
-	readonly data = signal<Piece | null | undefined>(undefined);
+	readonly data = signal<CompletePiece | null | undefined>(undefined);
 
-	fetchById(id: string) {
+	fetch(id: string) {
 		const key = this.getDataKey(id);
 
 		if (this.state.hasKey(key)) {
@@ -40,6 +40,6 @@ export class PieceService {
 	}
 
 	private getDataKey(id: string) {
-		return makeStateKey<Piece>('piece_' + id);
+		return makeStateKey<CompletePiece>('piece_' + id);
 	}
 }

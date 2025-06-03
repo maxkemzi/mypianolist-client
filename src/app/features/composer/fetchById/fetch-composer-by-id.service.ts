@@ -1,22 +1,22 @@
 import {
-	inject,
 	Injectable,
+	TransferState,
+	inject,
 	makeStateKey,
 	signal,
-	TransferState,
 } from '@angular/core';
-import {catchError, Observable, of, tap} from 'rxjs';
-import {Composer} from './composer.model';
-import {ComposersApi} from './composers.api';
+import {Composer} from '@entities/composer';
+import {Observable, catchError, of, tap} from 'rxjs';
+import {FetchComposerByIdApi} from './fetch-composer-by-id.api';
 
 @Injectable({providedIn: 'root'})
-export class ComposerService {
-	private readonly api = inject(ComposersApi);
+export class FetchComposerByIdService {
+	private readonly api = inject(FetchComposerByIdApi);
 	private readonly state = inject(TransferState);
 
 	readonly data = signal<Composer | null | undefined>(undefined);
 
-	fetchById(id: string): Observable<Composer | null> {
+	fetch(id: string): Observable<Composer | null> {
 		const key = this.getDataKey(id);
 
 		const stored = this.state.get(key, undefined);

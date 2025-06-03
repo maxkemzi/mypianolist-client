@@ -1,6 +1,7 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {RouterLink} from '@angular/router';
-import {GenreCardComponent, GenresService} from '@entities/genre';
+import {GenreCardComponent} from '@entities/genre';
+import {FetchAllGenresService} from '@features/genre/fetchAll';
 import {ContainerComponent, TypographyComponent} from '@shared/components';
 
 @Component({
@@ -14,9 +15,9 @@ import {ContainerComponent, TypographyComponent} from '@shared/components';
 	],
 })
 export class CatalogPageComponent implements OnInit {
-	readonly genres = inject(GenresService);
+	readonly fetchAllGenres = inject(FetchAllGenresService);
 
 	ngOnInit(): void {
-		this.genres.fetchAll().subscribe();
+		this.fetchAllGenres.fetch().subscribe();
 	}
 }
