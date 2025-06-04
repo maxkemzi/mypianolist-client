@@ -7,6 +7,6 @@ import {ClassMergeDirective} from '@shared/lib';
 })
 export class FormComponent extends ClassMergeDirective {
 	protected override defaultClass() {
-		return 'bg-background p-12 rounded-lg';
+		return 'bg-background px-12 py-10 rounded-lg';
 	}
 }

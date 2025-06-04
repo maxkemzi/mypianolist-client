@@ -1,5 +1,11 @@
 import {Component, inject} from '@angular/core';
-import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
+import {
+	FormBuilder,
+	FormControl,
+	FormGroup,
+	ReactiveFormsModule,
+	Validators,
+} from '@angular/forms';
 import {Router, RouterLink} from '@angular/router';
 import {
 	ButtonComponent,
@@ -26,15 +32,27 @@ import {AuthService} from '../auth.service';
 	],
 })
 export class SignupFormComponent {
-	private readonly formBuilder = inject(FormBuilder);
 	private readonly router = inject(Router);
 	private readonly service = inject(AuthService);
 
-	form = this.formBuilder.nonNullable.group({
-		username: ['', Validators.required],
-		email: ['', Validators.email],
-		password: ['', Validators.required],
-	});
+	readonly form = new FormGroup(
+		{
+			username: new FormControl('', {
+				validators: Validators.required,
+				nonNullable: true,
+			}),
+
+			email: new FormControl('', {
+				validators: Validators.email,
+				nonNullable: true,
+			}),
+			password: new FormControl('', {
+				validators: Validators.required,
+				nonNullable: true,
+			}),
+		},
+		{updateOn: 'blur'},
+	);
 
 	get usernameError(): string | undefined {
 		const control = this.form.get('username');
@@ -75,6 +93,8 @@ export class SignupFormComponent {
 	}
 
 	onSubmit = () => {
+		this.form.markAllAsTouched();
+
 		if (this.form.invalid) {
 			return;
 		}

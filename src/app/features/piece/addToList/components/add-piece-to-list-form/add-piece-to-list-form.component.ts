@@ -40,15 +40,19 @@ export class AddPieceToListFormComponent {
 	readonly addPieceToList = inject(AddPieceToListService);
 	readonly pieceUtils = inject(PieceUtils);
 
-	readonly form = new FormGroup({
-		status: new FormControl<PieceStatus | ''>('', {
-			validators: Validators.required,
-			nonNullable: true,
-		}),
-		score: new FormControl('', {nonNullable: true}),
-		startDate: new FormControl('', {nonNullable: true}),
-		finishDate: new FormControl('', {nonNullable: true}),
-	});
+	readonly form = new FormGroup(
+		{
+			status: new FormControl<PieceStatus | ''>('', {
+				validators: Validators.required,
+				nonNullable: true,
+				updateOn: 'submit',
+			}),
+			score: new FormControl('', {nonNullable: true}),
+			startDate: new FormControl('', {nonNullable: true}),
+			finishDate: new FormControl('', {nonNullable: true}),
+		},
+		{updateOn: 'blur'},
+	);
 
 	readonly piece = input.required<CompletePiece>();
 	readonly appSubmit = output<void>();
@@ -83,6 +87,8 @@ export class AddPieceToListFormComponent {
 	}
 
 	handleSubmit() {
+		this.form.markAllAsTouched();
+
 		if (this.form.invalid) {
 			return;
 		}
