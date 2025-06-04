@@ -4,7 +4,7 @@
 		[class.bg-primary]="isActive()"
 		type="button"
 		[disabled]="isDisabled()"
-		(click)="onClick.emit()"
+		(click)="appClick.emit()"
 	>
 		<span class="text-nowrap"><ng-content /></span>
 	</button>

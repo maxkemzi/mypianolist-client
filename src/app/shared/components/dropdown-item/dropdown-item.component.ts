@@ -13,5 +13,5 @@ export class DropdownItemComponent {
 	readonly isDisabled = input<boolean, unknown>(false, {
 		transform: booleanAttribute,
 	});
-	readonly onClick = output<void>();
+	readonly appClick = output<void>();
 }

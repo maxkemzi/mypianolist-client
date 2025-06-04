@@ -33,7 +33,7 @@
 								<app-dropdown-item
 									[isActive]="form.controls.status.value === status"
 									[isDisabled]="form.controls.status.value === status"
-									(onClick)="handleStatusClick(status)"
+									(appClick)="handleStatusClick(status)"
 									>{{
 										pieceUtils.statusToText(status)
 									}}</app-dropdown-item
