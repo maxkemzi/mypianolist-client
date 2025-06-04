@@ -1,15 +1,15 @@
 <div class="h-[88px] mb-10"></div>
 <section>
 	<div appContainer size="md">
-		@if (composer.data() === undefined) {
+		@if (fetchComposerById.data() === undefined) {
 			<p>Loading...</p>
 		}
 
-		@if (composer.data() === null) {
+		@if (fetchComposerById.data() === null) {
 			<p>The composer doesn't exist.</p>
 		}
 
-		@if (composer.data(); as composer) {
+		@if (fetchComposerById.data(); as composer) {
 			<app-composer-details [composer]="composer" />
 		}
 	</div>
