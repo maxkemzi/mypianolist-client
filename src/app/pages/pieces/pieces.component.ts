@@ -89,4 +89,8 @@ export class PiecesPageComponent {
 		this.searchQuery.set('');
 		this.handleSearch();
 	}
+
+	handleAddToListSubmit() {
+		this.addToListModalIsOpen.set(false);
+	}
 }

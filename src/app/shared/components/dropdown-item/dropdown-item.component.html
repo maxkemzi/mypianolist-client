@@ -1,6 +1,7 @@
 <li>
 	<button
 		class="w-full px-4 py-1.5 text-left transition-colors ease-out hover:bg-primary"
+		[class.bg-primary]="isActive()"
 		type="button"
 		[disabled]="isDisabled()"
 		(click)="onClick.emit()"

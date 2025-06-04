@@ -27,3 +27,7 @@ body {
 button {
 	cursor: pointer;
 }
+
+input {
+	color-scheme: dark;
+}

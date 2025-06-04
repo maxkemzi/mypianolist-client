@@ -6,13 +6,13 @@ export class PieceUtils {
 	statusToText(status: PieceStatus): string {
 		switch (status) {
 			case 'currently_learning':
-				return 'Currently learning';
+				return 'Currently Learning';
 			case 'completed':
 				return 'Completed';
 			case 'dropped':
 				return 'Dropped';
 			case 'plan_to_learn':
-				return 'Plan to learn';
+				return 'Plan to Learn';
 		}
 	}
 }

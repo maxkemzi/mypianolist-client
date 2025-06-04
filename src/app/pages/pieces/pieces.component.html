@@ -82,6 +82,7 @@
 								<div appModalContainer>
 									<app-add-piece-to-list-form
 										[piece]="piece"
+										(appSubmit)="handleAddToListSubmit()"
 										(appClickOutside)="
 											addToListModalIsOpen.set(false)
 										"

@@ -7,6 +7,9 @@ import {TypographyComponent} from '../typography';
 	imports: [TypographyComponent],
 })
 export class DropdownItemComponent {
+	readonly isActive = input<boolean, unknown>(false, {
+		transform: booleanAttribute,
+	});
 	readonly isDisabled = input<boolean, unknown>(false, {
 		transform: booleanAttribute,
 	});

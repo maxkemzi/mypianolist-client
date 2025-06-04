@@ -1,4 +1,4 @@
-<form appForm class="bg-background-darker" [formGroup]="form">
+<form appForm [formGroup]="form" (ngSubmit)="handleSubmit()">
 	<h3 class="text-center mb-1">Add Piece to My List</h3>
 	<p class="text-center" color="primary" weight="semibold">
 		{{ piece().title }}
@@ -7,15 +7,71 @@
 
 	<div class="flex flex-col gap-4 mb-7">
 		<app-form-field label="Status" [error]="statusError">
-			<input appInput formControlName="status" placeholder="Select Status" />
+			<div
+				class="relative"
+				(appClickOutside)="handleStatusInputClickOutside()"
+			>
+				<input
+					appInput
+					[value]="selectedStatus()"
+					formControlName="status"
+					placeholder="select status"
+					readonly="true"
+					(focus)="handleStatusInputFocus()"
+				/>
+
+				@if (statusDropdownIsOpen()) {
+					<app-dropdown class="absolute top-full left-0 min-w-full pt-2">
+						@if (fetchPieceStatuses.isLoading()) {
+							<p>Loading...</p>
+						} @else if (fetchPieceStatuses.hasError()) {
+							<p>Something went wrong.</p>
+						} @else if (fetchPieceStatuses.data().length === 0) {
+							<p>There are no statuses.</p>
+						} @else {
+							@for (status of fetchPieceStatuses.data(); track status) {
+								<app-dropdown-item
+									[isActive]="form.controls.status.value === status"
+									[isDisabled]="form.controls.status.value === status"
+									(onClick)="handleStatusClick(status)"
+									>{{
+										pieceUtils.statusToText(status)
+									}}</app-dropdown-item
+								>
+							}
+						}
+					</app-dropdown>
+				}
+			</div>
 		</app-form-field>
 
-		<app-form-field label="Start Date" [error]="startDateError">
-			<input appInput formControlName="startDate" placeholder="DD/MM/YY" />
+		<app-form-field label="Score">
+			<input
+				appInput
+				class="w-full"
+				formControlName="score"
+				type="number"
+				min="0"
+				max="10"
+			/>
 		</app-form-field>
 
-		<app-form-field label="Finish Date" [error]="finishDateError">
-			<input appInput formControlName="finishDate" placeholder="DD/MM/YY" />
+		<app-form-field label="Start Date">
+			<input
+				appInput
+				class="w-full"
+				formControlName="startDate"
+				type="date"
+			/>
+		</app-form-field>
+
+		<app-form-field label="Finish Date">
+			<input
+				appInput
+				class="w-full"
+				formControlName="finishDate"
+				type="date"
+			/>
 		</app-form-field>
 	</div>
 

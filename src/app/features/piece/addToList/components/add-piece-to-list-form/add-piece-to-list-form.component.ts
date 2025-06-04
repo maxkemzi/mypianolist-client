@@ -1,13 +1,24 @@
-import {Component, inject, input} from '@angular/core';
-import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
-import {CompletePiece} from '@entities/piece';
+import {Component, inject, input, output, signal} from '@angular/core';
+import {
+	FormBuilder,
+	FormControl,
+	FormGroup,
+	ReactiveFormsModule,
+	Validators,
+} from '@angular/forms';
+import {CompletePiece, PieceStatus, PieceUtils} from '@entities/piece';
+import {FetchPieceStatusesService} from '@features/piece/fetchStatuses';
 import {
 	ButtonComponent,
+	DropdownComponent,
+	DropdownItemComponent,
 	FormComponent,
 	FormFieldComponent,
 	InputComponent,
 	TypographyComponent,
 } from '@shared/components';
+import {ClickOutsideDirective} from '@shared/lib';
+import {AddPieceToListService} from '../../add-piece-to-list.service';
 
 @Component({
 	selector: 'app-add-piece-to-list-form',
@@ -19,18 +30,30 @@ import {
 		FormFieldComponent,
 		ReactiveFormsModule,
 		InputComponent,
+		DropdownComponent,
+		DropdownItemComponent,
+		ClickOutsideDirective,
 	],
 })
 export class AddPieceToListFormComponent {
-	private readonly formBuilder = inject(FormBuilder);
+	readonly fetchPieceStatuses = inject(FetchPieceStatusesService);
+	readonly addPieceToList = inject(AddPieceToListService);
+	readonly pieceUtils = inject(PieceUtils);
 
-	piece = input.required<CompletePiece>();
-
-	form = this.formBuilder.nonNullable.group({
-		status: ['', Validators.required],
-		startDate: ['', Validators.required],
-		finishDate: ['', Validators.required],
+	readonly form = new FormGroup({
+		status: new FormControl<PieceStatus | ''>('', {
+			validators: Validators.required,
+			nonNullable: true,
+		}),
+		score: new FormControl('', {nonNullable: true}),
+		startDate: new FormControl('', {nonNullable: true}),
+		finishDate: new FormControl('', {nonNullable: true}),
 	});
+
+	readonly piece = input.required<CompletePiece>();
+	readonly appSubmit = output<void>();
+	readonly statusDropdownIsOpen = signal<boolean>(false);
+	readonly selectedStatus = signal<string>('');
 
 	get statusError(): string | undefined {
 		const control = this.form.get('status');
@@ -44,27 +67,38 @@ export class AddPieceToListFormComponent {
 		return undefined;
 	}
 
-	get startDateError(): string | undefined {
-		const control = this.form.get('startDate');
-
-		if (control?.touched) {
-			if (control?.errors?.['required']) {
-				return 'Start date is required.';
-			}
-		}
-
-		return undefined;
+	handleStatusInputFocus() {
+		this.statusDropdownIsOpen.set(true);
+		this.fetchPieceStatuses.fetch().subscribe();
 	}
 
-	get finishDateError(): string | undefined {
-		const control = this.form.get('finishDate');
+	handleStatusInputClickOutside() {
+		this.statusDropdownIsOpen.set(false);
+	}
 
-		if (control?.touched) {
-			if (control?.errors?.['required']) {
-				return 'Finish date is required.';
-			}
+	handleStatusClick(status: PieceStatus) {
+		this.form.controls.status.setValue(status);
+		this.selectedStatus.set(this.pieceUtils.statusToText(status));
+		this.statusDropdownIsOpen.set(false);
+	}
+
+	handleSubmit() {
+		if (this.form.invalid) {
+			return;
 		}
 
-		return undefined;
+		const {status, score, startDate, finishDate} = this.form.getRawValue();
+
+		this.addPieceToList
+			.add({
+				id: this.piece().id,
+				status: status as PieceStatus,
+				score: Number(score),
+				startedAt: startDate,
+				finishedAt: finishDate,
+			})
+			.subscribe(() => {
+				this.appSubmit.emit();
+			});
 	}
 }
