@@ -1,15 +1,15 @@
 <div class="h-[88px] mb-10"></div>
 <section>
 	<div appContainer size="md">
-		@if (fetchPieceById.data() === undefined) {
+		@if (piece.data() === undefined) {
 			<p>Loading...</p>
 		}
 
-		@if (fetchPieceById.data() === null) {
+		@if (piece.data() === null) {
 			<p>The piece doesn't exist.</p>
 		}
 
-		@if (fetchPieceById.data(); as piece) {
+		@if (piece.data(); as piece) {
 			<app-piece-details [piece]="piece" />
 		}
 	</div>

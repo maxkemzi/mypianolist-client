@@ -15,7 +15,13 @@ import {ContainerComponent, TypographyComponent} from '@shared/components';
 	],
 })
 export class CatalogPageComponent implements OnInit {
-	readonly fetchAllGenres = inject(FetchAllGenresService);
+	private readonly fetchAllGenres = inject(FetchAllGenresService);
+
+	readonly genres = {
+		data: this.fetchAllGenres.data.asReadonly(),
+		isLoading: this.fetchAllGenres.isLoading.asReadonly(),
+		hasError: this.fetchAllGenres.hasError.asReadonly(),
+	};
 
 	ngOnInit(): void {
 		this.fetchAllGenres.fetch().subscribe();

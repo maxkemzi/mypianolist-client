@@ -2,18 +2,18 @@
 <section>
 	<div appContainer size="md">
 		<h1 class="mb-8 text-center">Catalog</h1>
-		@if (fetchAllGenres.isLoading()) {
+		@if (genres.isLoading()) {
 			<p>Loading...</p>
-		} @else if (fetchAllGenres.hasError()) {
+		} @else if (genres.hasError()) {
 			<p>Something went wrong.</p>
-		} @else if (fetchAllGenres.data().length === 0) {
+		} @else if (genres.data().length === 0) {
 			<p>There are no genres.</p>
 		} @else {
 			<div class="grid grid-cols-3 gap-4">
 				<a routerLink="/pieces">
 					<app-genre-card />
 				</a>
-				@for (genre of fetchAllGenres.data(); track genre.id) {
+				@for (genre of genres.data(); track genre.id) {
 					<a routerLink="/pieces" [queryParams]="{genre: genre.name}">
 						<app-genre-card [genre]="genre" />
 					</a>

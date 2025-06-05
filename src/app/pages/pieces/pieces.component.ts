@@ -40,13 +40,21 @@ import {ButtonComponent} from '../../shared/components/button/button.component';
 })
 export class PiecesPageComponent {
 	private readonly route = inject(ActivatedRoute);
-	readonly fetchAllPieces = inject(FetchAllPiecesService);
+	private readonly fetchAllPieces = inject(FetchAllPiecesService);
+
+	readonly genre = signal<string | null | undefined>(undefined);
+	readonly title = computed(() => `${this.genre() ?? 'all'} pieces`);
+	readonly pieces = {
+		data: this.fetchAllPieces.data.asReadonly(),
+		page: this.fetchAllPieces.page.asReadonly(),
+		totalCount: this.fetchAllPieces.totalCount.asReadonly(),
+		totalPages: this.fetchAllPieces.totalPages.asReadonly(),
+		isLoading: this.fetchAllPieces.isLoading.asReadonly(),
+		hasError: this.fetchAllPieces.hasError.asReadonly(),
+	};
 	readonly sortDropdownIsOpen = signal<boolean>(false);
 	readonly searchQuery = signal<string>('');
-	readonly genre = signal<string | null | undefined>(undefined);
 	readonly addToListModalIsOpen = signal<boolean>(false);
-
-	readonly title = computed(() => `${this.genre() ?? 'all'} pieces`);
 
 	get iconClasses() {
 		return 'text-2xl text-primary absolute top-1/2 left-4 translate-y-[-50%]';

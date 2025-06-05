@@ -16,11 +16,22 @@ import {
 })
 export class ListPageComponent implements OnInit {
 	private readonly route = inject(ActivatedRoute);
-	readonly fetchPieceList = inject(FetchPieceListService);
-	readonly fetchPieceStatuses = inject(FetchPieceStatusesService);
-	readonly pieceUtils = inject(PieceUtils);
+	private readonly fetchPieceList = inject(FetchPieceListService);
+	private readonly fetchPieceStatuses = inject(FetchPieceStatusesService);
 
-	activeStatus = signal<PieceStatus | null | undefined>(undefined);
+	readonly pieceUtils = inject(PieceUtils);
+	readonly pieceList = {
+		data: this.fetchPieceList.data.asReadonly(),
+		page: this.fetchPieceList.page.asReadonly(),
+		totalCount: this.fetchPieceList.totalCount.asReadonly(),
+		totalPages: this.fetchPieceList.totalPages.asReadonly(),
+		isLoading: this.fetchPieceList.isLoading.asReadonly(),
+		hasError: this.fetchPieceList.hasError.asReadonly(),
+	};
+	readonly pieceStatuses = {
+		data: this.fetchPieceStatuses.data.asReadonly(),
+	};
+	readonly activeStatus = signal<PieceStatus | null | undefined>(undefined);
 
 	ngOnInit() {
 		this.route.queryParamMap.subscribe(params => {

@@ -12,7 +12,11 @@ import {filter, map} from 'rxjs';
 })
 export class PiecePageComponent implements OnInit {
 	private readonly route = inject(ActivatedRoute);
-	readonly fetchPieceById = inject(FetchPieceByIdService);
+	private readonly fetchPieceById = inject(FetchPieceByIdService);
+
+	readonly piece = {
+		data: this.fetchPieceById.data.asReadonly(),
+	};
 
 	ngOnInit() {
 		this.route.paramMap

@@ -12,7 +12,9 @@ import {filter, map} from 'rxjs';
 })
 export class ComposerPageComponent implements OnInit {
 	private readonly route = inject(ActivatedRoute);
-	readonly fetchComposerById = inject(FetchComposerByIdService);
+	private readonly fetchComposerById = inject(FetchComposerByIdService);
+
+	readonly composer = {data: this.fetchComposerById.data.asReadonly()};
 
 	ngOnInit() {
 		this.route.paramMap
