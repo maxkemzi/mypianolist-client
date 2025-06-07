@@ -1,4 +1,4 @@
-<form appForm [formGroup]="form" (ngSubmit)="handleSubmit()">
+<form appForm [formGroup]="form" (ngSubmit)="onSubmit()">
 	<h3 class="text-center mb-1">Add Piece to My List</h3>
 	<p class="text-center" color="primary" weight="semibold">
 		{{ piece().title }}
@@ -7,17 +7,14 @@
 
 	<div class="flex flex-col gap-4 mb-7">
 		<app-form-field label="Status" [error]="statusError">
-			<div
-				class="relative"
-				(appClickOutside)="handleStatusInputClickOutside()"
-			>
+			<div class="relative" (appClickOutside)="onStatusClickOutside()">
 				<input
 					appInput
 					[value]="selectedStatus()"
 					formControlName="status"
 					placeholder="select status"
 					readonly="true"
-					(focus)="handleStatusInputFocus()"
+					(focus)="onStatusInputFocus()"
 				/>
 
 				@if (statusDropdownIsOpen()) {
@@ -33,7 +30,7 @@
 								<app-dropdown-item
 									[isActive]="form.controls.status.value === status"
 									[isDisabled]="form.controls.status.value === status"
-									(appClick)="handleStatusClick(status)"
+									(appClick)="onStatusClick(status)"
 									>{{
 										pieceUtils.statusToText(status)
 									}}</app-dropdown-item

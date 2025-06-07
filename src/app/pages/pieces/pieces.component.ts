@@ -54,8 +54,8 @@ export class PiecesPageComponent implements OnInit {
 		isLoading: this.fetchAllPieces.isLoading.asReadonly(),
 		hasError: this.fetchAllPieces.hasError.asReadonly(),
 	};
-	readonly sortDropdownIsOpen = signal<boolean>(false);
 	readonly searchQuery = signal<string>('');
+	readonly sortDropdownIsOpen = signal<boolean>(false);
 	readonly addToListModalIsOpen = signal<boolean>(false);
 
 	get iconClasses() {
@@ -76,18 +76,7 @@ export class PiecesPageComponent implements OnInit {
 		});
 	}
 
-	handlePageChange(page: number) {
-		this.fetchAllPieces.page.set(page);
-		this.fetchAllPieces
-			.fetch({genre: this.genre(), sort: this.sort()})
-			.subscribe();
-	}
-
-	toggleSortDropdownIsOpen() {
-		this.sortDropdownIsOpen.update(value => !value);
-	}
-
-	handleSearch() {
+	onSearch() {
 		this.fetchAllPieces.page.set(1);
 		this.fetchAllPieces
 			.fetch({
@@ -98,21 +87,40 @@ export class PiecesPageComponent implements OnInit {
 			.subscribe();
 	}
 
-	handleInputSearch(event: Event) {
+	onSearchInput(event: Event) {
 		const value = (event.target as HTMLInputElement).value;
 		this.searchQuery.set(value);
 	}
 
-	handleClearSearch() {
+	onSearchClear() {
 		this.searchQuery.set('');
-		this.handleSearch();
+		this.onSearch();
 	}
 
-	handleAddToListSubmit() {
-		this.addToListModalIsOpen.set(false);
+	toggleSortDropdownIsOpen() {
+		this.sortDropdownIsOpen.update(value => !value);
 	}
 
-	handleSortClick() {
+	closeSortDropdown() {
 		this.sortDropdownIsOpen.set(false);
+	}
+
+	onSortClick() {
+		this.sortDropdownIsOpen.set(false);
+	}
+
+	onPageChange(page: number) {
+		this.fetchAllPieces.page.set(page);
+		this.fetchAllPieces
+			.fetch({genre: this.genre(), sort: this.sort()})
+			.subscribe();
+	}
+
+	openAddToListModal() {
+		this.addToListModalIsOpen.set(true);
+	}
+
+	closeAddToListModal() {
+		this.addToListModalIsOpen.set(false);
 	}
 }

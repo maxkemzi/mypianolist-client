@@ -9,7 +9,7 @@ import {TypographyComponent} from '@shared/components';
 export class PaginationComponent {
 	page = input.required<number>();
 	totalPages = input.required<number>();
-	onPageChange = output<number>();
+	appPageChange = output<number>();
 
 	get pages() {
 		const pages: (number | string)[] = [];
@@ -45,19 +45,19 @@ export class PaginationComponent {
 
 	goToPage(page: number | string) {
 		if (typeof page === 'number' && page !== this.page()) {
-			this.onPageChange.emit(page);
+			this.appPageChange.emit(page);
 		}
 	}
 
 	prevPage() {
 		if (this.page() > 1) {
-			this.onPageChange.emit(this.page() - 1);
+			this.appPageChange.emit(this.page() - 1);
 		}
 	}
 
 	nextPage() {
 		if (this.page() < this.totalPages()) {
-			this.onPageChange.emit(this.page() + 1);
+			this.appPageChange.emit(this.page() + 1);
 		}
 	}
 }

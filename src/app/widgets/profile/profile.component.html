@@ -1,4 +1,4 @@
-<div class="relative" (appClickOutside)="handleClickOutside()">
+<div class="relative" (appClickOutside)="onClickOutside()">
 	<button
 		class="flex items-center gap-2"
 		type="button"
@@ -11,7 +11,7 @@
 		<app-dropdown class="absolute top-full left-0 min-w-full pt-2">
 			<app-dropdown-item
 				[isDisabled]="isLoggingOut()"
-				(appClick)="handleLogout()"
+				(appClick)="onLogoutClick()"
 			>
 				Log out
 			</app-dropdown-item>
@@ -28,7 +28,7 @@
 	<img
 		class="block object-cover max-w-full rounded-full bg-surface"
 		[src]="avatarPath()"
-		(error)="handleImageError()"
+		(error)="onImageError()"
 		width="50"
 		height="50"
 	/>

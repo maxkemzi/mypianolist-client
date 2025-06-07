@@ -71,22 +71,7 @@ export class AddPieceToListFormComponent {
 		return undefined;
 	}
 
-	handleStatusInputFocus() {
-		this.statusDropdownIsOpen.set(true);
-		this.fetchPieceStatuses.fetch().subscribe();
-	}
-
-	handleStatusInputClickOutside() {
-		this.statusDropdownIsOpen.set(false);
-	}
-
-	handleStatusClick(status: PieceStatus) {
-		this.form.controls.status.setValue(status);
-		this.selectedStatus.set(this.pieceUtils.statusToText(status));
-		this.statusDropdownIsOpen.set(false);
-	}
-
-	handleSubmit() {
+	onSubmit() {
 		this.form.markAllAsTouched();
 
 		if (this.form.invalid) {
@@ -106,5 +91,20 @@ export class AddPieceToListFormComponent {
 			.subscribe(() => {
 				this.appSubmit.emit();
 			});
+	}
+
+	onStatusClickOutside() {
+		this.statusDropdownIsOpen.set(false);
+	}
+
+	onStatusInputFocus() {
+		this.statusDropdownIsOpen.set(true);
+		this.fetchPieceStatuses.fetch().subscribe();
+	}
+
+	onStatusClick(status: PieceStatus) {
+		this.form.controls.status.setValue(status);
+		this.selectedStatus.set(this.pieceUtils.statusToText(status));
+		this.statusDropdownIsOpen.set(false);
 	}
 }

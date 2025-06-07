@@ -42,15 +42,17 @@ export class ProfileComponent {
 		return 'flex items-center gap-3';
 	}
 
-	handleImageError() {
-		this.imageHasError.set(true);
+	onClickOutside() {
+		if (this.dropdownIsOpen()) {
+			this.dropdownIsOpen.set(false);
+		}
 	}
 
 	toggleDropdownIsOpen() {
 		this.dropdownIsOpen.update(value => !value);
 	}
 
-	handleLogout() {
+	onLogoutClick() {
 		this.isLoggingOut.set(true);
 		this.auth
 			.logOut()
@@ -60,9 +62,7 @@ export class ProfileComponent {
 			});
 	}
 
-	handleClickOutside() {
-		if (this.dropdownIsOpen()) {
-			this.dropdownIsOpen.set(false);
-		}
+	onImageError() {
+		this.imageHasError.set(true);
 	}
 }

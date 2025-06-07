@@ -2,10 +2,10 @@
 <section>
 	<div appContainer size="md">
 		<h1 class="mb-7 text-center capitalize">{{ title() }}</h1>
-		<form class="flex justify-center mb-7" (ngSubmit)="handleSearch()">
+		<form class="flex justify-center mb-7" (ngSubmit)="onSearch()">
 			<div class="relative">
 				@if (searchQuery().trim().length > 0) {
-					<button type="button" (click)="handleClearSearch()">
+					<button type="button" (click)="onSearchClear()">
 						<i [class]="'ph ph-x ' + iconClasses"></i>
 					</button>
 				} @else {
@@ -17,7 +17,7 @@
 					class="pl-14 rounded-tr-none rounded-br-none"
 					placeholder="Search Pieces..."
 					[value]="searchQuery()"
-					(input)="handleInputSearch($event)"
+					(input)="onSearchInput($event)"
 				/>
 			</div>
 			<div>
@@ -51,13 +51,13 @@
 				@if (sortDropdownIsOpen()) {
 					<app-dropdown
 						class="absolute top-full left-0 min-w-full pt-2"
-						(appClickOutside)="sortDropdownIsOpen.set(false)"
+						(appClickOutside)="closeSortDropdown()"
 					>
 						<a
 							routerLink="/pieces"
 							[queryParams]="{sort: null}"
 							queryParamsHandling="merge"
-							(click)="handleSortClick()"
+							(click)="onSortClick()"
 						>
 							<app-dropdown-item [isActive]="sort() === 'created_at'"
 								>Date</app-dropdown-item
@@ -68,7 +68,7 @@
 							routerLink="/pieces"
 							[queryParams]="{sort: 'learners'}"
 							queryParamsHandling="merge"
-							(click)="handleSortClick()"
+							(click)="onSortClick()"
 						>
 							<app-dropdown-item [isActive]="sort() === 'learners'"
 								>Learners</app-dropdown-item
@@ -79,7 +79,7 @@
 							routerLink="/pieces"
 							[queryParams]="{sort: 'favorites'}"
 							queryParamsHandling="merge"
-							(click)="handleSortClick()"
+							(click)="onSortClick()"
 						>
 							<app-dropdown-item [isActive]="sort() === 'favorites'"
 								>Favorites</app-dropdown-item
@@ -106,13 +106,13 @@
 					>
 						<ng-container slot="bottom-right">
 							<app-add-piece-to-list-button
-								(appClick)="addToListModalIsOpen.set(true)"
+								(appClick)="openAddToListModal()"
 							/>
 							@if (addToListModalIsOpen()) {
 								<div appModalContainer>
 									<app-add-piece-to-list-form
 										[piece]="piece"
-										(appSubmit)="handleAddToListSubmit()"
+										(appSubmit)="closeAddToListModal()"
 										(appClickOutside)="
 											addToListModalIsOpen.set(false)
 										"
@@ -127,7 +127,7 @@
 				class="flex justify-center"
 				[page]="pieces.page()"
 				[totalPages]="pieces.totalPages()"
-				(onPageChange)="handlePageChange($event)"
+				(appPageChange)="onPageChange($event)"
 			/>
 		}
 	</div>
