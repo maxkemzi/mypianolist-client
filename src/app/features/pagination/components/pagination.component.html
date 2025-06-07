@@ -1,5 +1,5 @@
 <nav class="flex gap-4">
-	<button (click)="prevPage()" [disabled]="page() === 1">Prev</button>
+	<button (click)="prevPage()" [disabled]="page() === 0">Prev</button>
 
 	@for (page of pages; track page) {
 		@if (page === '...') {
@@ -11,12 +11,15 @@
 				[class.bg-primary]="page === this.page()"
 				(click)="goToPage(page)"
 			>
-				{{ page }}
+				{{ getPageLabel(page) }}
 			</button>
 		}
 	}
 
-	<button (click)="nextPage()" [disabled]="this.page() === this.totalPages()">
+	<button
+		(click)="nextPage()"
+		[disabled]="this.page() === this.totalPages() - 1"
+	>
 		Next
 	</button>
 </nav>

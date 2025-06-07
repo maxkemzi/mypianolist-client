@@ -33,16 +33,17 @@ export class FetchAllPiecesService {
 	readonly hasError = signal<boolean>(false);
 
 	fetch({
-		search,
 		genre,
 		sort,
+		search,
+		page,
 	}: {
-		search?: string;
 		genre?: string;
-		page?: number;
 		sort?: PieceSort;
+		search?: string;
+		page?: number;
 	} = {}): Observable<FetchResponse | null> {
-		const key = this.getDataKey(genre, sort);
+		const key = this.getDataKey({genre, sort, search, page});
 
 		if (search === undefined) {
 			const stored = this.state.get(key, undefined);
@@ -56,14 +57,13 @@ export class FetchAllPiecesService {
 		this.hasError.set(false);
 		return this.api
 			.fetch({
-				search,
 				genre,
-				page: this.toApiPage(this.page()),
-				limit: this.limit(),
 				sort,
+				search,
+				page,
+				limit: this.limit(),
 			})
 			.pipe(
-				map(res => ({...res, page: this.toUiPage(res.page)})),
 				tap(res => {
 					this.setValues(res);
 					this.state.set(key, res);
@@ -80,18 +80,21 @@ export class FetchAllPiecesService {
 			);
 	}
 
-	private getDataKey(genre?: string, sort?: string) {
-		return makeStateKey<FetchResponse>(
-			'pieces_' + (genre ?? 'all') + '_' + this.page() + '_' + sort,
-		);
-	}
+	private getDataKey({
+		genre,
+		sort,
+		search,
+		page,
+	}: {
+		genre: string | undefined;
+		sort: string | undefined;
+		search: string | undefined;
+		page: number | undefined;
+	}) {
+		const params = {genre, sort, search, page};
 
-	private toApiPage(page: number) {
-		return page - 1;
-	}
-
-	private toUiPage(page: number) {
-		return page + 1;
+		const key = 'pieces_' + btoa(JSON.stringify(params));
+		return makeStateKey<FetchResponse>(key);
 	}
 
 	private setValues(res: FetchResponse) {

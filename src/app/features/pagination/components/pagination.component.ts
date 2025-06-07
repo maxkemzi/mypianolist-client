@@ -15,27 +15,27 @@ export class PaginationComponent {
 		const pages: (number | string)[] = [];
 
 		if (this.totalPages() <= 5) {
-			for (let i = 1; i <= this.totalPages(); i++) pages.push(i);
+			for (let i = 0; i < this.totalPages(); i++) pages.push(i);
 		} else {
-			if (this.page() <= 3) {
-				pages.push(1, 2, 3, '...', this.totalPages());
-			} else if (this.page() >= this.totalPages() - 2) {
+			if (this.page() < 3) {
+				pages.push(0, 1, 2, '...', this.totalPages() - 1);
+			} else if (this.page() >= this.totalPages() - 3) {
 				pages.push(
-					1,
+					0,
 					'...',
+					this.totalPages() - 3,
 					this.totalPages() - 2,
 					this.totalPages() - 1,
-					this.totalPages(),
 				);
 			} else {
 				pages.push(
-					1,
+					0,
 					'...',
 					this.page() - 1,
 					this.page(),
 					this.page() + 1,
 					'...',
-					this.page(),
+					this.totalPages() - 1,
 				);
 			}
 		}
@@ -50,14 +50,18 @@ export class PaginationComponent {
 	}
 
 	prevPage() {
-		if (this.page() > 1) {
+		if (this.page() > 0) {
 			this.appPageChange.emit(this.page() - 1);
 		}
 	}
 
 	nextPage() {
-		if (this.page() < this.totalPages()) {
+		if (this.page() < this.totalPages() - 1) {
 			this.appPageChange.emit(this.page() + 1);
 		}
+	}
+
+	getPageLabel(page: number | string): string {
+		return typeof page === 'number' ? String(page + 1) : page;
 	}
 }
