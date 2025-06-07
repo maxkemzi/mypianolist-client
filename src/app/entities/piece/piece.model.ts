@@ -26,3 +26,5 @@ export interface UserPiece extends Piece {
 	score: number | null;
 	status: PieceStatus;
 }
+
+export type PieceSort = 'created_at' | 'learners' | 'favorites';

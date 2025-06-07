@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import {catchError, finalize, map, Observable, of, tap} from 'rxjs';
 import {FetchAllPiecesApi, FetchResponse} from './fetch-all-pieces.api';
-import {CompletePiece} from '@entities/piece';
+import {CompletePiece, PieceSort} from '@entities/piece';
 
 @Injectable({providedIn: 'root'})
 export class FetchAllPiecesService {
@@ -35,12 +35,14 @@ export class FetchAllPiecesService {
 	fetch({
 		search,
 		genre,
+		sort,
 	}: {
 		search?: string;
 		genre?: string;
 		page?: number;
+		sort?: PieceSort;
 	} = {}): Observable<FetchResponse | null> {
-		const key = this.getDataKey(genre);
+		const key = this.getDataKey(genre, sort);
 
 		if (search === undefined) {
 			const stored = this.state.get(key, undefined);
@@ -58,6 +60,7 @@ export class FetchAllPiecesService {
 				genre,
 				page: this.toApiPage(this.page()),
 				limit: this.limit(),
+				sort,
 			})
 			.pipe(
 				map(res => ({...res, page: this.toUiPage(res.page)})),
@@ -77,9 +80,9 @@ export class FetchAllPiecesService {
 			);
 	}
 
-	private getDataKey(genre?: string) {
+	private getDataKey(genre?: string, sort?: string) {
 		return makeStateKey<FetchResponse>(
-			'pieces_' + (genre ?? 'all') + '_' + this.page(),
+			'pieces_' + (genre ?? 'all') + '_' + this.page() + '_' + sort,
 		);
 	}
 

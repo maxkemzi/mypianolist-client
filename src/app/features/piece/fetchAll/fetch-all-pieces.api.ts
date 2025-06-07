@@ -1,6 +1,6 @@
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {inject, Injectable} from '@angular/core';
-import {CompletePiece} from '@entities/piece';
+import {CompletePiece, PieceSort} from '@entities/piece';
 import {Api, PaginationResponse} from '@shared/lib';
 
 export type FetchResponse = PaginationResponse<CompletePiece>;
@@ -14,7 +14,14 @@ export class FetchAllPiecesApi extends Api {
 		genre,
 		page,
 		limit,
-	}: {search?: string; genre?: string; page?: number; limit?: number} = {}) {
+		sort,
+	}: {
+		search?: string;
+		genre?: string;
+		page?: number;
+		limit?: number;
+		sort?: PieceSort;
+	} = {}) {
 		const params: Record<string, string | number> = {};
 
 		if (search) {
@@ -28,6 +35,9 @@ export class FetchAllPiecesApi extends Api {
 		}
 		if (limit) {
 			params['limit'] = limit;
+		}
+		if (sort) {
+			params['sort'] = sort;
 		}
 
 		return this.http.get<FetchResponse>(`${this.BASE_URL}/pieces`, {

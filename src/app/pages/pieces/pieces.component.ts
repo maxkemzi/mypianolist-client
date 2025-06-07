@@ -1,7 +1,7 @@
-import {Component, computed, inject, signal} from '@angular/core';
+import {Component, computed, inject, OnInit, signal} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {ActivatedRoute} from '@angular/router';
-import {PieceCardComponent} from '@entities/piece';
+import {ActivatedRoute, RouterLink} from '@angular/router';
+import {PieceCardComponent, PieceSort} from '@entities/piece';
 import {PaginationComponent} from '@features/pagination';
 import {
 	AddPieceToListButtonComponent,
@@ -36,13 +36,15 @@ import {ButtonComponent} from '../../shared/components/button/button.component';
 		AddPieceToListButtonComponent,
 		AddPieceToListFormComponent,
 		ModalContainerComponent,
+		RouterLink,
 	],
 })
-export class PiecesPageComponent {
+export class PiecesPageComponent implements OnInit {
 	private readonly route = inject(ActivatedRoute);
 	private readonly fetchAllPieces = inject(FetchAllPiecesService);
 
-	readonly genre = signal<string | null | undefined>(undefined);
+	readonly genre = signal<string | undefined>(undefined);
+	readonly sort = signal<PieceSort | undefined>(undefined);
 	readonly title = computed(() => `${this.genre() ?? 'all'} pieces`);
 	readonly pieces = {
 		data: this.fetchAllPieces.data.asReadonly(),
@@ -62,16 +64,23 @@ export class PiecesPageComponent {
 
 	ngOnInit(): void {
 		this.route.queryParamMap.subscribe(params => {
-			const genre = params.get('genre');
-			this.genre.set(genre);
+			const genre = params.get('genre') ?? undefined;
+			const sort = params.get('sort') as PieceSort | null;
 
-			this.fetchAllPieces.fetch({genre: genre ?? undefined}).subscribe();
+			this.genre.set(genre);
+			this.sort.set(sort || 'created_at');
+
+			this.fetchAllPieces
+				.fetch({genre: this.genre(), sort: this.sort()})
+				.subscribe();
 		});
 	}
 
 	handlePageChange(page: number) {
 		this.fetchAllPieces.page.set(page);
-		this.fetchAllPieces.fetch({genre: this.genre() ?? undefined}).subscribe();
+		this.fetchAllPieces
+			.fetch({genre: this.genre(), sort: this.sort()})
+			.subscribe();
 	}
 
 	toggleSortDropdownIsOpen() {
@@ -83,7 +92,8 @@ export class PiecesPageComponent {
 		this.fetchAllPieces
 			.fetch({
 				search: this.searchQuery().trim(),
-				genre: this.genre() ?? undefined,
+				genre: this.genre(),
+				sort: this.sort(),
 			})
 			.subscribe();
 	}
@@ -100,5 +110,9 @@ export class PiecesPageComponent {
 
 	handleAddToListSubmit() {
 		this.addToListModalIsOpen.set(false);
+	}
+
+	handleSortClick() {
+		this.sortDropdownIsOpen.set(false);
 	}
 }

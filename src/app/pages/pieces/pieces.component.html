@@ -53,8 +53,38 @@
 						class="absolute top-full left-0 min-w-full pt-2"
 						(appClickOutside)="sortDropdownIsOpen.set(false)"
 					>
-						<app-dropdown-item>Learners</app-dropdown-item>
-						<app-dropdown-item>Favorites</app-dropdown-item>
+						<a
+							routerLink="/pieces"
+							[queryParams]="{sort: null}"
+							queryParamsHandling="merge"
+							(click)="handleSortClick()"
+						>
+							<app-dropdown-item [isActive]="sort() === 'created_at'"
+								>Date</app-dropdown-item
+							>
+						</a>
+
+						<a
+							routerLink="/pieces"
+							[queryParams]="{sort: 'learners'}"
+							queryParamsHandling="merge"
+							(click)="handleSortClick()"
+						>
+							<app-dropdown-item [isActive]="sort() === 'learners'"
+								>Learners</app-dropdown-item
+							>
+						</a>
+
+						<a
+							routerLink="/pieces"
+							[queryParams]="{sort: 'favorites'}"
+							queryParamsHandling="merge"
+							(click)="handleSortClick()"
+						>
+							<app-dropdown-item [isActive]="sort() === 'favorites'"
+								>Favorites</app-dropdown-item
+							>
+						</a>
 					</app-dropdown>
 				}
 			</div>
