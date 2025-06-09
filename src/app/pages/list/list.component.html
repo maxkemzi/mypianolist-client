@@ -22,7 +22,7 @@
 					<li>
 						<a routerLink="/list" [queryParams]="{status}">
 							<app-tab [isActive]="activeStatus() === status">{{
-								pieceUtils.statusToText(status)
+								getStatusText(status)
 							}}</app-tab>
 						</a>
 					</li>
@@ -30,26 +30,34 @@
 			</ul>
 		}
 
-		<table>
+		<table class="w-full mt-7">
 			<thead>
-				<tr>
+				<tr
+					appTypography
+					class="text-left border-b-1 border-surface *:not-first:p-4"
+				>
+					<th class="w-1"></th>
 					<th>#</th>
 					<th>Title</th>
 					<th>Composer</th>
 					<th>Genre</th>
 					<th>Score</th>
-					<th>Status</th>
 				</tr>
 			</thead>
 			<tbody>
 				@for (piece of pieceList.data(); track piece.id; let i = $index) {
-					<tr>
+					<tr
+						appTypography
+						class="even:surface capitalize *:text-left *:not-first:p-4"
+					>
+						<td
+							[class]="'w-1' + ` ${getStatusBgColorClass(piece.status)}`"
+						></td>
 						<td>{{ i + 1 }}</td>
 						<td>{{ piece.title }}</td>
 						<td>{{ piece.composer.firstName }}</td>
 						<td>{{ piece.genre.name }}</td>
 						<td>{{ piece.score || '-' }}</td>
-						<td>{{ piece.status }}</td>
 					</tr>
 				}
 			</tbody>

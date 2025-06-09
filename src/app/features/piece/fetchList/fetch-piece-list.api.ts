@@ -1,7 +1,6 @@
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {inject, Injectable} from '@angular/core';
-import {PieceStatus} from '@entities/piece';
-import {UserPiece} from '@entities/piece/piece.model';
+import {PieceStatusType, UserPiece} from '@entities/piece';
 import {Api, PaginationResponse} from '@shared/lib';
 
 export type FetchAllResponse = PaginationResponse<UserPiece>;
@@ -19,7 +18,7 @@ export class FetchPieceListApi extends Api {
 	}: {
 		search?: string;
 		genre?: string;
-		status?: PieceStatus;
+		status?: PieceStatusType;
 		page?: number;
 		limit?: number;
 	} = {}) {

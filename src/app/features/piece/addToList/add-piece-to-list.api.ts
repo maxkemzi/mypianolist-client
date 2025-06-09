@@ -1,6 +1,6 @@
 import {HttpClient} from '@angular/common/http';
 import {inject, Injectable} from '@angular/core';
-import {PieceStatus} from '@entities/piece';
+import {PieceStatusType} from '@entities/piece';
 import {Api} from '@shared/lib';
 
 @Injectable({providedIn: 'root'})
@@ -15,7 +15,7 @@ export class AddPieceToListApi extends Api {
 		finishedAt,
 	}: {
 		id: string;
-		status: PieceStatus;
+		status: PieceStatusType;
 		score: number;
 		startedAt: string;
 		finishedAt: string;

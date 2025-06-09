@@ -15,7 +15,10 @@
 	--color-background-darker: #1b1b1b;
 	--color-surface: #252525;
 	--color-text: #faf9f6;
-	--color-danger: oklch(51.4% 0.222 16.935);
+	--color-success: #22c55e;
+	--color-info: #38bdf8;
+	--color-danger: #ef4444;
+	--color-disabled: #6b7280;
 }
 
 body {

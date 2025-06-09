@@ -16,15 +16,18 @@ export interface CompletePiece extends Piece {
 	learners: number;
 }
 
-export type PieceStatus =
-	| 'currently_learning'
-	| 'completed'
-	| 'dropped'
-	| 'plan_to_learn';
+export const PieceStatus = {
+	CURRENTLY_LEARNING: 'currently_learning',
+	COMPLETED: 'completed',
+	DROPPED: 'dropped',
+	PLAN_TO_LEARN: 'plan_to_learn',
+} as const;
+
+export type PieceStatusType = (typeof PieceStatus)[keyof typeof PieceStatus];
 
 export interface UserPiece extends Piece {
 	score: number | null;
-	status: PieceStatus;
+	status: PieceStatusType;
 }
 
 export type PieceSort = 'created_at' | 'learners' | 'favorites';

@@ -1,7 +1,7 @@
 import {inject, Injectable, signal} from '@angular/core';
+import {PieceStatusType} from '@entities/piece';
+import {catchError, finalize, of} from 'rxjs';
 import {AddPieceToListApi} from './add-piece-to-list.api';
-import {catchError, of, finalize} from 'rxjs';
-import {PieceStatus} from '@entities/piece';
 
 @Injectable({providedIn: 'root'})
 export class AddPieceToListService {
@@ -12,7 +12,7 @@ export class AddPieceToListService {
 
 	add(data: {
 		id: string;
-		status: PieceStatus;
+		status: PieceStatusType;
 		score: number;
 		startedAt: string;
 		finishedAt: string;

@@ -5,9 +5,9 @@ import {
 	signal,
 	TransferState,
 } from '@angular/core';
+import {PieceStatusType, UserPiece} from '@entities/piece';
 import {catchError, finalize, map, Observable, of, tap} from 'rxjs';
 import {FetchAllResponse, FetchPieceListApi} from './fetch-piece-list.api';
-import {PieceStatus, UserPiece} from '@entities/piece';
 
 @Injectable({providedIn: 'root'})
 export class FetchPieceListService {
@@ -39,7 +39,7 @@ export class FetchPieceListService {
 	}: {
 		search?: string;
 		genre?: string;
-		status?: PieceStatus;
+		status?: PieceStatusType;
 		page?: number;
 	} = {}): Observable<FetchAllResponse | null> {
 		const key = this.getDataKey(status);
@@ -79,7 +79,7 @@ export class FetchPieceListService {
 			);
 	}
 
-	private getDataKey(status?: PieceStatus) {
+	private getDataKey(status?: PieceStatusType) {
 		return makeStateKey<FetchAllResponse>(
 			'piece_list_' + (status ?? 'all') + '_' + this.page(),
 		);

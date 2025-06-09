@@ -6,7 +6,12 @@ import {
 	ReactiveFormsModule,
 	Validators,
 } from '@angular/forms';
-import {CompletePiece, PieceStatus, PieceUtils} from '@entities/piece';
+import {
+	CompletePiece,
+	PieceStatus,
+	PieceStatusType,
+	PieceUtils,
+} from '@entities/piece';
 import {FetchPieceStatusesService} from '@features/piece/fetchStatuses';
 import {
 	ButtonComponent,
@@ -42,7 +47,7 @@ export class AddPieceToListFormComponent {
 
 	readonly form = new FormGroup(
 		{
-			status: new FormControl<PieceStatus | ''>('', {
+			status: new FormControl<PieceStatusType | ''>('', {
 				validators: Validators.required,
 				nonNullable: true,
 				updateOn: 'submit',
@@ -83,7 +88,7 @@ export class AddPieceToListFormComponent {
 		this.addPieceToList
 			.add({
 				id: this.piece().id,
-				status: status as PieceStatus,
+				status: status as PieceStatusType,
 				score: Number(score),
 				startedAt: startDate,
 				finishedAt: finishDate,
@@ -102,7 +107,7 @@ export class AddPieceToListFormComponent {
 		this.fetchPieceStatuses.fetch().subscribe();
 	}
 
-	onStatusClick(status: PieceStatus) {
+	onStatusClick(status: PieceStatusType) {
 		this.form.controls.status.setValue(status);
 		this.selectedStatus.set(this.pieceUtils.statusToText(status));
 		this.statusDropdownIsOpen.set(false);

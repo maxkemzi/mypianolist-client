@@ -4,6 +4,7 @@ export {PieceUtils} from './piece.utils';
 export type {
 	Piece,
 	PieceStatus,
+	PieceStatusType,
 	UserPiece,
 	CompletePiece,
 	PieceSort,

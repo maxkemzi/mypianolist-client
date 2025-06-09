@@ -1,21 +1,21 @@
 import {
 	Injectable,
-	inject,
 	TransferState,
+	inject,
 	makeStateKey,
 	signal,
 } from '@angular/core';
-import {PieceStatus} from '@entities/piece';
-import {of, tap, catchError, finalize} from 'rxjs';
+import {PieceStatusType} from '@entities/piece';
+import {catchError, finalize, of, tap} from 'rxjs';
 import {FetchPieceStatusesApi} from './fetch-piece-statuses.api';
 
 @Injectable({providedIn: 'root'})
 export class FetchPieceStatusesService {
 	private readonly api = inject(FetchPieceStatusesApi);
 	private readonly state = inject(TransferState);
-	private readonly key = makeStateKey<PieceStatus[]>('statuses');
+	private readonly key = makeStateKey<PieceStatusType[]>('statuses');
 
-	readonly data = signal<PieceStatus[]>([]);
+	readonly data = signal<PieceStatusType[]>([]);
 	readonly isLoading = signal<boolean>(false);
 	readonly hasError = signal<boolean>(false);
 
@@ -43,7 +43,7 @@ export class FetchPieceStatusesService {
 		);
 	}
 
-	private setData(data: PieceStatus[]) {
+	private setData(data: PieceStatusType[]) {
 		this.data.set(data);
 		this.state.set(this.key, data);
 	}

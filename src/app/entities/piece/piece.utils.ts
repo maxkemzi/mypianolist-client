@@ -1,18 +1,26 @@
 import {Injectable} from '@angular/core';
-import {PieceStatus} from './piece.model';
+import {ThemeColorType} from '@shared/theme/types';
+import {PieceStatus, PieceStatusType} from './piece.model';
 
 @Injectable({providedIn: 'root'})
 export class PieceUtils {
-	statusToText(status: PieceStatus): string {
-		switch (status) {
-			case 'currently_learning':
-				return 'Currently Learning';
-			case 'completed':
-				return 'Completed';
-			case 'dropped':
-				return 'Dropped';
-			case 'plan_to_learn':
-				return 'Plan to Learn';
-		}
+	statusToText(status: PieceStatusType): string {
+		const STATUS_TO_TEXT_MAPPING: Record<PieceStatusType, string> = {
+			[PieceStatus.CURRENTLY_LEARNING]: 'Currently Learning',
+			[PieceStatus.COMPLETED]: 'Completed',
+			[PieceStatus.DROPPED]: 'Dropped',
+			[PieceStatus.PLAN_TO_LEARN]: 'Plan to Learn',
+		};
+		return STATUS_TO_TEXT_MAPPING[status];
+	}
+
+	statusToColor(status: PieceStatusType): ThemeColorType {
+		const STATUS_TO_COLOR_MAPPING: Record<PieceStatusType, ThemeColorType> = {
+			[PieceStatus.CURRENTLY_LEARNING]: 'success',
+			[PieceStatus.COMPLETED]: 'info',
+			[PieceStatus.DROPPED]: 'danger',
+			[PieceStatus.PLAN_TO_LEARN]: 'disabled',
+		};
+		return STATUS_TO_COLOR_MAPPING[status];
 	}
 }
