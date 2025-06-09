@@ -1,5 +1,6 @@
 import {Component, effect, inject, OnInit, signal} from '@angular/core';
 import {ActivatedRoute, RouterLink} from '@angular/router';
+import {Composer, ComposerUtils} from '@entities/composer';
 import {PieceStatusType, PieceUtils} from '@entities/piece';
 import {FetchPieceListService} from '@features/piece/fetchList';
 import {FetchPieceStatusesService} from '@features/piece/fetchStatuses';
@@ -21,6 +22,7 @@ export class ListPageComponent implements OnInit {
 	private readonly fetchPieceStatuses = inject(FetchPieceStatusesService);
 	private readonly pieceUtils = inject(PieceUtils);
 	private readonly themeUtils = inject(ThemeUtils);
+	private readonly composerUtils = inject(ComposerUtils);
 
 	readonly pieceList = {
 		data: this.fetchPieceList.data.asReadonly(),
@@ -63,5 +65,9 @@ export class ListPageComponent implements OnInit {
 		return this.themeUtils.colorToBgClass(
 			this.pieceUtils.statusToColor(status),
 		);
+	}
+
+	getComposerName(composer: Composer) {
+		return this.composerUtils.getCompactName(composer);
 	}
 }

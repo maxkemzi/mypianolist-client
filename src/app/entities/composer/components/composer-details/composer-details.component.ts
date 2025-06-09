@@ -1,5 +1,6 @@
-import {Component, computed, input} from '@angular/core';
+import {Component, computed, inject, input} from '@angular/core';
 import {Composer} from '@entities/composer/composer.model';
+import {ComposerUtils} from '@entities/composer/composer.utils';
 import {InfoItemComponent, TypographyComponent} from '@shared/components';
 
 @Component({
@@ -8,6 +9,8 @@ import {InfoItemComponent, TypographyComponent} from '@shared/components';
 	imports: [TypographyComponent, InfoItemComponent],
 })
 export class ComposerDetailsComponent {
+	private readonly utils = inject(ComposerUtils);
+
 	readonly composer = input.required<Composer>();
 
 	readonly image = computed(() => {
@@ -15,16 +18,7 @@ export class ComposerDetailsComponent {
 		return image ? `/server${image}` : null;
 	});
 
-	readonly fullName = computed(() => {
-		const {nickname, firstName, lastName} = this.composer();
-		let result = `${firstName} ${lastName}`;
-
-		if (nickname) {
-			result += ` (${nickname})`;
-		}
-
-		return result;
-	});
+	readonly fullName = computed(() => this.utils.getFullName(this.composer()));
 
 	readonly lifeSpan = computed(() => {
 		const {bornAt, diedAt} = this.composer();

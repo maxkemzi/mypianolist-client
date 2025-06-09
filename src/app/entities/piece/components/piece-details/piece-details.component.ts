@@ -1,5 +1,6 @@
-import {Component, computed, input} from '@angular/core';
+import {Component, computed, inject, input} from '@angular/core';
 import {RouterLink} from '@angular/router';
+import {ComposerUtils} from '@entities/composer';
 import {CompletePiece} from '@entities/piece/piece.model';
 import {InfoItemComponent, TypographyComponent} from '@shared/components';
 
@@ -9,6 +10,8 @@ import {InfoItemComponent, TypographyComponent} from '@shared/components';
 	imports: [TypographyComponent, RouterLink, InfoItemComponent],
 })
 export class PieceDetailsComponent {
+	private readonly composerUtils = inject(ComposerUtils);
+
 	readonly piece = input.required<CompletePiece>();
 
 	readonly composedDate = computed(() => {
@@ -20,10 +23,9 @@ export class PieceDetailsComponent {
 		return image ? `/server${image}` : null;
 	});
 
-	readonly composerName = computed(() => {
-		const {nickname, firstName, lastName} = this.piece().composer;
-		return nickname ?? `${firstName.charAt(0)}. ${lastName}`;
-	});
+	readonly composerName = computed(() =>
+		this.composerUtils.getCompactName(this.piece().composer),
+	);
 
 	readonly composerLifeSpan = computed(() => {
 		const {bornAt, diedAt} = this.piece().composer;

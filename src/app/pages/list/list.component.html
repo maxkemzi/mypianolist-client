@@ -34,7 +34,7 @@
 			<thead>
 				<tr
 					appTypography
-					class="text-left border-b-1 border-surface *:not-first:p-4"
+					class="text-left border-b-1 border-surface *:not-first:p-4 *:font-semibold"
 				>
 					<th class="w-1"></th>
 					<th>#</th>
@@ -55,7 +55,7 @@
 						></td>
 						<td>{{ i + 1 }}</td>
 						<td>{{ piece.title }}</td>
-						<td>{{ piece.composer.firstName }}</td>
+						<td>{{ getComposerName(piece.composer) }}</td>
 						<td>{{ piece.genre.name }}</td>
 						<td>{{ piece.score || '-' }}</td>
 					</tr>
