@@ -1,20 +1,35 @@
 import {Component, effect, inject, OnInit, signal} from '@angular/core';
 import {ActivatedRoute, RouterLink} from '@angular/router';
 import {Composer, ComposerUtils} from '@entities/composer';
-import {PieceStatusType, PieceUtils} from '@entities/piece';
+import {Piece, PieceStatusType, PieceUtils} from '@entities/piece';
 import {FetchPieceListService} from '@features/piece/fetchList';
 import {FetchPieceStatusesService} from '@features/piece/fetchStatuses';
 import {
+	RemovePieceFromListAlertComponent,
+	RemovePieceFromListButtonComponent,
+} from '@features/piece/removeFromList';
+import {
 	ContainerComponent,
+	ModalContainerComponent,
 	TabComponent,
 	TypographyComponent,
 } from '@shared/components';
+import {ClickOutsideDirective} from '@shared/lib';
 import {ThemeUtils} from '@shared/theme';
 
 @Component({
 	selector: 'app-list-page',
 	templateUrl: './list.component.html',
-	imports: [TypographyComponent, TabComponent, ContainerComponent, RouterLink],
+	imports: [
+		TypographyComponent,
+		TabComponent,
+		ContainerComponent,
+		RouterLink,
+		RemovePieceFromListButtonComponent,
+		RemovePieceFromListAlertComponent,
+		ModalContainerComponent,
+		ClickOutsideDirective,
+	],
 })
 export class ListPageComponent implements OnInit {
 	private readonly route = inject(ActivatedRoute);
@@ -34,10 +49,14 @@ export class ListPageComponent implements OnInit {
 	};
 	readonly pieceStatuses = {
 		data: this.fetchPieceStatuses.data.asReadonly(),
+		isLoading: this.fetchPieceStatuses.isLoading.asReadonly(),
+		hasError: this.fetchPieceStatuses.hasError.asReadonly(),
 	};
+
 	readonly activeStatus = signal<PieceStatusType | null | undefined>(
 		undefined,
 	);
+	readonly pieceToRemoveFromList = signal<Piece | null>(null);
 
 	ngOnInit() {
 		this.route.queryParamMap.subscribe(params => {
@@ -69,5 +88,13 @@ export class ListPageComponent implements OnInit {
 
 	getComposerName(composer: Composer) {
 		return this.composerUtils.getCompactName(composer);
+	}
+
+	openRemovePieceFromListAlert(piece: Piece) {
+		this.pieceToRemoveFromList.set(piece);
+	}
+
+	closeRemovePieceFromListAlert() {
+		this.pieceToRemoveFromList.set(null);
 	}
 }

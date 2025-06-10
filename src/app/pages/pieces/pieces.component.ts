@@ -60,8 +60,7 @@ export class PiecesPageComponent implements OnInit {
 
 	readonly searchValue = signal<string>('');
 	readonly sortDropdownIsOpen = signal<boolean>(false);
-	readonly addToListModalIsOpen = signal<boolean>(false);
-	readonly addToListModalPiece = signal<Piece | null>(null);
+	readonly pieceToAddToList = signal<Piece | null>(null);
 
 	get iconClasses() {
 		return 'text-2xl text-primary absolute top-1/2 left-4 translate-y-[-50%]';
@@ -115,11 +114,11 @@ export class PiecesPageComponent implements OnInit {
 	}
 
 	openAddToListModal(piece: Piece) {
-		this.addToListModalPiece.set(piece);
+		this.pieceToAddToList.set(piece);
 	}
 
 	closeAddToListModal() {
-		this.addToListModalPiece.set(null);
+		this.pieceToAddToList.set(null);
 	}
 
 	private addQueryParams(params: Params) {

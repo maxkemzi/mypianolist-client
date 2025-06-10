@@ -1,0 +1,21 @@
+<div appModal>
+	<h3 class="text-center mb-1">Remove Piece from My List</h3>
+	<p class="text-center" color="primary" weight="semibold">
+		{{ piece().title }}
+	</p>
+	<p class="text-center mb-7">By {{ composerName() }}</p>
+
+	<div class="flex items-center gap-4 justify-center">
+		<button appButton variant="outline" type="button" (click)="onCancel()">
+			Cancel
+		</button>
+		<button
+			appButton
+			type="button"
+			[disabled]="isLoading()"
+			(click)="onConfirm()"
+		>
+			Remove
+		</button>
+	</div>
+</div>

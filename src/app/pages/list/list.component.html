@@ -3,11 +3,11 @@
 	<div appContainer size="md">
 		<h1 class="mb-7 text-center capitalize">MyPianoList</h1>
 
-		@if (pieceList.isLoading()) {
+		@if (pieceStatuses.isLoading()) {
 			<p>Loading...</p>
-		} @else if (pieceList.hasError()) {
+		} @else if (pieceStatuses.hasError()) {
 			<p>Something went wrong.</p>
-		} @else if (pieceList.data().length === 0) {
+		} @else if (pieceStatuses.data().length === 0) {
 			<p>There are no piece statuses.</p>
 		} @else {
 			<ul class="flex justify-center items-center gap-4">
@@ -42,6 +42,7 @@
 					<th>Composer</th>
 					<th>Genre</th>
 					<th>Score</th>
+					<th></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -58,9 +59,24 @@
 						<td>{{ getComposerName(piece.composer) }}</td>
 						<td>{{ piece.genre.name }}</td>
 						<td>{{ piece.score || '-' }}</td>
+						<td>
+							<app-remove-piece-from-list-button
+								(appClick)="openRemovePieceFromListAlert(piece)"
+							/>
+						</td>
 					</tr>
 				}
 			</tbody>
 		</table>
 	</div>
+	@if (pieceToRemoveFromList(); as piece) {
+		<div appModalContainer>
+			<app-remove-piece-from-list-alert
+				[piece]="piece"
+				(appCancel)="closeRemovePieceFromListAlert()"
+				(appConfirm)="closeRemovePieceFromListAlert()"
+				(appClickOutside)="closeRemovePieceFromListAlert()"
+			/>
+		</div>
+	}
 </section>
