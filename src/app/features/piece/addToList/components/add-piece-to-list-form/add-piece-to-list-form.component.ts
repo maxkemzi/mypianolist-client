@@ -1,25 +1,19 @@
 import {Component, inject, input, output, signal} from '@angular/core';
 import {
-	FormBuilder,
 	FormControl,
 	FormGroup,
 	ReactiveFormsModule,
 	Validators,
 } from '@angular/forms';
-import {
-	CompletePiece,
-	PieceStatus,
-	PieceStatusType,
-	PieceUtils,
-} from '@entities/piece';
+import {Piece, PieceStatusType, PieceUtils} from '@entities/piece';
 import {FetchPieceStatusesService} from '@features/piece/fetchStatuses';
 import {
 	ButtonComponent,
 	DropdownComponent,
 	DropdownItemComponent,
-	FormComponent,
 	FormFieldComponent,
 	InputComponent,
+	ModalComponent,
 	TypographyComponent,
 } from '@shared/components';
 import {ClickOutsideDirective} from '@shared/lib';
@@ -31,7 +25,7 @@ import {AddPieceToListService} from '../../add-piece-to-list.service';
 	imports: [
 		TypographyComponent,
 		ButtonComponent,
-		FormComponent,
+		ModalComponent,
 		FormFieldComponent,
 		ReactiveFormsModule,
 		InputComponent,
@@ -59,7 +53,7 @@ export class AddPieceToListFormComponent {
 		{updateOn: 'blur'},
 	);
 
-	readonly piece = input.required<CompletePiece>();
+	readonly piece = input.required<Piece>();
 	readonly appSubmit = output<void>();
 	readonly statusDropdownIsOpen = signal<boolean>(false);
 	readonly selectedStatus = signal<string>('');

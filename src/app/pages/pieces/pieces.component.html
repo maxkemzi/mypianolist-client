@@ -95,19 +95,8 @@
 					>
 						<ng-container slot="bottom-right">
 							<app-add-piece-to-list-button
-								(appClick)="openAddToListModal()"
+								(appClick)="openAddToListModal(piece)"
 							/>
-							@if (addToListModalIsOpen()) {
-								<div appModalContainer>
-									<app-add-piece-to-list-form
-										[piece]="piece"
-										(appSubmit)="closeAddToListModal()"
-										(appClickOutside)="
-											addToListModalIsOpen.set(false)
-										"
-									/>
-								</div>
-							}
 						</ng-container>
 					</app-piece-card>
 				}
@@ -120,4 +109,14 @@
 			/>
 		}
 	</div>
+
+	@if (addToListModalPiece(); as piece) {
+		<div appModalContainer>
+			<app-add-piece-to-list-form
+				[piece]="piece"
+				(appSubmit)="closeAddToListModal()"
+				(appClickOutside)="closeAddToListModal()"
+			/>
+		</div>
+	}
 </section>

@@ -1,4 +1,4 @@
-export {FormComponent} from './form';
+export {ModalComponent} from './modal';
 export {FormFieldComponent} from './form-field';
 export {ButtonComponent} from './button';
 export {ContainerComponent} from './container';

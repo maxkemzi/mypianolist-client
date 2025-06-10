@@ -1,7 +1,7 @@
 import {Component, computed, inject, OnInit, signal} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {ActivatedRoute, Params, Router} from '@angular/router';
-import {PieceCardComponent, PieceSort} from '@entities/piece';
+import {Piece, PieceCardComponent, PieceSort} from '@entities/piece';
 import {PaginationComponent} from '@features/pagination';
 import {
 	AddPieceToListButtonComponent,
@@ -61,6 +61,7 @@ export class PiecesPageComponent implements OnInit {
 	readonly searchValue = signal<string>('');
 	readonly sortDropdownIsOpen = signal<boolean>(false);
 	readonly addToListModalIsOpen = signal<boolean>(false);
+	readonly addToListModalPiece = signal<Piece | null>(null);
 
 	get iconClasses() {
 		return 'text-2xl text-primary absolute top-1/2 left-4 translate-y-[-50%]';
@@ -113,12 +114,12 @@ export class PiecesPageComponent implements OnInit {
 		this.addQueryParams({page});
 	}
 
-	openAddToListModal() {
-		this.addToListModalIsOpen.set(true);
+	openAddToListModal(piece: Piece) {
+		this.addToListModalPiece.set(piece);
 	}
 
 	closeAddToListModal() {
-		this.addToListModalIsOpen.set(false);
+		this.addToListModalPiece.set(null);
 	}
 
 	private addQueryParams(params: Params) {

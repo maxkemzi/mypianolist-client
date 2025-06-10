@@ -2,10 +2,10 @@ import {Component} from '@angular/core';
 import {ClassMergeDirective} from '@shared/lib';
 
 @Component({
-	selector: 'form[appForm]',
-	templateUrl: './form.component.html',
+	selector: '[appModal]',
+	templateUrl: './modal.component.html',
 })
-export class FormComponent extends ClassMergeDirective {
+export class ModalComponent extends ClassMergeDirective {
 	protected override defaultClass() {
 		return 'bg-background px-12 py-10 rounded-lg';
 	}

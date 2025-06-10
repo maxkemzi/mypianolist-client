@@ -1,6 +1,5 @@
 import {Component, inject} from '@angular/core';
 import {
-	FormBuilder,
 	FormControl,
 	FormGroup,
 	ReactiveFormsModule,
@@ -9,10 +8,10 @@ import {
 import {Router, RouterLink} from '@angular/router';
 import {
 	ButtonComponent,
-	FormComponent,
 	FormFieldComponent,
 	InputComponent,
 	LinkComponent,
+	ModalComponent,
 	TypographyComponent,
 } from '@shared/components';
 import {AuthService} from '../auth.service';
@@ -24,7 +23,7 @@ import {AuthService} from '../auth.service';
 		TypographyComponent,
 		ButtonComponent,
 		LinkComponent,
-		FormComponent,
+		ModalComponent,
 		FormFieldComponent,
 		ReactiveFormsModule,
 		RouterLink,
