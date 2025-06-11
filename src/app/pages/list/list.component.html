@@ -13,16 +13,14 @@
 			<ul class="flex justify-center items-center gap-4">
 				<li>
 					<a routerLink="/list">
-						<app-tab [isActive]="activeStatus() === null"
-							>All pieces</app-tab
-						>
+						<app-tab [isActive]="status() === null">All pieces</app-tab>
 					</a>
 				</li>
-				@for (status of pieceStatuses.data(); track status) {
+				@for (statusItem of pieceStatuses.data(); track statusItem) {
 					<li>
-						<a routerLink="/list" [queryParams]="{status}">
-							<app-tab [isActive]="activeStatus() === status">{{
-								getStatusText(status)
+						<a routerLink="/list" [queryParams]="{status: statusItem}">
+							<app-tab [isActive]="status() === statusItem">{{
+								getStatusText(statusItem)
 							}}</app-tab>
 						</a>
 					</li>
@@ -49,7 +47,7 @@
 				@for (piece of pieceList.data(); track piece.id; let i = $index) {
 					<tr
 						appTypography
-						class="even:surface capitalize *:text-left *:not-first:p-4"
+						class="even:bg-surface capitalize *:text-left *:not-first:p-4"
 					>
 						<td
 							[class]="'w-1' + ` ${getStatusBgColorClass(piece.status)}`"
@@ -74,7 +72,7 @@
 			<app-remove-piece-from-list-alert
 				[piece]="piece"
 				(appCancel)="closeRemovePieceFromListAlert()"
-				(appConfirm)="closeRemovePieceFromListAlert()"
+				(appConfirm)="onRemoveFromListConfirm()"
 				(appClickOutside)="closeRemovePieceFromListAlert()"
 			/>
 		</div>

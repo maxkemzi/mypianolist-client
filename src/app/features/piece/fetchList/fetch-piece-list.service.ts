@@ -3,10 +3,11 @@ import {
 	Injectable,
 	makeStateKey,
 	signal,
+	StateKey,
 	TransferState,
 } from '@angular/core';
 import {PieceStatusType, UserPiece} from '@entities/piece';
-import {catchError, finalize, map, Observable, of, tap} from 'rxjs';
+import {catchError, finalize, Observable, of, tap} from 'rxjs';
 import {FetchAllResponse, FetchPieceListApi} from './fetch-piece-list.api';
 
 @Injectable({providedIn: 'root'})
@@ -22,6 +23,8 @@ export class FetchPieceListService {
 	private readonly api = inject(FetchPieceListApi);
 	private readonly state = inject(TransferState);
 
+	private readonly keys = signal<StateKey<FetchAllResponse>[]>([]);
+
 	readonly data = signal<UserPiece[]>(this.InitialValue.DATA);
 	readonly page = signal<number>(this.InitialValue.PAGE);
 	readonly limit = signal<number>(this.InitialValue.LIMIT);
@@ -33,39 +36,39 @@ export class FetchPieceListService {
 	readonly hasError = signal<boolean>(false);
 
 	fetch({
-		search,
 		genre,
+		search,
 		status,
+		page,
 	}: {
 		search?: string;
 		genre?: string;
 		status?: PieceStatusType;
 		page?: number;
 	} = {}): Observable<FetchAllResponse | null> {
-		const key = this.getDataKey(status);
+		const key = this.getDataKey({genre, search, status, page});
 
-		if (search === undefined) {
-			const stored = this.state.get(key, undefined);
-			if (stored) {
-				this.setValues(stored);
-				return of(stored);
-			}
+		const stored = this.state.get(key, undefined);
+		if (stored) {
+			this.setValues(stored);
+			return of(stored);
 		}
 
 		this.isLoading.set(true);
 		this.hasError.set(false);
 		return this.api
 			.fetchAll({
-				search,
 				genre,
-				page: this.toApiPage(this.page()),
+				search,
+				status,
+				page,
 				limit: this.limit(),
 			})
 			.pipe(
-				map(res => ({...res, page: this.toUiPage(res.page)})),
 				tap(res => {
 					this.setValues(res);
 					this.state.set(key, res);
+					this.keys.update(prev => [...prev, key]);
 				}),
 				catchError(() => {
 					this.hasError.set(true);
@@ -79,18 +82,27 @@ export class FetchPieceListService {
 			);
 	}
 
-	private getDataKey(status?: PieceStatusType) {
-		return makeStateKey<FetchAllResponse>(
-			'piece_list_' + (status ?? 'all') + '_' + this.page(),
-		);
+	clearCache() {
+		for (const key of this.keys()) {
+			this.state.remove(key);
+		}
 	}
 
-	private toApiPage(page: number) {
-		return page - 1;
-	}
+	private getDataKey({
+		genre,
+		status,
+		search,
+		page,
+	}: {
+		genre: string | undefined;
+		status: PieceStatusType | undefined;
+		search: string | undefined;
+		page: number | undefined;
+	}) {
+		const params = {genre, status, search, page};
 
-	private toUiPage(page: number) {
-		return page + 1;
+		const key = 'piece_list' + btoa(JSON.stringify(params));
+		return makeStateKey<FetchAllResponse>(key);
 	}
 
 	private setValues(res: FetchAllResponse) {

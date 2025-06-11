@@ -53,26 +53,21 @@ export class ListPageComponent implements OnInit {
 		hasError: this.fetchPieceStatuses.hasError.asReadonly(),
 	};
 
-	readonly activeStatus = signal<PieceStatusType | null | undefined>(
-		undefined,
-	);
+	readonly status = signal<PieceStatusType | null | undefined>(undefined);
 	readonly pieceToRemoveFromList = signal<Piece | null>(null);
 
 	ngOnInit() {
-		this.route.queryParamMap.subscribe(params => {
-			const status = params.get('status');
-			this.activeStatus.set(status as PieceStatusType);
-		});
 		this.fetchPieceStatuses.fetch().subscribe();
+		this.route.queryParamMap.subscribe(params => {
+			const status = params.get('status') as PieceStatusType | null;
+
+			this.status.set(status);
+		});
 	}
 
 	constructor() {
 		effect(() => {
-			this.fetchPieceList
-				.fetch({
-					status: (this.activeStatus() as PieceStatusType) ?? undefined,
-				})
-				.subscribe();
+			this.fetchList();
 		});
 	}
 
@@ -96,5 +91,17 @@ export class ListPageComponent implements OnInit {
 
 	closeRemovePieceFromListAlert() {
 		this.pieceToRemoveFromList.set(null);
+	}
+
+	onRemoveFromListConfirm() {
+		this.fetchPieceList.clearCache();
+		this.fetchList();
+		this.closeRemovePieceFromListAlert();
+	}
+
+	private fetchList() {
+		this.fetchPieceList
+			.fetch({status: this.status() ?? undefined})
+			.subscribe();
 	}
 }

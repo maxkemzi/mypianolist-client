@@ -7,8 +7,8 @@ import {AddPieceToListApi} from './add-piece-to-list.api';
 export class AddPieceToListService {
 	private readonly api = inject(AddPieceToListApi);
 
-	isLoading = signal<boolean>(false);
-	hasError = signal<boolean>(false);
+	readonly isLoading = signal<boolean>(false);
+	readonly hasError = signal<boolean>(false);
 
 	add(data: {
 		id: string;

@@ -5,9 +5,9 @@ import {
 	signal,
 	TransferState,
 } from '@angular/core';
-import {catchError, finalize, map, Observable, of, tap} from 'rxjs';
-import {FetchAllPiecesApi, FetchResponse} from './fetch-all-pieces.api';
 import {CompletePiece, PieceSort} from '@entities/piece';
+import {catchError, finalize, Observable, of, tap} from 'rxjs';
+import {FetchAllPiecesApi, FetchResponse} from './fetch-all-pieces.api';
 
 @Injectable({providedIn: 'root'})
 export class FetchAllPiecesService {
@@ -45,12 +45,10 @@ export class FetchAllPiecesService {
 	} = {}): Observable<FetchResponse | null> {
 		const key = this.getDataKey({genre, sort, search, page});
 
-		if (search === undefined) {
-			const stored = this.state.get(key, undefined);
-			if (stored) {
-				this.setValues(stored);
-				return of(stored);
-			}
+		const stored = this.state.get(key, undefined);
+		if (stored) {
+			this.setValues(stored);
+			return of(stored);
 		}
 
 		this.isLoading.set(true);

@@ -1,4 +1,11 @@
-import {Component, computed, inject, OnInit, signal} from '@angular/core';
+import {
+	Component,
+	computed,
+	effect,
+	inject,
+	OnInit,
+	signal,
+} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {Piece, PieceCardComponent, PieceSort} from '@entities/piece';
@@ -18,6 +25,7 @@ import {
 } from '@shared/components';
 import {ClickOutsideDirective} from '@shared/lib';
 import {ButtonComponent} from '../../shared/components/button/button.component';
+import {FetchPieceListService} from '@features/piece/fetchList';
 
 @Component({
 	selector: 'app-pieces-page',
@@ -42,10 +50,11 @@ export class PiecesPageComponent implements OnInit {
 	private readonly router = inject(Router);
 	private readonly route = inject(ActivatedRoute);
 	private readonly fetchAllPieces = inject(FetchAllPiecesService);
+	private readonly fetchPieceList = inject(FetchPieceListService);
 
-	readonly genre = signal<string | undefined>(undefined);
+	readonly genre = signal<string | null | undefined>(undefined);
 	readonly sort = signal<PieceSort>('created_at');
-	readonly search = signal<string | undefined>(undefined);
+	readonly search = signal<string | null | undefined>(undefined);
 	readonly page = signal<number>(0);
 
 	readonly title = computed(() => `${this.genre() ?? 'all'} pieces`);
@@ -68,17 +77,28 @@ export class PiecesPageComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.route.queryParamMap.subscribe(params => {
-			const genre = params.get('genre') ?? undefined;
+			const genre = params.get('genre');
 			const sort = (params.get('sort') as PieceSort | null) ?? 'created_at';
-			const search = params.get('search') ?? undefined;
+			const search = params.get('search');
 			const page = params.get('page') ? Number(params.get('page')) : 0;
 
 			this.genre.set(genre);
 			this.sort.set(sort);
 			this.search.set(search);
 			this.page.set(page);
+		});
+	}
 
-			this.fetchAllPieces.fetch({genre, sort, search, page}).subscribe();
+	constructor() {
+		effect(() => {
+			this.fetchAllPieces
+				.fetch({
+					genre: this.genre() ?? undefined,
+					sort: this.sort(),
+					search: this.search() ?? undefined,
+					page: this.page(),
+				})
+				.subscribe();
 		});
 	}
 
@@ -119,6 +139,11 @@ export class PiecesPageComponent implements OnInit {
 
 	closeAddToListModal() {
 		this.pieceToAddToList.set(null);
+	}
+
+	onAddToListSubmit() {
+		this.fetchPieceList.clearCache();
+		this.closeAddToListModal();
 	}
 
 	private addQueryParams(params: Params) {
