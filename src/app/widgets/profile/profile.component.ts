@@ -1,11 +1,13 @@
 import {
 	Component,
 	computed,
+	DestroyRef,
 	HostBinding,
 	inject,
 	input,
 	signal,
 } from '@angular/core';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {Router} from '@angular/router';
 import {AuthService} from '@features/auth';
 import {
@@ -29,6 +31,8 @@ import {finalize} from 'rxjs';
 export class ProfileComponent {
 	private readonly auth = inject(AuthService);
 	private readonly router = inject(Router);
+	private readonly destroyRef = inject(DestroyRef);
+
 	readonly username = input<string>('username');
 	readonly avatar = input<string | null>(null);
 	readonly imageHasError = signal<boolean>(false);
@@ -56,7 +60,10 @@ export class ProfileComponent {
 		this.isLoggingOut.set(true);
 		this.auth
 			.logOut()
-			.pipe(finalize(() => this.isLoggingOut.set(false)))
+			.pipe(
+				finalize(() => this.isLoggingOut.set(false)),
+				takeUntilDestroyed(this.destroyRef),
+			)
 			.subscribe(() => {
 				this.router.navigate(['/auth/login']);
 			});

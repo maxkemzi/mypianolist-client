@@ -1,4 +1,11 @@
-import {Component, effect, inject, OnInit, signal} from '@angular/core';
+import {
+	Component,
+	DestroyRef,
+	effect,
+	inject,
+	OnInit,
+	signal,
+} from '@angular/core';
 import {ActivatedRoute, RouterLink} from '@angular/router';
 import {Composer, ComposerUtils} from '@entities/composer';
 import {Piece, PieceStatusType, PieceUtils} from '@entities/piece';
@@ -16,6 +23,7 @@ import {
 } from '@shared/components';
 import {ClickOutsideDirective} from '@shared/lib';
 import {ThemeUtils} from '@shared/theme';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 @Component({
 	selector: 'app-list-page',
@@ -38,6 +46,7 @@ export class ListPageComponent implements OnInit {
 	private readonly pieceUtils = inject(PieceUtils);
 	private readonly themeUtils = inject(ThemeUtils);
 	private readonly composerUtils = inject(ComposerUtils);
+	private readonly destroyRef = inject(DestroyRef);
 
 	readonly pieceList = {
 		data: this.fetchPieceList.data.asReadonly(),
@@ -57,12 +66,17 @@ export class ListPageComponent implements OnInit {
 	readonly pieceToRemoveFromList = signal<Piece | null>(null);
 
 	ngOnInit() {
-		this.fetchPieceStatuses.fetch().subscribe();
-		this.route.queryParamMap.subscribe(params => {
-			const status = params.get('status') as PieceStatusType | null;
+		this.fetchPieceStatuses
+			.fetch()
+			.pipe(takeUntilDestroyed(this.destroyRef))
+			.subscribe();
+		this.route.queryParamMap
+			.pipe(takeUntilDestroyed(this.destroyRef))
+			.subscribe(params => {
+				const status = params.get('status') as PieceStatusType | null;
 
-			this.status.set(status);
-		});
+				this.status.set(status);
+			});
 	}
 
 	constructor() {
@@ -102,6 +116,7 @@ export class ListPageComponent implements OnInit {
 	private fetchList() {
 		this.fetchPieceList
 			.fetch({status: this.status() ?? undefined})
+			.pipe(takeUntilDestroyed(this.destroyRef))
 			.subscribe();
 	}
 }

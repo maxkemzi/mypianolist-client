@@ -1,4 +1,5 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, DestroyRef, inject, OnInit} from '@angular/core';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {ActivatedRoute} from '@angular/router';
 import {ComposerDetailsComponent} from '@entities/composer';
 import {FetchComposerByIdService} from '@features/composer/fetchById';
@@ -13,6 +14,7 @@ import {filter, map} from 'rxjs';
 export class ComposerPageComponent implements OnInit {
 	private readonly route = inject(ActivatedRoute);
 	private readonly fetchComposerById = inject(FetchComposerByIdService);
+	private readonly destroyRef = inject(DestroyRef);
 
 	readonly composer = {data: this.fetchComposerById.data.asReadonly()};
 
@@ -21,9 +23,13 @@ export class ComposerPageComponent implements OnInit {
 			.pipe(
 				map(params => params.get('id')),
 				filter((id): id is string => !!id),
+				takeUntilDestroyed(this.destroyRef),
 			)
 			.subscribe(id => {
-				this.fetchComposerById.fetch(id).subscribe();
+				this.fetchComposerById
+					.fetch(id)
+					.pipe(takeUntilDestroyed(this.destroyRef))
+					.subscribe();
 			});
 	}
 }

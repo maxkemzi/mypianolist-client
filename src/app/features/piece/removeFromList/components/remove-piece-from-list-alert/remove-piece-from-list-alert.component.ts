@@ -1,4 +1,11 @@
-import {Component, computed, inject, input, output} from '@angular/core';
+import {
+	Component,
+	computed,
+	DestroyRef,
+	inject,
+	input,
+	output,
+} from '@angular/core';
 import {ReactiveFormsModule} from '@angular/forms';
 import {ComposerUtils} from '@entities/composer';
 import {Piece} from '@entities/piece';
@@ -8,6 +15,7 @@ import {
 	TypographyComponent,
 } from '@shared/components';
 import {RemovePieceFromListService} from '../../remove-piece-from-list.service';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 @Component({
 	selector: 'app-remove-piece-from-list-alert',
@@ -20,6 +28,7 @@ import {RemovePieceFromListService} from '../../remove-piece-from-list.service';
 	],
 })
 export class RemovePieceFromListAlertComponent {
+	private readonly destroyRef = inject(DestroyRef);
 	private readonly service = inject(RemovePieceFromListService);
 	private readonly composerUtils = inject(ComposerUtils);
 
@@ -37,8 +46,11 @@ export class RemovePieceFromListAlertComponent {
 	}
 
 	onConfirm() {
-		this.service.remove(this.piece().id).subscribe(() => {
-			this.appConfirm.emit();
-		});
+		this.service
+			.remove(this.piece().id)
+			.pipe(takeUntilDestroyed(this.destroyRef))
+			.subscribe(() => {
+				this.appConfirm.emit();
+			});
 	}
 }

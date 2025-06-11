@@ -1,4 +1,5 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, DestroyRef, inject, OnInit} from '@angular/core';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {RouterLink} from '@angular/router';
 import {GenreCardComponent} from '@entities/genre';
 import {FetchAllGenresService} from '@features/genre/fetchAll';
@@ -16,6 +17,7 @@ import {ContainerComponent, TypographyComponent} from '@shared/components';
 })
 export class CatalogPageComponent implements OnInit {
 	private readonly fetchAllGenres = inject(FetchAllGenresService);
+	private readonly destroyRef = inject(DestroyRef);
 
 	readonly genres = {
 		data: this.fetchAllGenres.data.asReadonly(),
@@ -24,6 +26,9 @@ export class CatalogPageComponent implements OnInit {
 	};
 
 	ngOnInit(): void {
-		this.fetchAllGenres.fetch().subscribe();
+		this.fetchAllGenres
+			.fetch()
+			.pipe(takeUntilDestroyed(this.destroyRef))
+			.subscribe();
 	}
 }

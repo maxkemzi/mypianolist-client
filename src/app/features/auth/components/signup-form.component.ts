@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, DestroyRef, inject} from '@angular/core';
 import {
 	FormControl,
 	FormGroup,
@@ -15,6 +15,7 @@ import {
 	TypographyComponent,
 } from '@shared/components';
 import {AuthService} from '../auth.service';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 @Component({
 	selector: 'app-signup-form',
@@ -33,6 +34,7 @@ import {AuthService} from '../auth.service';
 export class SignupFormComponent {
 	private readonly router = inject(Router);
 	private readonly service = inject(AuthService);
+	private readonly destroyRef = inject(DestroyRef);
 
 	readonly form = new FormGroup(
 		{
@@ -98,13 +100,16 @@ export class SignupFormComponent {
 			return;
 		}
 
-		this.service.signUp(this.form.getRawValue()).subscribe({
-			next: () => {
-				this.router.navigate(['/auth/login']);
-			},
-			error: () => {
-				console.error('Error signing up.');
-			},
-		});
+		this.service
+			.signUp(this.form.getRawValue())
+			.pipe(takeUntilDestroyed(this.destroyRef))
+			.subscribe({
+				next: () => {
+					this.router.navigate(['/auth/login']);
+				},
+				error: () => {
+					console.error('Error signing up.');
+				},
+			});
 	};
 }

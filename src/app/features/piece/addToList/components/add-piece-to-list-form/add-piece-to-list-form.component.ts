@@ -1,4 +1,11 @@
-import {Component, inject, input, output, signal} from '@angular/core';
+import {
+	Component,
+	DestroyRef,
+	inject,
+	input,
+	output,
+	signal,
+} from '@angular/core';
 import {
 	FormControl,
 	FormGroup,
@@ -18,6 +25,7 @@ import {
 } from '@shared/components';
 import {ClickOutsideDirective} from '@shared/lib';
 import {AddPieceToListService} from '../../add-piece-to-list.service';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 @Component({
 	selector: 'app-add-piece-to-list-form',
@@ -35,6 +43,8 @@ import {AddPieceToListService} from '../../add-piece-to-list.service';
 	],
 })
 export class AddPieceToListFormComponent {
+	private destroyRef = inject(DestroyRef);
+
 	readonly fetchPieceStatuses = inject(FetchPieceStatusesService);
 	readonly addPieceToList = inject(AddPieceToListService);
 	readonly pieceUtils = inject(PieceUtils);
@@ -87,6 +97,7 @@ export class AddPieceToListFormComponent {
 				startedAt: startDate,
 				finishedAt: finishDate,
 			})
+			.pipe(takeUntilDestroyed(this.destroyRef))
 			.subscribe(() => {
 				this.appSubmit.emit();
 			});
@@ -98,7 +109,10 @@ export class AddPieceToListFormComponent {
 
 	onStatusInputFocus() {
 		this.statusDropdownIsOpen.set(true);
-		this.fetchPieceStatuses.fetch().subscribe();
+		this.fetchPieceStatuses
+			.fetch()
+			.pipe(takeUntilDestroyed(this.destroyRef))
+			.subscribe();
 	}
 
 	onStatusClick(status: PieceStatusType) {

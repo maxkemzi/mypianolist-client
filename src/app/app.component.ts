@@ -1,4 +1,5 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, DestroyRef, inject, OnInit} from '@angular/core';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {RouterOutlet} from '@angular/router';
 import {AuthService} from '@features/auth';
 
@@ -9,9 +10,10 @@ import {AuthService} from '@features/auth';
 })
 export class AppComponent implements OnInit {
 	private readonly auth = inject(AuthService);
+	private readonly destroyRef = inject(DestroyRef);
 	title = 'mypianolist-frontend';
 
 	ngOnInit(): void {
-		this.auth.refresh().subscribe();
+		this.auth.refresh().pipe(takeUntilDestroyed(this.destroyRef)).subscribe();
 	}
 }

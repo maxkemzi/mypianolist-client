@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, DestroyRef, inject} from '@angular/core';
 import {
 	FormControl,
 	FormGroup,
@@ -15,6 +15,7 @@ import {
 	TypographyComponent,
 } from '@shared/components';
 import {AuthService} from '../auth.service';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 @Component({
 	selector: 'app-login-form',
@@ -33,6 +34,7 @@ import {AuthService} from '../auth.service';
 export class LoginFormComponent {
 	private readonly router = inject(Router);
 	private readonly service = inject(AuthService);
+	private readonly destroyRef = inject(DestroyRef);
 
 	readonly form = new FormGroup(
 		{
@@ -79,13 +81,16 @@ export class LoginFormComponent {
 			return;
 		}
 
-		this.service.logIn(this.form.getRawValue()).subscribe({
-			next: () => {
-				this.router.navigate(['/']);
-			},
-			error: () => {
-				console.error('Error logging in.');
-			},
-		});
+		this.service
+			.logIn(this.form.getRawValue())
+			.pipe(takeUntilDestroyed(this.destroyRef))
+			.subscribe({
+				next: () => {
+					this.router.navigate(['/']);
+				},
+				error: () => {
+					console.error('Error logging in.');
+				},
+			});
 	};
 }

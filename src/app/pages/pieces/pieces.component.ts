@@ -1,6 +1,7 @@
 import {
 	Component,
 	computed,
+	DestroyRef,
 	effect,
 	inject,
 	OnInit,
@@ -26,6 +27,7 @@ import {
 import {ClickOutsideDirective} from '@shared/lib';
 import {ButtonComponent} from '../../shared/components/button/button.component';
 import {FetchPieceListService} from '@features/piece/fetchList';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 @Component({
 	selector: 'app-pieces-page',
@@ -51,6 +53,7 @@ export class PiecesPageComponent implements OnInit {
 	private readonly route = inject(ActivatedRoute);
 	private readonly fetchAllPieces = inject(FetchAllPiecesService);
 	private readonly fetchPieceList = inject(FetchPieceListService);
+	private readonly destroyRef = inject(DestroyRef);
 
 	readonly genre = signal<string | null | undefined>(undefined);
 	readonly sort = signal<PieceSort>('created_at');
@@ -76,17 +79,20 @@ export class PiecesPageComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-		this.route.queryParamMap.subscribe(params => {
-			const genre = params.get('genre');
-			const sort = (params.get('sort') as PieceSort | null) ?? 'created_at';
-			const search = params.get('search');
-			const page = params.get('page') ? Number(params.get('page')) : 0;
+		this.route.queryParamMap
+			.pipe(takeUntilDestroyed(this.destroyRef))
+			.subscribe(params => {
+				const genre = params.get('genre');
+				const sort =
+					(params.get('sort') as PieceSort | null) ?? 'created_at';
+				const search = params.get('search');
+				const page = params.get('page') ? Number(params.get('page')) : 0;
 
-			this.genre.set(genre);
-			this.sort.set(sort);
-			this.search.set(search);
-			this.page.set(page);
-		});
+				this.genre.set(genre);
+				this.sort.set(sort);
+				this.search.set(search);
+				this.page.set(page);
+			});
 	}
 
 	constructor() {
@@ -98,6 +104,7 @@ export class PiecesPageComponent implements OnInit {
 					search: this.search() ?? undefined,
 					page: this.page(),
 				})
+				.pipe(takeUntilDestroyed(this.destroyRef))
 				.subscribe();
 		});
 	}
