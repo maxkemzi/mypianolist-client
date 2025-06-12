@@ -3,25 +3,20 @@ import {inject, Injectable} from '@angular/core';
 import {PieceStatusType, UserPiece} from '@entities/piece';
 import {Api, PaginationResponse} from '@shared/lib';
 
-export type FetchAllResponse = PaginationResponse<UserPiece>;
+export type FetchResponse = PaginationResponse<UserPiece>;
+export interface FetchParams {
+	search?: string;
+	genre?: string;
+	status?: PieceStatusType;
+	page?: number;
+	limit?: number;
+}
 
 @Injectable({providedIn: 'root'})
 export class FetchPieceListApi extends Api {
 	private readonly http = inject(HttpClient);
 
-	fetchAll({
-		search,
-		genre,
-		page,
-		limit,
-		status,
-	}: {
-		search?: string;
-		genre?: string;
-		status?: PieceStatusType;
-		page?: number;
-		limit?: number;
-	} = {}) {
+	fetchAll({search, genre, page, limit, status}: FetchParams = {}) {
 		const params: Record<string, string | number> = {};
 
 		if (search) {
@@ -40,7 +35,7 @@ export class FetchPieceListApi extends Api {
 			params['status'] = status;
 		}
 
-		return this.http.get<FetchAllResponse>(`${this.BASE_URL}/users/pieces`, {
+		return this.http.get<FetchResponse>(`${this.BASE_URL}/users/pieces`, {
 			params: new HttpParams({fromObject: params}),
 		});
 	}

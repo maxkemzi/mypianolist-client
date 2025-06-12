@@ -4,24 +4,19 @@ import {CompletePiece, PieceSort} from '@entities/piece';
 import {Api, PaginationResponse} from '@shared/lib';
 
 export type FetchResponse = PaginationResponse<CompletePiece>;
+export interface FetchParams {
+	search?: string;
+	genre?: string;
+	page?: number;
+	limit?: number;
+	sort?: PieceSort;
+}
 
 @Injectable({providedIn: 'root'})
 export class FetchAllPiecesApi extends Api {
 	private readonly http = inject(HttpClient);
 
-	fetch({
-		search,
-		genre,
-		page,
-		limit,
-		sort,
-	}: {
-		search?: string;
-		genre?: string;
-		page?: number;
-		limit?: number;
-		sort?: PieceSort;
-	} = {}) {
+	fetch({search, genre, page, limit, sort}: FetchParams = {}) {
 		const params: Record<string, string | number> = {};
 
 		if (search) {
