@@ -1,11 +1,5 @@
-import {
-	Component,
-	DestroyRef,
-	inject,
-	input,
-	output,
-	signal,
-} from '@angular/core';
+import {Component, DestroyRef, inject, input, output} from '@angular/core';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {
 	FormControl,
 	FormGroup,
@@ -13,19 +7,18 @@ import {
 	Validators,
 } from '@angular/forms';
 import {Piece, PieceStatusType, PieceUtils} from '@entities/piece';
-import {FetchPieceStatusesService} from '@features/piece/fetchStatuses';
+import {
+	FetchPieceStatusesService,
+	PieceStatusesSelect,
+} from '@features/piece/fetchStatuses';
 import {
 	ButtonComponent,
-	DropdownComponent,
-	DropdownItemComponent,
 	FormFieldComponent,
 	InputComponent,
 	ModalComponent,
 	TypographyComponent,
 } from '@shared/components';
-import {ClickOutsideDirective} from '@shared/lib';
 import {AddPieceToListService} from '../../add-piece-to-list.service';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 @Component({
 	selector: 'app-add-piece-to-list-form',
@@ -37,13 +30,11 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 		FormFieldComponent,
 		ReactiveFormsModule,
 		InputComponent,
-		DropdownComponent,
-		DropdownItemComponent,
-		ClickOutsideDirective,
+		PieceStatusesSelect,
 	],
 })
 export class AddPieceToListFormComponent {
-	private destroyRef = inject(DestroyRef);
+	private readonly destroyRef = inject(DestroyRef);
 
 	readonly fetchPieceStatuses = inject(FetchPieceStatusesService);
 	readonly addPieceToList = inject(AddPieceToListService);
@@ -65,8 +56,6 @@ export class AddPieceToListFormComponent {
 
 	readonly piece = input.required<Piece>();
 	readonly appSubmit = output<void>();
-	readonly statusDropdownIsOpen = signal<boolean>(false);
-	readonly selectedStatus = signal<string>('');
 
 	get statusError(): string | undefined {
 		const control = this.form.get('status');
@@ -101,23 +90,5 @@ export class AddPieceToListFormComponent {
 			.subscribe(() => {
 				this.appSubmit.emit();
 			});
-	}
-
-	onStatusClickOutside() {
-		this.statusDropdownIsOpen.set(false);
-	}
-
-	onStatusInputFocus() {
-		this.statusDropdownIsOpen.set(true);
-		this.fetchPieceStatuses
-			.fetch()
-			.pipe(takeUntilDestroyed(this.destroyRef))
-			.subscribe();
-	}
-
-	onStatusClick(status: PieceStatusType) {
-		this.form.controls.status.setValue(status);
-		this.selectedStatus.set(this.pieceUtils.statusToText(status));
-		this.statusDropdownIsOpen.set(false);
 	}
 }

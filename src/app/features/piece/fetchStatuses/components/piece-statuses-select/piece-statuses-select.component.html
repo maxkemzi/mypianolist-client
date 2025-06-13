@@ -1,0 +1,32 @@
+<div class="relative" (appClickOutside)="onClickOutside()">
+	<input
+		appInput
+		[value]="valueLabel()"
+		placeholder="select status"
+		readonly="true"
+		(focus)="onFocus()"
+		(blur)="onTouched()"
+		[disabled]="disabled()"
+	/>
+
+	@if (isOpen()) {
+		<app-dropdown class="absolute top-full left-0 min-w-full pt-2">
+			@if (statuses.isLoading()) {
+				<p>Loading...</p>
+			} @else if (statuses.hasError()) {
+				<p>Something went wrong.</p>
+			} @else if (statuses.data().length === 0) {
+				<p>There are no statuses.</p>
+			} @else {
+				@for (status of statuses.data(); track status) {
+					<app-dropdown-item
+						[isActive]="value() === status"
+						[isDisabled]="value() === status"
+						(appClick)="onSelect(status)"
+						>{{ statusToText(status) }}</app-dropdown-item
+					>
+				}
+			}
+		</app-dropdown>
+	}
+</div>

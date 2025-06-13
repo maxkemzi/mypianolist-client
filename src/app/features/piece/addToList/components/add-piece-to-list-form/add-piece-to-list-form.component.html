@@ -7,39 +7,7 @@
 
 	<div class="flex flex-col gap-4 mb-7">
 		<app-form-field label="Status" [error]="statusError">
-			<div class="relative" (appClickOutside)="onStatusClickOutside()">
-				<input
-					appInput
-					[value]="selectedStatus()"
-					formControlName="status"
-					placeholder="select status"
-					readonly="true"
-					(focus)="onStatusInputFocus()"
-				/>
-
-				@if (statusDropdownIsOpen()) {
-					<app-dropdown class="absolute top-full left-0 min-w-full pt-2">
-						@if (fetchPieceStatuses.isLoading()) {
-							<p>Loading...</p>
-						} @else if (fetchPieceStatuses.hasError()) {
-							<p>Something went wrong.</p>
-						} @else if (fetchPieceStatuses.data().length === 0) {
-							<p>There are no statuses.</p>
-						} @else {
-							@for (status of fetchPieceStatuses.data(); track status) {
-								<app-dropdown-item
-									[isActive]="form.controls.status.value === status"
-									[isDisabled]="form.controls.status.value === status"
-									(appClick)="onStatusClick(status)"
-									>{{
-										pieceUtils.statusToText(status)
-									}}</app-dropdown-item
-								>
-							}
-						}
-					</app-dropdown>
-				}
-			</div>
+			<app-piece-statuses-select formControlName="status" />
 		</app-form-field>
 
 		<app-form-field label="Score">

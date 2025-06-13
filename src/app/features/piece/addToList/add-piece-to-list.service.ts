@@ -18,6 +18,7 @@ export class AddPieceToListService {
 		finishedAt: string;
 	}) {
 		this.isLoading.set(true);
+		this.hasError.set(false);
 		return this.api.add(data).pipe(
 			catchError(() => {
 				this.hasError.set(true);
