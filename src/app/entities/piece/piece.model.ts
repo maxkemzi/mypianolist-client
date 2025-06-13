@@ -28,6 +28,8 @@ export type PieceStatusType = (typeof PieceStatus)[keyof typeof PieceStatus];
 export interface UserPiece extends Piece {
 	score: number | null;
 	status: PieceStatusType;
+	startedAt: string;
+	finishedAt: string;
 }
 
 export type PieceSort = 'created_at' | 'learners' | 'favorites';

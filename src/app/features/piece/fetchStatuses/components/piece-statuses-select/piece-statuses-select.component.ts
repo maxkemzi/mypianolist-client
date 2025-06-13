@@ -4,20 +4,19 @@ import {
 	DestroyRef,
 	forwardRef,
 	inject,
-	Injectable,
 	OnInit,
 	signal,
 } from '@angular/core';
-import {FetchPieceStatusesService} from '../../fetch-piece-statuses.service';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {PieceStatusType, PieceUtils} from '@entities/piece';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
+import {PieceStatusType, PieceUtils} from '@entities/piece';
 import {
 	DropdownComponent,
 	DropdownItemComponent,
 	InputComponent,
 } from '@shared/components';
 import {ClickOutsideDirective} from '@shared/lib';
+import {FetchPieceStatusesService} from '../../fetch-piece-statuses.service';
 
 @Component({
 	selector: 'app-piece-statuses-select',
@@ -31,8 +30,8 @@ import {ClickOutsideDirective} from '@shared/lib';
 	providers: [
 		{
 			provide: NG_VALUE_ACCESSOR,
-			multi: true,
 			useExisting: forwardRef(() => PieceStatusesSelect),
+			multi: true,
 		},
 	],
 })

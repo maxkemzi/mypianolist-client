@@ -57,7 +57,10 @@
 						<td>{{ getComposerName(piece.composer) }}</td>
 						<td>{{ piece.genre.name }}</td>
 						<td>{{ piece.score || '-' }}</td>
-						<td>
+						<td class="flex gap-2">
+							<app-edit-piece-button
+								(appClick)="openEditPieceModal(piece)"
+							/>
 							<app-remove-piece-from-list-button
 								(appClick)="openRemovePieceFromListAlert(piece)"
 							/>
@@ -74,6 +77,15 @@
 				(appCancel)="closeRemovePieceFromListAlert()"
 				(appConfirm)="onRemoveFromListConfirm()"
 				(appClickOutside)="closeRemovePieceFromListAlert()"
+			/>
+		</div>
+	}
+	@if (pieceToEdit(); as piece) {
+		<div appModalContainer>
+			<app-edit-piece-form
+				[piece]="piece"
+				(appSubmit)="onEditSubmit()"
+				(appClickOutside)="closeEditPieceModal()"
 			/>
 		</div>
 	}

@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import {ActivatedRoute, RouterLink} from '@angular/router';
 import {Composer, ComposerUtils} from '@entities/composer';
-import {Piece, PieceStatusType, PieceUtils} from '@entities/piece';
+import {Piece, PieceStatusType, PieceUtils, UserPiece} from '@entities/piece';
 import {FetchPieceListService} from '@features/piece/fetchList';
 import {FetchPieceStatusesService} from '@features/piece/fetchStatuses';
 import {
@@ -24,6 +24,10 @@ import {
 import {ClickOutsideDirective} from '@shared/lib';
 import {ThemeUtils} from '@shared/theme';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {
+	EditPieceButtonComponent,
+	EditPieceFormComponent,
+} from '@features/piece/edit';
 
 @Component({
 	selector: 'app-list-page',
@@ -37,6 +41,8 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 		RemovePieceFromListAlertComponent,
 		ModalContainerComponent,
 		ClickOutsideDirective,
+		EditPieceButtonComponent,
+		EditPieceFormComponent,
 	],
 })
 export class ListPageComponent implements OnInit {
@@ -64,6 +70,7 @@ export class ListPageComponent implements OnInit {
 
 	readonly status = signal<PieceStatusType | null | undefined>(undefined);
 	readonly pieceToRemoveFromList = signal<Piece | null>(null);
+	readonly pieceToEdit = signal<UserPiece | null>(null);
 
 	ngOnInit() {
 		this.fetchPieceStatuses
@@ -111,6 +118,20 @@ export class ListPageComponent implements OnInit {
 		this.fetchPieceList.clearCache();
 		this.fetchList();
 		this.closeRemovePieceFromListAlert();
+	}
+
+	openEditPieceModal(piece: UserPiece) {
+		this.pieceToEdit.set(piece);
+	}
+
+	closeEditPieceModal() {
+		this.pieceToEdit.set(null);
+	}
+
+	onEditSubmit() {
+		this.fetchPieceList.clearCache();
+		this.fetchList();
+		this.closeEditPieceModal();
 	}
 
 	private fetchList() {

@@ -33,6 +33,7 @@ export class TypographyComponent extends ClassMergeDirective {
 			text: 'text-text',
 			primary: 'text-primary',
 			danger: 'text-danger',
+			warning: 'text-warning',
 		};
 
 		const SIZE_TO_CLASSES_MAPPING: Record<Size, string> = {

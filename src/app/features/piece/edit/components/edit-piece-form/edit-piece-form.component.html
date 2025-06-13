@@ -1,0 +1,52 @@
+<form appModal [formGroup]="form" (ngSubmit)="onSubmit()">
+	<h3 class="text-center mb-1">Edit Piece</h3>
+	<p class="text-center" color="primary" weight="semibold">
+		{{ piece().title }}
+	</p>
+	<p class="text-center mb-4">By F. F. Chopin</p>
+
+	<div class="flex flex-col gap-4 mb-7">
+		<app-form-field label="Status" [error]="statusError">
+			<app-piece-statuses-select formControlName="status" />
+		</app-form-field>
+
+		<app-form-field label="Score">
+			<input
+				appInput
+				class="w-full"
+				formControlName="score"
+				type="number"
+				min="0"
+				max="10"
+				placeholder="select score"
+			/>
+		</app-form-field>
+
+		<app-form-field label="Start Date">
+			<input
+				appInput
+				class="w-full"
+				formControlName="startedAt"
+				type="date"
+			/>
+		</app-form-field>
+
+		<app-form-field label="Finish Date">
+			<input
+				appInput
+				class="w-full"
+				formControlName="finishedAt"
+				type="date"
+			/>
+		</app-form-field>
+	</div>
+
+	<button
+		appButton
+		class="w-full"
+		type="submit"
+		[disabled]="!form.dirty || isLoading()"
+	>
+		Submit
+	</button>
+</form>
