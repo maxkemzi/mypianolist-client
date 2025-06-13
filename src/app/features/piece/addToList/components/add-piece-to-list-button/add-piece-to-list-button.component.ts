@@ -14,8 +14,11 @@ import {AddPieceToListService} from '../../add-piece-to-list.service';
 	imports: [ButtonComponent],
 })
 export class AddPieceToListButtonComponent {
-	readonly service = inject(AddPieceToListService);
+	private readonly service = inject(AddPieceToListService);
 
-	isDisabled = input<boolean, unknown>(false, {transform: booleanAttribute});
-	appClick = output<void>();
+	readonly isDisabled = input<boolean, unknown>(false, {
+		transform: booleanAttribute,
+	});
+	readonly appClick = output<void>();
+	readonly isLoading = this.service.isLoading.asReadonly();
 }

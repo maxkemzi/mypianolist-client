@@ -1,7 +1,7 @@
 <button
 	appButton
 	size="sm"
-	[disabled]="isDisabled() || service.isLoading()"
+	[disabled]="isDisabled() || isLoading()"
 	(click)="appClick.emit()"
 >
 	Add to List

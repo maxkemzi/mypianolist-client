@@ -26,7 +26,7 @@
 			<input
 				appInput
 				class="w-full"
-				formControlName="startDate"
+				formControlName="startedAt"
 				type="date"
 			/>
 		</app-form-field>
@@ -35,11 +35,18 @@
 			<input
 				appInput
 				class="w-full"
-				formControlName="finishDate"
+				formControlName="finishedAt"
 				type="date"
 			/>
 		</app-form-field>
 	</div>
 
-	<button appButton class="w-full" type="submit">Submit</button>
+	<button
+		appButton
+		class="w-full"
+		type="submit"
+		[disabled]="!form.dirty || isLoading()"
+	>
+		Submit
+	</button>
 </form>

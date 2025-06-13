@@ -35,10 +35,10 @@ import {AddPieceToListService} from '../../add-piece-to-list.service';
 })
 export class AddPieceToListFormComponent {
 	private readonly destroyRef = inject(DestroyRef);
+	private readonly service = inject(AddPieceToListService);
 
-	readonly fetchPieceStatuses = inject(FetchPieceStatusesService);
-	readonly addPieceToList = inject(AddPieceToListService);
-	readonly pieceUtils = inject(PieceUtils);
+	readonly piece = input.required<Piece>();
+	readonly appSubmit = output<void>();
 
 	readonly form = new FormGroup(
 		{
@@ -48,14 +48,12 @@ export class AddPieceToListFormComponent {
 				updateOn: 'submit',
 			}),
 			score: new FormControl('', {nonNullable: true}),
-			startDate: new FormControl('', {nonNullable: true}),
-			finishDate: new FormControl('', {nonNullable: true}),
+			startedAt: new FormControl('', {nonNullable: true}),
+			finishedAt: new FormControl('', {nonNullable: true}),
 		},
 		{updateOn: 'blur'},
 	);
-
-	readonly piece = input.required<Piece>();
-	readonly appSubmit = output<void>();
+	readonly isLoading = this.service.isLoading.asReadonly();
 
 	get statusError(): string | undefined {
 		const control = this.form.get('status');
@@ -76,15 +74,15 @@ export class AddPieceToListFormComponent {
 			return;
 		}
 
-		const {status, score, startDate, finishDate} = this.form.getRawValue();
+		const {status, score, startedAt, finishedAt} = this.form.getRawValue();
 
-		this.addPieceToList
+		this.service
 			.add({
 				id: this.piece().id,
 				status: status as PieceStatusType,
 				score: Number(score),
-				startedAt: startDate,
-				finishedAt: finishDate,
+				startedAt,
+				finishedAt,
 			})
 			.pipe(takeUntilDestroyed(this.destroyRef))
 			.subscribe(() => {
