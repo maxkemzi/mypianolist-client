@@ -1,13 +1,12 @@
-import {HttpClient} from '@angular/common/http';
 import {inject, Injectable} from '@angular/core';
 import {Api} from '@shared/lib';
 import {EditPiecePayload} from './edit-piece.model';
 
 @Injectable({providedIn: 'root'})
-export class EditPieceApi extends Api {
-	private readonly http = inject(HttpClient);
+export class EditPieceApi {
+	private readonly api = inject(Api);
 
 	edit(id: string, body: EditPiecePayload) {
-		return this.http.patch(`${this.BASE_URL}/users/pieces/${id}`, body);
+		return this.api.patch(`/users/pieces/${id}`, body);
 	}
 }

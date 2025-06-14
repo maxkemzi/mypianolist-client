@@ -1,11 +1,10 @@
-import {HttpClient} from '@angular/common/http';
 import {inject, Injectable} from '@angular/core';
 import {PieceStatusType} from '@entities/piece';
 import {Api} from '@shared/lib';
 
 @Injectable({providedIn: 'root'})
-export class AddPieceToListApi extends Api {
-	private readonly http = inject(HttpClient);
+export class AddPieceToListApi {
+	private readonly api = inject(Api);
 
 	add({
 		id,
@@ -20,7 +19,7 @@ export class AddPieceToListApi extends Api {
 		startedAt: string;
 		finishedAt: string;
 	}) {
-		return this.http.post(`${this.BASE_URL}/users/pieces`, {
+		return this.api.post('/users/pieces', {
 			pieceId: id,
 			status,
 			score,

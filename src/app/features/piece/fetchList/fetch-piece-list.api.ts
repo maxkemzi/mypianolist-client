@@ -13,8 +13,8 @@ export interface FetchParams {
 }
 
 @Injectable({providedIn: 'root'})
-export class FetchPieceListApi extends Api {
-	private readonly http = inject(HttpClient);
+export class FetchPieceListApi {
+	private readonly api = inject(HttpClient);
 
 	fetchAll({search, genre, page, limit, status}: FetchParams = {}) {
 		const params: Record<string, string | number> = {};
@@ -35,7 +35,7 @@ export class FetchPieceListApi extends Api {
 			params['status'] = status;
 		}
 
-		return this.http.get<FetchResponse>(`${this.BASE_URL}/users/pieces`, {
+		return this.api.get<FetchResponse>('/users/pieces', {
 			params: new HttpParams({fromObject: params}),
 		});
 	}

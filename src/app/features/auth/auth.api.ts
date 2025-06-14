@@ -1,4 +1,3 @@
-import {HttpClient} from '@angular/common/http';
 import {inject, Injectable} from '@angular/core';
 import {Api} from '@shared/lib';
 import {AuthUser} from './auth.model';
@@ -9,22 +8,22 @@ interface AuthResponse {
 }
 
 @Injectable({providedIn: 'root'})
-export class AuthApi extends Api {
-	private readonly http = inject(HttpClient);
+export class AuthApi {
+	private readonly api = inject(Api);
 
 	logIn(body: {username: string; password: string}) {
-		return this.http.post<AuthResponse>(`${this.BASE_URL}/auth/login`, body);
+		return this.api.post<AuthResponse>('/auth/login', body);
 	}
 
 	signUp(body: {username: string; email: string; password: string}) {
-		return this.http.post(`${this.BASE_URL}/auth/register`, body);
+		return this.api.post('/auth/register', body);
 	}
 
 	refresh() {
-		return this.http.post<AuthResponse>(`${this.BASE_URL}/auth/refresh`, {});
+		return this.api.post<AuthResponse>('/auth/refresh', {});
 	}
 
 	logOut() {
-		return this.http.delete(`${this.BASE_URL}/auth/logout`, {});
+		return this.api.delete('/auth/logout', {});
 	}
 }

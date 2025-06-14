@@ -1,4 +1,4 @@
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpParams} from '@angular/common/http';
 import {inject, Injectable} from '@angular/core';
 import {CompletePiece, PieceSort} from '@entities/piece';
 import {Api, PaginationResponse} from '@shared/lib';
@@ -13,8 +13,8 @@ export interface FetchParams {
 }
 
 @Injectable({providedIn: 'root'})
-export class FetchAllPiecesApi extends Api {
-	private readonly http = inject(HttpClient);
+export class FetchAllPiecesApi {
+	private readonly api = inject(Api);
 
 	fetch({search, genre, page, limit, sort}: FetchParams = {}) {
 		const params: Record<string, string | number> = {};
@@ -35,7 +35,7 @@ export class FetchAllPiecesApi extends Api {
 			params['sort'] = sort;
 		}
 
-		return this.http.get<FetchResponse>(`${this.BASE_URL}/pieces`, {
+		return this.api.get<FetchResponse>('/pieces', {
 			params: new HttpParams({fromObject: params}),
 		});
 	}
