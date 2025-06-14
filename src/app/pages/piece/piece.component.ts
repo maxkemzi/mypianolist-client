@@ -16,9 +16,7 @@ export class PiecePageComponent implements OnInit {
 	private readonly fetchPieceById = inject(FetchPieceByIdService);
 	private readonly destroyRef = inject(DestroyRef);
 
-	readonly piece = {
-		data: this.fetchPieceById.data.asReadonly(),
-	};
+	readonly piece = {data: this.fetchPieceById.data};
 
 	ngOnInit() {
 		this.route.paramMap

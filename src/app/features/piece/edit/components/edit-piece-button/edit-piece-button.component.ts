@@ -21,5 +21,5 @@ export class EditPieceButtonComponent {
 	});
 	readonly appClick = output<void>();
 
-	readonly isLoading = this.service.isLoading.asReadonly();
+	readonly isLoading = this.service.isLoading;
 }

@@ -39,7 +39,8 @@ export class RemovePieceFromListAlertComponent {
 	readonly composerName = computed(() =>
 		this.composerUtils.getCompactName(this.piece().composer),
 	);
-	readonly isLoading = this.service.isLoading.asReadonly();
+
+	readonly isLoading = this.service.isLoading;
 
 	onCancel() {
 		this.appCancel.emit();

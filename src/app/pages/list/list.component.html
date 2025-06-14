@@ -62,7 +62,7 @@
 								(appClick)="openEditPieceModal(piece)"
 							/>
 							<app-remove-piece-from-list-button
-								(appClick)="openRemovePieceFromListAlert(piece)"
+								(appClick)="openRemovePieceAlert(piece)"
 							/>
 						</td>
 					</tr>
@@ -70,13 +70,13 @@
 			</tbody>
 		</table>
 	</div>
-	@if (pieceToRemoveFromList(); as piece) {
+	@if (pieceToRemove(); as piece) {
 		<div appModalContainer>
 			<app-remove-piece-from-list-alert
 				[piece]="piece"
-				(appCancel)="closeRemovePieceFromListAlert()"
-				(appConfirm)="onRemoveFromListConfirm()"
-				(appClickOutside)="closeRemovePieceFromListAlert()"
+				(appCancel)="closeRemovePieceAlert()"
+				(appConfirm)="onRemovePieceConfirm()"
+				(appClickOutside)="closeRemovePieceAlert()"
 			/>
 		</div>
 	}
@@ -84,7 +84,7 @@
 		<div appModalContainer>
 			<app-edit-piece-form
 				[piece]="piece"
-				(appSubmit)="onEditSubmit()"
+				(appSubmit)="onEditPieceSubmit()"
 				(appClickOutside)="closeEditPieceModal()"
 			/>
 		</div>

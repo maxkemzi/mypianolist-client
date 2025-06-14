@@ -14,24 +14,26 @@ export class FetchPieceByIdService {
 	private readonly api = inject(FetchPieceByIdApi);
 	private readonly state = inject(TransferState);
 
-	readonly data = signal<CompletePiece | null | undefined>(undefined);
+	private readonly _data = signal<CompletePiece | null | undefined>(undefined);
+
+	readonly data = this._data.asReadonly();
 
 	fetch(id: string) {
 		const key = this.getDataKey(id);
 
 		if (this.state.hasKey(key)) {
 			const stored = this.state.get(key, null);
-			this.data.set(stored);
+			this._data.set(stored);
 			return of(stored);
 		}
 
 		return this.api.fetchById(id).pipe(
 			tap(data => {
-				this.data.set(data);
+				this._data.set(data);
 				this.state.set(key, data);
 			}),
-			catchError(e => {
-				this.data.set(null);
+			catchError(() => {
+				this._data.set(null);
 				this.state.set(key, null);
 
 				return of(null);

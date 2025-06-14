@@ -16,7 +16,7 @@ export class ComposerPageComponent implements OnInit {
 	private readonly fetchComposerById = inject(FetchComposerByIdService);
 	private readonly destroyRef = inject(DestroyRef);
 
-	readonly composer = {data: this.fetchComposerById.data.asReadonly()};
+	readonly composer = {data: this.fetchComposerById.data};
 
 	ngOnInit() {
 		this.route.paramMap

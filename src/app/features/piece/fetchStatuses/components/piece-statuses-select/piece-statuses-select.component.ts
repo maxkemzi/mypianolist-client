@@ -50,9 +50,9 @@ export class PieceStatusesSelect implements OnInit, ControlValueAccessor {
 	});
 
 	readonly statuses = {
-		data: this.service.data.asReadonly(),
-		isLoading: this.service.isLoading.asReadonly(),
-		hasError: this.service.hasError.asReadonly(),
+		data: this.service.data,
+		isLoading: this.service.isLoading,
+		hasError: this.service.hasError,
 	};
 	readonly statusToText = this.pieceUtils.statusToText;
 

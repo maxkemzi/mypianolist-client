@@ -7,8 +7,11 @@ import {AddPieceToListApi} from './add-piece-to-list.api';
 export class AddPieceToListService {
 	private readonly api = inject(AddPieceToListApi);
 
-	readonly isLoading = signal<boolean>(false);
-	readonly hasError = signal<boolean>(false);
+	private readonly _isLoading = signal<boolean>(false);
+	private readonly _hasError = signal<boolean>(false);
+
+	readonly isLoading = this._isLoading.asReadonly();
+	readonly hasError = this._hasError.asReadonly();
 
 	add(data: {
 		id: string;
@@ -17,15 +20,15 @@ export class AddPieceToListService {
 		startedAt: string;
 		finishedAt: string;
 	}) {
-		this.isLoading.set(true);
-		this.hasError.set(false);
+		this._isLoading.set(true);
+		this._hasError.set(false);
 		return this.api.add(data).pipe(
 			catchError(() => {
-				this.hasError.set(true);
+				this._hasError.set(true);
 				return of(null);
 			}),
 			finalize(() => {
-				this.isLoading.set(false);
+				this._isLoading.set(false);
 			}),
 		);
 	}

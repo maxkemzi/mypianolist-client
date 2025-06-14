@@ -62,12 +62,12 @@ export class PiecesPageComponent implements OnInit {
 
 	readonly title = computed(() => `${this.genre() ?? 'all'} pieces`);
 	readonly pieces = {
-		data: this.fetchAllPieces.data.asReadonly(),
-		page: this.fetchAllPieces.page.asReadonly(),
-		totalCount: this.fetchAllPieces.totalCount.asReadonly(),
-		totalPages: this.fetchAllPieces.totalPages.asReadonly(),
-		isLoading: this.fetchAllPieces.isLoading.asReadonly(),
-		hasError: this.fetchAllPieces.hasError.asReadonly(),
+		data: this.fetchAllPieces.data,
+		page: this.fetchAllPieces.page,
+		totalCount: this.fetchAllPieces.totalCount,
+		totalPages: this.fetchAllPieces.totalPages,
+		isLoading: this.fetchAllPieces.isLoading,
+		hasError: this.fetchAllPieces.hasError,
 	};
 
 	readonly searchValue = signal<string>('');

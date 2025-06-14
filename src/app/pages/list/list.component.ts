@@ -55,21 +55,21 @@ export class ListPageComponent implements OnInit {
 	private readonly destroyRef = inject(DestroyRef);
 
 	readonly pieceList = {
-		data: this.fetchPieceList.data.asReadonly(),
-		page: this.fetchPieceList.page.asReadonly(),
-		totalCount: this.fetchPieceList.totalCount.asReadonly(),
-		totalPages: this.fetchPieceList.totalPages.asReadonly(),
-		isLoading: this.fetchPieceList.isLoading.asReadonly(),
-		hasError: this.fetchPieceList.hasError.asReadonly(),
+		data: this.fetchPieceList.data,
+		page: this.fetchPieceList.page,
+		totalCount: this.fetchPieceList.totalCount,
+		totalPages: this.fetchPieceList.totalPages,
+		isLoading: this.fetchPieceList.isLoading,
+		hasError: this.fetchPieceList.hasError,
 	};
 	readonly pieceStatuses = {
-		data: this.fetchPieceStatuses.data.asReadonly(),
-		isLoading: this.fetchPieceStatuses.isLoading.asReadonly(),
-		hasError: this.fetchPieceStatuses.hasError.asReadonly(),
+		data: this.fetchPieceStatuses.data,
+		isLoading: this.fetchPieceStatuses.isLoading,
+		hasError: this.fetchPieceStatuses.hasError,
 	};
 
 	readonly status = signal<PieceStatusType | null | undefined>(undefined);
-	readonly pieceToRemoveFromList = signal<Piece | null>(null);
+	readonly pieceToRemove = signal<Piece | null>(null);
 	readonly pieceToEdit = signal<UserPiece | null>(null);
 
 	ngOnInit() {
@@ -106,18 +106,18 @@ export class ListPageComponent implements OnInit {
 		return this.composerUtils.getCompactName(composer);
 	}
 
-	openRemovePieceFromListAlert(piece: Piece) {
-		this.pieceToRemoveFromList.set(piece);
+	openRemovePieceAlert(piece: Piece) {
+		this.pieceToRemove.set(piece);
 	}
 
-	closeRemovePieceFromListAlert() {
-		this.pieceToRemoveFromList.set(null);
+	closeRemovePieceAlert() {
+		this.pieceToRemove.set(null);
 	}
 
-	onRemoveFromListConfirm() {
+	onRemovePieceConfirm() {
 		this.fetchPieceList.clearCache();
 		this.fetchList();
-		this.closeRemovePieceFromListAlert();
+		this.closeRemovePieceAlert();
 	}
 
 	openEditPieceModal(piece: UserPiece) {
@@ -128,7 +128,7 @@ export class ListPageComponent implements OnInit {
 		this.pieceToEdit.set(null);
 	}
 
-	onEditSubmit() {
+	onEditPieceSubmit() {
 		this.fetchPieceList.clearCache();
 		this.fetchList();
 		this.closeEditPieceModal();

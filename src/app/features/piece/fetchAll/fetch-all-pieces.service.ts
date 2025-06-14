@@ -18,24 +18,24 @@ export class FetchAllPiecesService extends FetchPiecesService<
 	private readonly CACHE_PREFIX = 'pieces';
 
 	fetch(params: FetchParams = {}): Observable<FetchResponse | null> {
-		this.isLoading.set(true);
-		this.hasError.set(false);
+		this._isLoading.set(true);
+		this._hasError.set(false);
 		return this.cachedFetch
 			.buildFetch<
 				FetchResponse,
 				FetchParams
-			>(this.api.fetch({limit: this.limit(), ...params}), {prefix: this.CACHE_PREFIX, params})
+			>(this.api.fetch({limit: this._limit(), ...params}), {prefix: this.CACHE_PREFIX, params})
 			.pipe(
 				tap(res => {
 					this.setValues(res);
 				}),
 				catchError(() => {
-					this.hasError.set(true);
+					this._hasError.set(true);
 					this.resetValues();
 					return of(null);
 				}),
 				finalize(() => {
-					this.isLoading.set(false);
+					this._isLoading.set(false);
 				}),
 			);
 	}

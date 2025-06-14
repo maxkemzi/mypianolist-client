@@ -20,9 +20,9 @@ export class CatalogPageComponent implements OnInit {
 	private readonly destroyRef = inject(DestroyRef);
 
 	readonly genres = {
-		data: this.fetchAllGenres.data.asReadonly(),
-		isLoading: this.fetchAllGenres.isLoading.asReadonly(),
-		hasError: this.fetchAllGenres.hasError.asReadonly(),
+		data: this.fetchAllGenres.data,
+		isLoading: this.fetchAllGenres.isLoading,
+		hasError: this.fetchAllGenres.hasError,
 	};
 
 	ngOnInit(): void {

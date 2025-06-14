@@ -6,11 +6,8 @@ import {
 	ReactiveFormsModule,
 	Validators,
 } from '@angular/forms';
-import {Piece, PieceStatusType, PieceUtils} from '@entities/piece';
-import {
-	FetchPieceStatusesService,
-	PieceStatusesSelect,
-} from '@features/piece/fetchStatuses';
+import {Piece, PieceStatusType} from '@entities/piece';
+import {PieceStatusesSelect} from '@features/piece/fetchStatuses';
 import {
 	ButtonComponent,
 	FormFieldComponent,
@@ -53,7 +50,8 @@ export class AddPieceToListFormComponent {
 		},
 		{updateOn: 'blur'},
 	);
-	readonly isLoading = this.service.isLoading.asReadonly();
+
+	readonly isLoading = this.service.isLoading;
 
 	get statusError(): string | undefined {
 		const control = this.form.get('status');

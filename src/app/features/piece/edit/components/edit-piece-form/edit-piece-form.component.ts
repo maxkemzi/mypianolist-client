@@ -51,7 +51,8 @@ export class EditPieceFormComponent implements OnInit {
 		},
 		{updateOn: 'blur'},
 	);
-	readonly isLoading = this.service.isLoading.asReadonly();
+
+	readonly isLoading = this.service.isLoading;
 
 	ngOnInit(): void {
 		const {status, score, startedAt, finishedAt} = this.piece();

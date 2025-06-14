@@ -15,34 +15,37 @@ export class FetchAllGenresService {
 	private readonly api = inject(FetchAllGenresApi);
 	private readonly state = inject(TransferState);
 
-	readonly data = signal<Genre[]>([]);
+	private readonly _data = signal<Genre[]>([]);
+	private readonly _isLoading = signal<boolean>(false);
+	private readonly _hasError = signal<boolean>(false);
 
-	readonly isLoading = signal<boolean>(false);
-	readonly hasError = signal<boolean>(false);
+	readonly data = this._data.asReadonly();
+	readonly isLoading = this._isLoading.asReadonly();
+	readonly hasError = this._hasError.asReadonly();
 
 	fetch(): Observable<Genre[] | null> {
 		const stored = this.state.get(this.key, undefined);
 		if (stored) {
-			this.data.set(stored);
+			this._data.set(stored);
 			return of(stored);
 		}
 
-		this.hasError.set(false);
-		this.isLoading.set(true);
+		this._hasError.set(false);
+		this._isLoading.set(true);
 		return this.api.fetch().pipe(
 			map(res => res.content),
 			tap(data => {
-				this.data.set(data);
+				this._data.set(data);
 				this.state.set<Genre[]>(this.key, data);
 			}),
 			catchError(() => {
-				this.hasError.set(true);
-				this.data.set([]);
+				this._hasError.set(true);
+				this._data.set([]);
 				this.state.remove(this.key);
 				return of(null);
 			}),
 			finalize(() => {
-				this.isLoading.set(false);
+				this._isLoading.set(false);
 			}),
 		);
 	}

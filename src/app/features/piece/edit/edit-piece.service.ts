@@ -7,19 +7,22 @@ import {EditPiecePayload} from './edit-piece.model';
 export class EditPieceService {
 	private readonly api = inject(EditPieceApi);
 
-	readonly isLoading = signal<boolean>(false);
-	readonly hasError = signal<boolean>(false);
+	private readonly _isLoading = signal<boolean>(false);
+	private readonly _hasError = signal<boolean>(false);
+
+	readonly isLoading = this._isLoading.asReadonly();
+	readonly hasError = this._hasError.asReadonly();
 
 	edit(id: string, payload: EditPiecePayload) {
-		this.isLoading.set(true);
-		this.hasError.set(false);
+		this._isLoading.set(true);
+		this._hasError.set(false);
 		return this.api.edit(id, payload).pipe(
 			catchError(() => {
-				this.hasError.set(true);
+				this._hasError.set(true);
 				return of(null);
 			}),
 			finalize(() => {
-				this.isLoading.set(false);
+				this._isLoading.set(false);
 			}),
 		);
 	}

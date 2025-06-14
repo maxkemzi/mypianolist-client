@@ -14,24 +14,26 @@ export class FetchComposerByIdService {
 	private readonly api = inject(FetchComposerByIdApi);
 	private readonly state = inject(TransferState);
 
-	readonly data = signal<Composer | null | undefined>(undefined);
+	private readonly _data = signal<Composer | null | undefined>(undefined);
+
+	readonly data = this._data.asReadonly();
 
 	fetch(id: string): Observable<Composer | null> {
 		const key = this.getDataKey(id);
 
 		const stored = this.state.get(key, undefined);
 		if (stored) {
-			this.data.set(stored);
+			this._data.set(stored);
 			return of(stored);
 		}
 
 		return this.api.fetchById(id).pipe(
 			tap(res => {
-				this.data.set(res);
+				this._data.set(res);
 				this.state.set(key, res);
 			}),
 			catchError(() => {
-				this.data.set(null);
+				this._data.set(null);
 				this.state.remove(key);
 				return of(null);
 			}),

@@ -10,7 +10,10 @@ export class AuthService {
 	private readonly api = inject(AuthApi);
 	private readonly cookies = inject(CookieService);
 	private readonly platformId = inject(PLATFORM_ID);
-	user = signal<AuthUser | null | undefined>(undefined);
+
+	private readonly _user = signal<AuthUser | null | undefined>(undefined);
+
+	readonly user = this._user.asReadonly();
 
 	signUp(body: {username: string; email: string; password: string}) {
 		return this.api.signUp(body);
@@ -19,7 +22,7 @@ export class AuthService {
 	logIn(body: {username: string; password: string}) {
 		return this.api.logIn(body).pipe(
 			tap(data => {
-				this.user.set(data.user);
+				this._user.set(data.user);
 				this.setAccessToken(data.accessToken);
 			}),
 		);
@@ -32,12 +35,12 @@ export class AuthService {
 
 		return this.api.refresh().pipe(
 			tap(data => {
-				this.user.set(data.user);
+				this._user.set(data.user);
 				this.setAccessToken(data.accessToken);
 			}),
 			map(data => data.user),
 			catchError(() => {
-				this.user.set(null);
+				this._user.set(null);
 				this.deleteAccessToken();
 
 				return of(null);
@@ -48,7 +51,7 @@ export class AuthService {
 	logOut() {
 		return this.api.logOut().pipe(
 			tap(() => {
-				this.user.set(null);
+				this._user.set(null);
 				this.deleteAccessToken();
 			}),
 		);
