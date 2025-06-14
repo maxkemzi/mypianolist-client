@@ -1,4 +1,4 @@
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpParams} from '@angular/common/http';
 import {inject, Injectable} from '@angular/core';
 import {PieceStatusType, UserPiece} from '@entities/piece';
 import {Api, PaginationResponse} from '@shared/lib';
@@ -14,7 +14,7 @@ export interface FetchParams {
 
 @Injectable({providedIn: 'root'})
 export class FetchPieceListApi {
-	private readonly api = inject(HttpClient);
+	private readonly api = inject(Api);
 
 	fetchAll({search, genre, page, limit, status}: FetchParams = {}) {
 		const params: Record<string, string | number> = {};
