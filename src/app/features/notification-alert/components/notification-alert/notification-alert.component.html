@@ -1,0 +1,7 @@
+<div class="flex items-center gap-2 overflow-hidden">
+	<i appTypography [class]="iconClasses" [color]="typographyColor"></i>
+	<p class="truncate" [color]="typographyColor">{{ alert().message }}</p>
+</div>
+<button type="button" (click)="onClose()">
+	<i appTypography class="ph-bold ph-x" color="surfaceLighter"></i>
+</button>

@@ -13,7 +13,7 @@ export class ThemeUtils {
 			[ThemeColor.TEXT]: 'bg-text',
 			[ThemeColor.SUCCESS]: 'bg-success',
 			[ThemeColor.INFO]: 'bg-info',
-			[ThemeColor.DANGER]: 'bg-danger',
+			[ThemeColor.ERROR]: 'bg-error',
 			[ThemeColor.DISABLED]: 'bg-disabled',
 		};
 

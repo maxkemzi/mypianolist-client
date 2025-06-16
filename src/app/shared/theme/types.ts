@@ -7,7 +7,7 @@ const ThemeColor = {
 	TEXT: 'text',
 	SUCCESS: 'success',
 	INFO: 'info',
-	DANGER: 'danger',
+	ERROR: 'error',
 	DISABLED: 'disabled',
 } as const;
 

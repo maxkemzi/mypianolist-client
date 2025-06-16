@@ -18,7 +18,7 @@ export class PieceUtils {
 		const STATUS_TO_COLOR_MAPPING: Record<PieceStatusType, ThemeColorType> = {
 			[PieceStatus.CURRENTLY_LEARNING]: 'success',
 			[PieceStatus.COMPLETED]: 'info',
-			[PieceStatus.DROPPED]: 'danger',
+			[PieceStatus.DROPPED]: 'error',
 			[PieceStatus.PLAN_TO_LEARN]: 'disabled',
 		};
 		return STATUS_TO_COLOR_MAPPING[status];

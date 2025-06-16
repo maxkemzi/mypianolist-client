@@ -1,0 +1,11 @@
+@if (items().length !== 0) {
+	<div class="fixed top-0 right-0 z-50 p-4">
+		<ul class="flex flex-col gap-3">
+			@for (item of items(); track item.id) {
+				<li>
+					<app-notification-alert [alert]="item" />
+				</li>
+			}
+		</ul>
+	</div>
+}
