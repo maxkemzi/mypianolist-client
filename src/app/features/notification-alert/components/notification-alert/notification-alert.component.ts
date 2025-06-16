@@ -19,7 +19,7 @@ export class NotificationAlertComponent {
 	get classes() {
 		const {status} = this.alert();
 		return twJoin(
-			'w-62 flex items-center justify-between gap-3 p-4 rounded-lg bg-background shadow-lg border-1 border-surface border-t-2 overflow-hidden',
+			'max-w-screen flex items-center justify-between gap-3 p-4 rounded-lg bg-background shadow-lg border-1 border-surface border-t-2 overflow-hidden',
 			status === 'error' && 'border-t-error',
 			status === 'success' && 'border-t-success',
 			status === 'warning' && 'border-t-warning',

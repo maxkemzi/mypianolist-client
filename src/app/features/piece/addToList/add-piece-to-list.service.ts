@@ -1,17 +1,18 @@
-import {inject, Injectable, signal} from '@angular/core';
+import {computed, inject, Injectable, signal} from '@angular/core';
 import {PieceStatusType} from '@entities/piece';
-import {catchError, finalize, of} from 'rxjs';
+import {RequestStatus} from '@shared/lib';
+import {catchError, of, tap} from 'rxjs';
 import {AddPieceToListApi} from './add-piece-to-list.api';
 
 @Injectable({providedIn: 'root'})
 export class AddPieceToListService {
 	private readonly api = inject(AddPieceToListApi);
 
-	private readonly _isLoading = signal<boolean>(false);
-	private readonly _hasError = signal<boolean>(false);
+	private readonly _status = signal<RequestStatus>('idle');
 
-	readonly isLoading = this._isLoading.asReadonly();
-	readonly hasError = this._hasError.asReadonly();
+	readonly isLoading = computed(() => this._status() === 'loading');
+	readonly hasError = computed(() => this._status() === 'error');
+	readonly hasSuccess = computed(() => this._status() === 'success');
 
 	add(data: {
 		id: string;
@@ -20,16 +21,19 @@ export class AddPieceToListService {
 		startedAt: string;
 		finishedAt: string;
 	}) {
-		this._isLoading.set(true);
-		this._hasError.set(false);
+		this._status.set('loading');
 		return this.api.add(data).pipe(
+			tap(() => {
+				this._status.set('success');
+			}),
 			catchError(() => {
-				this._hasError.set(true);
+				this._status.set('error');
 				return of(null);
 			}),
-			finalize(() => {
-				this._isLoading.set(false);
-			}),
 		);
+	}
+
+	resetStatus() {
+		this._status.set('idle');
 	}
 }
