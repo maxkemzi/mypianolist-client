@@ -3,12 +3,18 @@ import {
 	DestroyRef,
 	effect,
 	inject,
+	input,
 	OnInit,
 	signal,
 } from '@angular/core';
-import {ActivatedRoute, RouterLink} from '@angular/router';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {RouterLink} from '@angular/router';
 import {Composer, ComposerUtils} from '@entities/composer';
 import {Piece, PieceStatusType, PieceUtils, UserPiece} from '@entities/piece';
+import {
+	EditPieceButtonComponent,
+	EditPieceFormComponent,
+} from '@features/piece/edit';
 import {FetchPieceListService} from '@features/piece/fetchList';
 import {FetchPieceStatusesService} from '@features/piece/fetchStatuses';
 import {
@@ -23,11 +29,6 @@ import {
 } from '@shared/components';
 import {ClickOutsideDirective} from '@shared/lib';
 import {ThemeUtils} from '@shared/theme';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {
-	EditPieceButtonComponent,
-	EditPieceFormComponent,
-} from '@features/piece/edit';
 
 @Component({
 	selector: 'app-list-page',
@@ -46,7 +47,6 @@ import {
 	],
 })
 export class ListPageComponent implements OnInit {
-	private readonly route = inject(ActivatedRoute);
 	private readonly fetchPieceList = inject(FetchPieceListService);
 	private readonly fetchPieceStatuses = inject(FetchPieceStatusesService);
 	private readonly pieceUtils = inject(PieceUtils);
@@ -68,7 +68,8 @@ export class ListPageComponent implements OnInit {
 		hasError: this.fetchPieceStatuses.hasError,
 	};
 
-	readonly status = signal<PieceStatusType | null | undefined>(undefined);
+	readonly status = input<PieceStatusType>();
+
 	readonly pieceToRemove = signal<Piece | null>(null);
 	readonly pieceToEdit = signal<UserPiece | null>(null);
 
@@ -77,13 +78,6 @@ export class ListPageComponent implements OnInit {
 			.fetch()
 			.pipe(takeUntilDestroyed(this.destroyRef))
 			.subscribe();
-		this.route.queryParamMap
-			.pipe(takeUntilDestroyed(this.destroyRef))
-			.subscribe(params => {
-				const status = params.get('status') as PieceStatusType | null;
-
-				this.status.set(status);
-			});
 	}
 
 	constructor() {
@@ -136,7 +130,7 @@ export class ListPageComponent implements OnInit {
 
 	private fetchList() {
 		this.fetchPieceList
-			.fetch({status: this.status() ?? undefined})
+			.fetch({status: this.status()})
 			.pipe(takeUntilDestroyed(this.destroyRef))
 			.subscribe();
 	}

@@ -4,9 +4,11 @@ import {
 	DestroyRef,
 	effect,
 	inject,
+	input,
 	OnInit,
 	signal,
 } from '@angular/core';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {FormsModule} from '@angular/forms';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {Piece, PieceCardComponent, PieceSort} from '@entities/piece';
@@ -16,6 +18,7 @@ import {
 	AddPieceToListFormComponent,
 } from '@features/piece/addToList';
 import {FetchAllPiecesService} from '@features/piece/fetchAll';
+import {FetchPieceListService} from '@features/piece/fetchList';
 import {
 	ContainerComponent,
 	DropdownComponent,
@@ -26,8 +29,6 @@ import {
 } from '@shared/components';
 import {ClickOutsideDirective} from '@shared/lib';
 import {ButtonComponent} from '../../shared/components/button/button.component';
-import {FetchPieceListService} from '@features/piece/fetchList';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 @Component({
 	selector: 'app-pieces-page',
@@ -48,19 +49,13 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 		ModalContainerComponent,
 	],
 })
-export class PiecesPageComponent implements OnInit {
+export class PiecesPageComponent {
 	private readonly router = inject(Router);
 	private readonly route = inject(ActivatedRoute);
 	private readonly fetchAllPieces = inject(FetchAllPiecesService);
 	private readonly fetchPieceList = inject(FetchPieceListService);
 	private readonly destroyRef = inject(DestroyRef);
 
-	readonly genre = signal<string | null | undefined>(undefined);
-	readonly sort = signal<PieceSort>('created_at');
-	readonly search = signal<string | null | undefined>(undefined);
-	readonly page = signal<number>(0);
-
-	readonly title = computed(() => `${this.genre() ?? 'all'} pieces`);
 	readonly pieces = {
 		data: this.fetchAllPieces.data,
 		page: this.fetchAllPieces.page,
@@ -70,6 +65,12 @@ export class PiecesPageComponent implements OnInit {
 		hasError: this.fetchAllPieces.hasError,
 	};
 
+	readonly genre = input<string>();
+	readonly title = computed(() => `${this.genre() ?? 'all'} pieces`);
+	readonly sort = input<PieceSort>();
+	readonly search = input<string>();
+	readonly page = input<number>();
+
 	readonly searchValue = signal<string>('');
 	readonly sortDropdownIsOpen = signal<boolean>(false);
 	readonly pieceToAddToList = signal<Piece | null>(null);
@@ -78,30 +79,13 @@ export class PiecesPageComponent implements OnInit {
 		return 'text-2xl text-primary absolute top-1/2 left-4 translate-y-[-50%]';
 	}
 
-	ngOnInit(): void {
-		this.route.queryParamMap
-			.pipe(takeUntilDestroyed(this.destroyRef))
-			.subscribe(params => {
-				const genre = params.get('genre');
-				const sort =
-					(params.get('sort') as PieceSort | null) ?? 'created_at';
-				const search = params.get('search');
-				const page = params.get('page') ? Number(params.get('page')) : 0;
-
-				this.genre.set(genre);
-				this.sort.set(sort);
-				this.search.set(search);
-				this.page.set(page);
-			});
-	}
-
 	constructor() {
 		effect(() => {
 			this.fetchAllPieces
 				.fetch({
-					genre: this.genre() ?? undefined,
+					genre: this.genre(),
 					sort: this.sort(),
-					search: this.search() ?? undefined,
+					search: this.search(),
 					page: this.page(),
 				})
 				.pipe(takeUntilDestroyed(this.destroyRef))
@@ -110,16 +94,18 @@ export class PiecesPageComponent implements OnInit {
 	}
 
 	onSearch() {
-		this.addQueryParams({search: this.searchValue(), page: null});
+		if (this.searchValue().length !== 0) {
+			this.addQueryParams({search: this.searchValue(), page: undefined});
+		}
 	}
 
 	onSearchInput(event: Event) {
 		const value = (event.target as HTMLInputElement).value;
-		this.searchValue.set(value);
+		this.searchValue.set(value.trim());
 	}
 
 	onSearchClear() {
-		this.addQueryParams({search: null, page: null});
+		this.addQueryParams({search: undefined, page: undefined});
 		this.searchValue.set('');
 	}
 
@@ -131,7 +117,7 @@ export class PiecesPageComponent implements OnInit {
 		this.sortDropdownIsOpen.set(false);
 	}
 
-	onSortClick(sort: PieceSort | null) {
+	onSortClick(sort: PieceSort | undefined) {
 		this.addQueryParams({sort});
 		this.sortDropdownIsOpen.set(false);
 	}

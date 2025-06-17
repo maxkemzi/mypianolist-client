@@ -13,7 +13,9 @@
 			<ul class="flex justify-center items-center gap-4">
 				<li>
 					<a routerLink="/list">
-						<app-tab [isActive]="status() === null">All pieces</app-tab>
+						<app-tab [isActive]="status() === undefined"
+							>All pieces</app-tab
+						>
 					</a>
 				</li>
 				@for (statusItem of pieceStatuses.data(); track statusItem) {

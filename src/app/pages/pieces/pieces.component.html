@@ -4,7 +4,7 @@
 		<h1 class="mb-7 text-center capitalize">{{ title() }}</h1>
 		<form class="flex justify-center mb-7" (ngSubmit)="onSearch()">
 			<div class="relative">
-				@if (searchValue().trim().length > 0) {
+				@if (searchValue().length !== 0) {
 					<button
 						type="button"
 						(click)="onSearchClear()"
@@ -58,8 +58,8 @@
 						(appClickOutside)="closeSortDropdown()"
 					>
 						<app-dropdown-item
-							[isActive]="sort() === 'created_at'"
-							(appClick)="onSortClick(null)"
+							[isActive]="sort() === undefined"
+							(appClick)="onSortClick(undefined)"
 							>Date</app-dropdown-item
 						>
 
