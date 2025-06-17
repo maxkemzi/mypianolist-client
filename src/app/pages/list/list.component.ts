@@ -9,8 +9,14 @@ import {
 } from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {RouterLink} from '@angular/router';
-import {Composer, ComposerUtils} from '@entities/composer';
-import {Piece, PieceStatusType, PieceUtils, UserPiece} from '@entities/piece';
+import {
+	Piece,
+	PieceListTableHeadComponent,
+	PieceListTableRowComponent,
+	PieceStatusType,
+	PieceUtils,
+	UserPiece,
+} from '@entities/piece';
 import {
 	EditPieceButtonComponent,
 	EditPieceFormComponent,
@@ -28,7 +34,6 @@ import {
 	TypographyComponent,
 } from '@shared/components';
 import {ClickOutsideDirective} from '@shared/lib';
-import {ThemeUtils} from '@shared/theme';
 
 @Component({
 	selector: 'app-list-page',
@@ -44,14 +49,14 @@ import {ThemeUtils} from '@shared/theme';
 		ClickOutsideDirective,
 		EditPieceButtonComponent,
 		EditPieceFormComponent,
+		PieceListTableRowComponent,
+		PieceListTableHeadComponent,
 	],
 })
 export class ListPageComponent implements OnInit {
 	private readonly fetchPieceList = inject(FetchPieceListService);
 	private readonly fetchPieceStatuses = inject(FetchPieceStatusesService);
 	private readonly pieceUtils = inject(PieceUtils);
-	private readonly themeUtils = inject(ThemeUtils);
-	private readonly composerUtils = inject(ComposerUtils);
 	private readonly destroyRef = inject(DestroyRef);
 
 	readonly pieceList = {
@@ -88,16 +93,6 @@ export class ListPageComponent implements OnInit {
 
 	getStatusText(status: PieceStatusType) {
 		return this.pieceUtils.statusToText(status);
-	}
-
-	getStatusBgColorClass(status: PieceStatusType) {
-		return this.themeUtils.colorToBgClass(
-			this.pieceUtils.statusToColor(status),
-		);
-	}
-
-	getComposerName(composer: Composer) {
-		return this.composerUtils.getCompactName(composer);
 	}
 
 	openRemovePieceAlert(piece: Piece) {

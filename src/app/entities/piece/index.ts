@@ -9,3 +9,5 @@ export type {
 	CompletePiece,
 	PieceSort,
 } from './piece.model';
+export {PieceListTableRowComponent} from './components/piece-list-table-row/piece-list-table-row.component';
+export {PieceListTableHeadComponent} from './components/piece-list-table-head/piece-list-table-head.component';

@@ -31,51 +31,18 @@
 		}
 
 		<table class="w-full mt-7">
-			<thead>
-				<tr
-					appTypography
-					class="text-left border-b-1 border-surface *:not-first:p-4 *:font-semibold"
-				>
-					<th class="w-1"></th>
-					<th>#</th>
-					<th>Title</th>
-					<th>Composer</th>
-					<th>Genre</th>
-					<th>Score</th>
-					<th></th>
-				</tr>
-			</thead>
+			<thead appPieceListTableHead></thead>
 			<tbody>
 				@for (piece of pieceList.data(); track piece.id; let i = $index) {
-					<tr
-						class="even:bg-surface capitalize *:text-left *:not-first:p-4"
-					>
-						<td
-							[class]="'w-1' + ` ${getStatusBgColorClass(piece.status)}`"
-						></td>
-						<td>{{ i + 1 }}</td>
-						<td>
-							<a [routerLink]="['/pieces', piece.id]">
-								<span weight="medium" color="primary">
-									{{ piece.title }}
-								</span>
-							</a>
-						</td>
-						<td>{{ getComposerName(piece.composer) }}</td>
-						<td>{{ piece.genre.name }}</td>
-						<td>
-							<p weight="medium">
-								{{ piece.score || '-' }}
-							</p>
-						</td>
-						<td class="flex gap-2">
+					<tr appPieceListTableRow [number]="i + 1" [piece]="piece">
+						<div class="flex gap-2" slot="actions">
 							<app-edit-piece-button
 								(appClick)="openEditPieceModal(piece)"
 							/>
 							<app-remove-piece-from-list-button
 								(appClick)="openRemovePieceAlert(piece)"
 							/>
-						</td>
+						</div>
 					</tr>
 				}
 			</tbody>

@@ -1,0 +1,19 @@
+<td [class]="'w-1' + ` ${statusBgColorClass()}`"></td>
+<td>{{ number() }}</td>
+<td>
+	<a [routerLink]="['/pieces', piece().id]">
+		<span weight="medium" color="primary">
+			{{ piece().title }}
+		</span>
+	</a>
+</td>
+<td>{{ composerName() }}</td>
+<td>{{ piece().genre.name }}</td>
+<td>
+	<p weight="medium">
+		{{ piece().score || '-' }}
+	</p>
+</td>
+<td>
+	<ng-content select="[slot=actions]" />
+</td>
