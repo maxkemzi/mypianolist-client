@@ -48,17 +48,26 @@
 			<tbody>
 				@for (piece of pieceList.data(); track piece.id; let i = $index) {
 					<tr
-						appTypography
 						class="even:bg-surface capitalize *:text-left *:not-first:p-4"
 					>
 						<td
 							[class]="'w-1' + ` ${getStatusBgColorClass(piece.status)}`"
 						></td>
 						<td>{{ i + 1 }}</td>
-						<td>{{ piece.title }}</td>
+						<td>
+							<a [routerLink]="['/pieces', piece.id]">
+								<span weight="medium" color="primary">
+									{{ piece.title }}
+								</span>
+							</a>
+						</td>
 						<td>{{ getComposerName(piece.composer) }}</td>
 						<td>{{ piece.genre.name }}</td>
-						<td>{{ piece.score || '-' }}</td>
+						<td>
+							<p weight="medium">
+								{{ piece.score || '-' }}
+							</p>
+						</td>
 						<td class="flex gap-2">
 							<app-edit-piece-button
 								(appClick)="openEditPieceModal(piece)"
