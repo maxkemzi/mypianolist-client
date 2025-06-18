@@ -10,7 +10,25 @@
 		}
 
 		@if (piece.data(); as piece) {
-			<app-piece-details [piece]="piece" />
+			<app-piece-details [piece]="piece">
+				<div class="mb-4 flex gap-2" slot="actions">
+					<button appButton size="sm" (click)="openAddToListModal()">
+						Add to List
+					</button>
+				</div>
+			</app-piece-details>
 		}
 	</div>
 </section>
+
+@if (addToListModalIsOpen()) {
+	@if (piece.data(); as piece) {
+		<div appModalContainer>
+			<app-add-piece-to-list-form
+				[piece]="piece"
+				(appSubmit)="onAddToListSubmit()"
+				(appClickOutside)="closeAddToListModal()"
+			/>
+		</div>
+	}
+}

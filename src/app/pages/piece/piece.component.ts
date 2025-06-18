@@ -1,25 +1,63 @@
-import {Component, DestroyRef, inject, input, OnInit} from '@angular/core';
+import {
+	Component,
+	DestroyRef,
+	inject,
+	input,
+	OnInit,
+	signal,
+} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {PieceDetailsComponent} from '@entities/piece';
+import {AddPieceToListFormComponent} from '@features/piece/addToList';
 import {FetchPieceByIdService} from '@features/piece/fetchById';
-import {ContainerComponent, TypographyComponent} from '@shared/components';
+import {FetchPieceListService} from '@features/piece/fetchList';
+import {
+	ButtonComponent,
+	ContainerComponent,
+	ModalContainerComponent,
+	TypographyComponent,
+} from '@shared/components';
+import {ClickOutsideDirective} from '@shared/lib';
 
 @Component({
 	selector: 'app-piece-page',
 	templateUrl: './piece.component.html',
-	imports: [ContainerComponent, TypographyComponent, PieceDetailsComponent],
+	imports: [
+		ContainerComponent,
+		TypographyComponent,
+		PieceDetailsComponent,
+		ButtonComponent,
+		AddPieceToListFormComponent,
+		ModalContainerComponent,
+		ClickOutsideDirective,
+	],
 })
 export class PiecePageComponent implements OnInit {
 	private readonly fetchPieceById = inject(FetchPieceByIdService);
+	private readonly fetchPieceList = inject(FetchPieceListService);
 	private readonly destroyRef = inject(DestroyRef);
 
 	readonly id = input.required<string>();
 	readonly piece = {data: this.fetchPieceById.data};
+	readonly addToListModalIsOpen = signal<boolean>(false);
 
 	ngOnInit() {
 		this.fetchPieceById
 			.fetch(this.id())
 			.pipe(takeUntilDestroyed(this.destroyRef))
 			.subscribe();
+	}
+
+	onAddToListSubmit() {
+		this.fetchPieceList.clearCache();
+		this.closeAddToListModal();
+	}
+
+	openAddToListModal() {
+		this.addToListModalIsOpen.set(true);
+	}
+
+	closeAddToListModal() {
+		this.addToListModalIsOpen.set(false);
 	}
 }
