@@ -8,12 +8,14 @@ import {
 } from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {PieceDetailsComponent} from '@entities/piece';
+import {AddPieceToFavoritesAlertComponent} from '@features/piece/addToFavorites';
 import {AddPieceToListFormComponent} from '@features/piece/addToList';
 import {FetchPieceByIdService} from '@features/piece/fetchById';
 import {FetchPieceListService} from '@features/piece/fetchList';
 import {
 	ButtonComponent,
 	ContainerComponent,
+	ModalComponent,
 	ModalContainerComponent,
 	TypographyComponent,
 } from '@shared/components';
@@ -28,6 +30,7 @@ import {ClickOutsideDirective} from '@shared/lib';
 		PieceDetailsComponent,
 		ButtonComponent,
 		AddPieceToListFormComponent,
+		AddPieceToFavoritesAlertComponent,
 		ModalContainerComponent,
 		ClickOutsideDirective,
 	],
@@ -40,6 +43,7 @@ export class PiecePageComponent implements OnInit {
 	readonly id = input.required<string>();
 	readonly piece = {data: this.fetchPieceById.data};
 	readonly addToListModalIsOpen = signal<boolean>(false);
+	readonly addToFavoritesAlertIsOpen = signal<boolean>(false);
 
 	ngOnInit() {
 		this.fetchPieceById
@@ -59,5 +63,17 @@ export class PiecePageComponent implements OnInit {
 
 	closeAddToListModal() {
 		this.addToListModalIsOpen.set(false);
+	}
+
+	onAddToFavorites() {
+		this.closeAddToFavoritesAlert();
+	}
+
+	openAddToFavoritesAlert() {
+		this.addToFavoritesAlertIsOpen.set(true);
+	}
+
+	closeAddToFavoritesAlert() {
+		this.addToFavoritesAlertIsOpen.set(false);
 	}
 }

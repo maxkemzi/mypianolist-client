@@ -15,6 +15,20 @@
 					<button appButton size="sm" (click)="openAddToListModal()">
 						Add to List
 					</button>
+					@if (!piece.inFavorites) {
+						<button
+							appButton
+							size="sm"
+							variant="outline"
+							(click)="openAddToFavoritesAlert()"
+						>
+							Add to Favorites
+						</button>
+					} @else {
+						<button appButton size="sm" variant="outline">
+							Remove from Favorites
+						</button>
+					}
 				</div>
 			</app-piece-details>
 		}
@@ -28,6 +42,19 @@
 				[piece]="piece"
 				(appSubmit)="onAddToListSubmit()"
 				(appClickOutside)="closeAddToListModal()"
+			/>
+		</div>
+	}
+}
+
+@if (addToFavoritesAlertIsOpen()) {
+	@if (piece.data(); as piece) {
+		<div appModalContainer>
+			<app-add-piece-to-favorites-alert
+				[piece]="piece"
+				(appConfirm)="onAddToFavorites()"
+				(appCancel)="closeAddToFavoritesAlert()"
+				(appClickOutside)="closeAddToFavoritesAlert()"
 			/>
 		</div>
 	}
