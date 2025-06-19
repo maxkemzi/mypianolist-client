@@ -15,7 +15,6 @@ import {FetchPieceListService} from '@features/piece/fetchList';
 import {
 	ButtonComponent,
 	ContainerComponent,
-	ModalComponent,
 	ModalContainerComponent,
 	TypographyComponent,
 } from '@shared/components';
@@ -41,15 +40,16 @@ export class PiecePageComponent implements OnInit {
 	private readonly destroyRef = inject(DestroyRef);
 
 	readonly id = input.required<string>();
-	readonly piece = {data: this.fetchPieceById.data};
+	readonly piece = {
+		data: this.fetchPieceById.data,
+		isLoading: this.fetchPieceById.isLoading,
+		hasError: this.fetchPieceById.hasError,
+	};
 	readonly addToListModalIsOpen = signal<boolean>(false);
 	readonly addToFavoritesAlertIsOpen = signal<boolean>(false);
 
 	ngOnInit() {
-		this.fetchPieceById
-			.fetch(this.id())
-			.pipe(takeUntilDestroyed(this.destroyRef))
-			.subscribe();
+		this.fetch();
 	}
 
 	onAddToListSubmit() {
@@ -66,6 +66,7 @@ export class PiecePageComponent implements OnInit {
 	}
 
 	onAddToFavorites() {
+		this.fetch();
 		this.closeAddToFavoritesAlert();
 	}
 
@@ -75,5 +76,12 @@ export class PiecePageComponent implements OnInit {
 
 	closeAddToFavoritesAlert() {
 		this.addToFavoritesAlertIsOpen.set(false);
+	}
+
+	private fetch() {
+		this.fetchPieceById
+			.fetch(this.id())
+			.pipe(takeUntilDestroyed(this.destroyRef))
+			.subscribe();
 	}
 }

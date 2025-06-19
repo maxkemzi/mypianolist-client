@@ -1,6 +1,6 @@
 import {inject, Injectable} from '@angular/core';
-import {CachedFetchService} from '@shared/lib';
-import {catchError, finalize, Observable, of, tap} from 'rxjs';
+import {DataCacheService, withCache} from '@shared/lib';
+import {catchError, finalize, map, Observable, of, tap} from 'rxjs';
 import {FetchPiecesService} from '../fetch-pieces.service';
 import {
 	FetchParams,
@@ -13,34 +13,38 @@ export class FetchPieceListService extends FetchPiecesService<
 	FetchResponse,
 	FetchParams
 > {
-	private readonly cachedFetch = inject(CachedFetchService);
+	private readonly dataCache = inject(DataCacheService);
 	private readonly api = inject(FetchPieceListApi);
 	private readonly CACHE_PREFIX = 'piece_list';
 
 	fetch(params: FetchParams = {}): Observable<FetchResponse | null> {
 		this._isLoading.set(true);
 		this._hasError.set(false);
-		return this.cachedFetch
-			.buildFetch<
-				FetchResponse,
-				FetchParams
-			>(this.api.fetchAll({limit: this._limit(), ...params}), {prefix: this.CACHE_PREFIX, params})
-			.pipe(
-				tap(res => {
-					this.setValues(res);
-				}),
-				catchError(() => {
-					this._hasError.set(true);
-					this.resetValues();
-					return of(null);
-				}),
-				finalize(() => {
+		return this.api.fetchAll({limit: this._limit(), ...params}).pipe(
+			withCache(
+				() => this.dataCache.get(this.CACHE_PREFIX, params),
+				value => this.dataCache.set(this.CACHE_PREFIX, params, value),
+			),
+			tap(res => {
+				this.setValues(res.data);
+
+				if (res.fromCache) {
 					this._isLoading.set(false);
-				}),
-			);
+				}
+			}),
+			map(res => res.data),
+			catchError(() => {
+				this._hasError.set(true);
+				this.resetValues();
+				return of();
+			}),
+			finalize(() => {
+				this._isLoading.set(false);
+			}),
+		);
 	}
 
 	clearCache() {
-		this.cachedFetch.clearCache(this.CACHE_PREFIX);
+		this.dataCache.removeByPrefix(this.CACHE_PREFIX);
 	}
 }

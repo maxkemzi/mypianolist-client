@@ -1,8 +1,12 @@
 <div class="h-[88px] mb-10"></div>
 <section>
 	<div appContainer size="md">
-		@if (piece.data() === undefined) {
+		@if (piece.isLoading()) {
 			<p>Loading...</p>
+		}
+
+		@if (piece.hasError()) {
+			<p>Something went wrong fetching the piece.</p>
 		}
 
 		@if (piece.data() === null) {
