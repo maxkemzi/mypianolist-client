@@ -7,11 +7,13 @@ import {
 	signal,
 } from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {PieceDetailsComponent} from '@entities/piece';
+import {
+	AddPieceToListButtonComponent,
+	PieceDetailsComponent,
+} from '@entities/piece';
 import {AddPieceToFavoritesAlertComponent} from '@features/piece/addToFavorites';
 import {AddPieceToListFormComponent} from '@features/piece/addToList';
 import {FetchPieceByIdService} from '@features/piece/fetchById';
-import {FetchPieceListService} from '@features/piece/fetchList';
 import {
 	ButtonComponent,
 	ContainerComponent,
@@ -32,11 +34,11 @@ import {ClickOutsideDirective} from '@shared/lib';
 		AddPieceToFavoritesAlertComponent,
 		ModalContainerComponent,
 		ClickOutsideDirective,
+		AddPieceToListButtonComponent,
 	],
 })
 export class PiecePageComponent implements OnInit {
 	private readonly fetchPieceById = inject(FetchPieceByIdService);
-	private readonly fetchPieceList = inject(FetchPieceListService);
 	private readonly destroyRef = inject(DestroyRef);
 
 	readonly id = input.required<string>();
@@ -53,7 +55,6 @@ export class PiecePageComponent implements OnInit {
 	}
 
 	onAddToListSubmit() {
-		this.fetchPieceList.clearCache();
 		this.closeAddToListModal();
 	}
 

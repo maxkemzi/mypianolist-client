@@ -11,3 +11,4 @@ export type {
 } from './piece.model';
 export {PieceListTableRowComponent} from './components/piece-list-table-row/piece-list-table-row.component';
 export {PieceListTableHeadComponent} from './components/piece-list-table-head/piece-list-table-head.component';
+export {AddPieceToListButtonComponent} from './components/add-piece-to-list-button/add-piece-to-list-button.component';

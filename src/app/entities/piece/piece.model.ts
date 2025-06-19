@@ -15,6 +15,7 @@ export interface CompletePiece extends Piece {
 	favorites: number;
 	learners: number;
 	inFavorites?: boolean;
+	status?: PieceStatusType;
 }
 
 export const PieceStatus = {

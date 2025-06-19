@@ -16,9 +16,10 @@
 		@if (piece.data(); as piece) {
 			<app-piece-details [piece]="piece">
 				<div class="mb-4 flex gap-2" slot="actions">
-					<button appButton size="sm" (click)="openAddToListModal()">
-						Add to List
-					</button>
+					<app-add-piece-to-list-button
+						[status]="piece.status"
+						(appClick)="openAddToListModal()"
+					/>
 					@if (!piece.inFavorites) {
 						<button
 							appButton

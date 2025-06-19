@@ -95,6 +95,7 @@
 					>
 						<ng-container slot="bottom-right">
 							<app-add-piece-to-list-button
+								[status]="piece.status"
 								(appClick)="openAddToListModal(piece)"
 							/>
 						</ng-container>

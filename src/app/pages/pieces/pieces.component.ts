@@ -5,18 +5,19 @@ import {
 	effect,
 	inject,
 	input,
-	OnInit,
 	signal,
 } from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {FormsModule} from '@angular/forms';
 import {ActivatedRoute, Params, Router} from '@angular/router';
-import {Piece, PieceCardComponent, PieceSort} from '@entities/piece';
-import {PaginationComponent} from '@features/pagination';
 import {
 	AddPieceToListButtonComponent,
-	AddPieceToListFormComponent,
-} from '@features/piece/addToList';
+	Piece,
+	PieceCardComponent,
+	PieceSort,
+} from '@entities/piece';
+import {PaginationComponent} from '@features/pagination';
+import {AddPieceToListFormComponent} from '@features/piece/addToList';
 import {FetchAllPiecesService} from '@features/piece/fetchAll';
 import {FetchPieceListService} from '@features/piece/fetchList';
 import {
@@ -44,9 +45,9 @@ import {ButtonComponent} from '../../shared/components/button/button.component';
 		FormsModule,
 		ClickOutsideDirective,
 		PaginationComponent,
-		AddPieceToListButtonComponent,
 		AddPieceToListFormComponent,
 		ModalContainerComponent,
+		AddPieceToListButtonComponent,
 	],
 })
 export class PiecesPageComponent {
@@ -81,15 +82,7 @@ export class PiecesPageComponent {
 
 	constructor() {
 		effect(() => {
-			this.fetchAllPieces
-				.fetch({
-					genre: this.genre(),
-					sort: this.sort(),
-					search: this.search(),
-					page: this.page(),
-				})
-				.pipe(takeUntilDestroyed(this.destroyRef))
-				.subscribe();
+			this.fetch();
 		});
 	}
 
@@ -135,8 +128,20 @@ export class PiecesPageComponent {
 	}
 
 	onAddToListSubmit() {
-		this.fetchPieceList.clearCache();
+		this.fetch();
 		this.closeAddToListModal();
+	}
+
+	private fetch() {
+		this.fetchAllPieces
+			.fetch({
+				genre: this.genre(),
+				sort: this.sort(),
+				search: this.search(),
+				page: this.page(),
+			})
+			.pipe(takeUntilDestroyed(this.destroyRef))
+			.subscribe();
 	}
 
 	private addQueryParams(params: Params) {

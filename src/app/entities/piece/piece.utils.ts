@@ -6,7 +6,7 @@ import {PieceStatus, PieceStatusType} from './piece.model';
 export class PieceUtils {
 	statusToText(status: PieceStatusType): string {
 		const STATUS_TO_TEXT_MAPPING: Record<PieceStatusType, string> = {
-			[PieceStatus.CURRENTLY_LEARNING]: 'Currently Learning',
+			[PieceStatus.CURRENTLY_LEARNING]: 'Learning',
 			[PieceStatus.COMPLETED]: 'Completed',
 			[PieceStatus.DROPPED]: 'Dropped',
 			[PieceStatus.PLAN_TO_LEARN]: 'Plan to Learn',

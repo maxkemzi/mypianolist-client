@@ -1,0 +1,9 @@
+<button
+	appButton
+	[class]="bgColorClass"
+	size="sm"
+	[disabled]="status() !== undefined"
+	(click)="appClick.emit()"
+>
+	{{ text }}
+</button>

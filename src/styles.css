@@ -35,6 +35,10 @@ button {
 	cursor: pointer;
 }
 
+button:disabled {
+	cursor: auto;
+}
+
 input {
 	color-scheme: dark;
 }

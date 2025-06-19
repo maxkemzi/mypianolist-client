@@ -104,7 +104,6 @@ export class ListPageComponent implements OnInit {
 	}
 
 	onRemovePieceConfirm() {
-		this.fetchPieceList.clearCache();
 		this.fetchList();
 		this.closeRemovePieceAlert();
 	}
@@ -118,7 +117,6 @@ export class ListPageComponent implements OnInit {
 	}
 
 	onEditPieceSubmit() {
-		this.fetchPieceList.clearCache();
 		this.fetchList();
 		this.closeEditPieceModal();
 	}
