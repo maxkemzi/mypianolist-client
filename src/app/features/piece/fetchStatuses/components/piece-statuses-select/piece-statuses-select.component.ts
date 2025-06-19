@@ -41,7 +41,6 @@ export class PieceStatusesSelect implements OnInit, ControlValueAccessor {
 	private readonly pieceUtils = inject(PieceUtils);
 
 	readonly value = signal<PieceStatusType | ''>('');
-	readonly touched = signal<boolean>(false);
 	readonly disabled = signal<boolean>(false);
 	readonly isOpen = signal<boolean>(false);
 	readonly valueLabel = computed(() => {
@@ -78,19 +77,13 @@ export class PieceStatusesSelect implements OnInit, ControlValueAccessor {
 		this.onTouched = fn;
 	}
 
-	markAsTouched() {
-		if (!this.touched()) {
-			this.onTouched();
-			this.touched.set(true);
-		}
-	}
-
 	setDisabledState(isDisabled: boolean): void {
 		this.disabled.set(isDisabled);
 	}
 
 	onClickOutside() {
 		this.isOpen.set(false);
+		this.onTouched();
 	}
 
 	onFocus() {
@@ -100,6 +93,7 @@ export class PieceStatusesSelect implements OnInit, ControlValueAccessor {
 	onSelect(status: PieceStatusType) {
 		this.value.set(status);
 		this.onChange(this.value());
+		this.onTouched();
 
 		this.isOpen.set(false);
 	}

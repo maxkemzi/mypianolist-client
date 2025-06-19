@@ -43,7 +43,6 @@ export class EditPieceFormComponent implements OnInit {
 		{
 			status: new FormControl<PieceStatusType | ''>('', {
 				nonNullable: true,
-				updateOn: 'submit',
 			}),
 			score: new FormControl('', {nonNullable: true}),
 			startedAt: new FormControl('', {nonNullable: true}),
