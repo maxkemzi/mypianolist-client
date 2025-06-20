@@ -1,48 +1,46 @@
-import {
-	Injectable,
-	TransferState,
-	inject,
-	makeStateKey,
-	signal,
-} from '@angular/core';
+import {Injectable, inject, signal} from '@angular/core';
 import {CompleteComposer} from '@entities/composer';
-import {Observable, catchError, of, tap} from 'rxjs';
+import {DataCacheService, withCache} from '@shared/lib';
+import {catchError, finalize, of, tap} from 'rxjs';
 import {FetchComposerByIdApi} from './fetch-composer-by-id.api';
 
 @Injectable({providedIn: 'root'})
 export class FetchComposerByIdService {
 	private readonly api = inject(FetchComposerByIdApi);
-	private readonly state = inject(TransferState);
+	private readonly dataCache = inject(DataCacheService);
+	private readonly CACHE_PREFIX = 'composer';
 
-	private readonly _data = signal<CompleteComposer | null | undefined>(
-		undefined,
-	);
+	private readonly _data = signal<CompleteComposer | null>(null);
+	private readonly _isLoading = signal<boolean>(false);
+	private readonly _hasError = signal<boolean>(false);
 
 	readonly data = this._data.asReadonly();
+	readonly isLoading = this._isLoading.asReadonly();
+	readonly hasError = this._hasError.asReadonly();
 
-	fetch(id: string): Observable<CompleteComposer | null> {
-		const key = this.getDataKey(id);
-
-		const stored = this.state.get(key, undefined);
-		if (stored) {
-			this._data.set(stored);
-			return of(stored);
-		}
-
+	fetch(id: string) {
+		this._isLoading.set(true);
+		this._hasError.set(false);
 		return this.api.fetchById(id).pipe(
+			withCache(
+				() => this.dataCache.get(this.CACHE_PREFIX, {id}),
+				value => this.dataCache.set(this.CACHE_PREFIX, {id}, value),
+			),
 			tap(res => {
-				this._data.set(res);
-				this.state.set(key, res);
+				this._data.set(res.data);
+
+				if (res.fromCache) {
+					this._isLoading.set(false);
+				}
 			}),
 			catchError(() => {
+				this._hasError.set(true);
 				this._data.set(null);
-				this.state.remove(key);
-				return of(null);
+				return of();
+			}),
+			finalize(() => {
+				this._isLoading.set(false);
 			}),
 		);
-	}
-
-	private getDataKey(id: string) {
-		return makeStateKey<CompleteComposer>('composer_' + id);
 	}
 }

@@ -10,6 +10,7 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {ComposerDetailsComponent} from '@entities/composer';
 import {AddComposerToFavoritesAlertComponent} from '@features/composer/addToFavorites';
 import {FetchComposerByIdService} from '@features/composer/fetchById';
+import {RemoveComposerFromFavoritesAlertComponent} from '@features/composer/removeFromFavorites';
 import {
 	ButtonComponent,
 	ContainerComponent,
@@ -29,6 +30,7 @@ import {ClickOutsideDirective} from '@shared/lib';
 		ClickOutsideDirective,
 		ButtonComponent,
 		ModalContainerComponent,
+		RemoveComposerFromFavoritesAlertComponent,
 	],
 })
 export class ComposerPageComponent implements OnInit {
@@ -36,8 +38,13 @@ export class ComposerPageComponent implements OnInit {
 	private readonly destroyRef = inject(DestroyRef);
 
 	readonly id = input.required<string>();
-	readonly composer = {data: this.fetchComposerById.data};
+	readonly composer = {
+		data: this.fetchComposerById.data,
+		isLoading: this.fetchComposerById.isLoading,
+		hasError: this.fetchComposerById.hasError,
+	};
 	readonly addToFavoritesAlertIsOpen = signal<boolean>(false);
+	readonly removeFromFavoritesAlertIsOpen = signal<boolean>(false);
 
 	ngOnInit() {
 		this.fetch();
@@ -54,6 +61,19 @@ export class ComposerPageComponent implements OnInit {
 
 	closeAddToFavoritesAlert() {
 		this.addToFavoritesAlertIsOpen.set(false);
+	}
+
+	onRemoveFromFavorites() {
+		this.fetch();
+		this.closeRemoveFromFavoritesAlert();
+	}
+
+	openRemoveFromFavoritesAlert() {
+		this.removeFromFavoritesAlertIsOpen.set(true);
+	}
+
+	closeRemoveFromFavoritesAlert() {
+		this.removeFromFavoritesAlertIsOpen.set(false);
 	}
 
 	private fetch() {

@@ -1,0 +1,32 @@
+import {computed, inject, Injectable, signal} from '@angular/core';
+import {RequestStatus} from '@shared/lib';
+import {catchError, of, tap} from 'rxjs';
+import {RemoveComposerFromFavoritesApi} from './remove-composer-from-favorites.api';
+
+@Injectable({providedIn: 'root'})
+export class RemoveComposerFromFavoritesService {
+	private readonly api = inject(RemoveComposerFromFavoritesApi);
+
+	private readonly _status = signal<RequestStatus>('idle');
+
+	readonly isLoading = computed(() => this._status() === 'loading');
+	readonly hasError = computed(() => this._status() === 'error');
+	readonly hasSuccess = computed(() => this._status() === 'success');
+
+	remove(id: string) {
+		this._status.set('loading');
+		return this.api.remove(id).pipe(
+			tap(() => {
+				this._status.set('success');
+			}),
+			catchError(() => {
+				this._status.set('error');
+				return of(null);
+			}),
+		);
+	}
+
+	resetStatus() {
+		this._status.set('idle');
+	}
+}

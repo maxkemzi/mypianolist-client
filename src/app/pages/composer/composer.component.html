@@ -1,8 +1,12 @@
 <div class="h-[88px] mb-10"></div>
 <section>
 	<div appContainer size="md">
-		@if (composer.data() === undefined) {
+		@if (composer.isLoading()) {
 			<p>Loading...</p>
+		}
+
+		@if (composer.hasError()) {
+			<p>Something went wrong fetching the composer.</p>
 		}
 
 		@if (composer.data() === null) {
@@ -14,11 +18,20 @@
 				<ng-container slot="actions">
 					<button
 						appButton
+						class="mb-4"
 						size="sm"
 						variant="outline"
-						(click)="openAddToFavoritesAlert()"
+						(click)="
+							composer.inFavorites
+								? openRemoveFromFavoritesAlert()
+								: openAddToFavoritesAlert()
+						"
 					>
-						Add to Favorites
+						{{
+							composer.inFavorites
+								? 'Remove from Favorites'
+								: 'Add to Favorites'
+						}}
 					</button>
 				</ng-container>
 			</app-composer-details>
@@ -34,6 +47,19 @@
 				(appConfirm)="onAddToFavorites()"
 				(appCancel)="closeAddToFavoritesAlert()"
 				(appClickOutside)="closeAddToFavoritesAlert()"
+			/>
+		</div>
+	}
+}
+
+@if (removeFromFavoritesAlertIsOpen()) {
+	@if (composer.data(); as composer) {
+		<div appModalContainer>
+			<app-remove-composer-from-favorites-alert
+				[composer]="composer"
+				(appConfirm)="onRemoveFromFavorites()"
+				(appCancel)="closeRemoveFromFavoritesAlert()"
+				(appClickOutside)="closeRemoveFromFavoritesAlert()"
 			/>
 		</div>
 	}
