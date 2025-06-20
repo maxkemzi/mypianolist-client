@@ -30,7 +30,12 @@
 							Add to Favorites
 						</button>
 					} @else {
-						<button appButton size="sm" variant="outline">
+						<button
+							appButton
+							size="sm"
+							variant="outline"
+							(click)="openRemoveFromFavoritesAlert()"
+						>
 							Remove from Favorites
 						</button>
 					}
@@ -60,6 +65,19 @@
 				(appConfirm)="onAddToFavorites()"
 				(appCancel)="closeAddToFavoritesAlert()"
 				(appClickOutside)="closeAddToFavoritesAlert()"
+			/>
+		</div>
+	}
+}
+
+@if (removeFromFavoritesAlertIsOpen()) {
+	@if (piece.data(); as piece) {
+		<div appModalContainer>
+			<app-remove-piece-from-favorites-alert
+				[piece]="piece"
+				(appConfirm)="onRemoveFromFavorites()"
+				(appCancel)="closeRemoveFromFavoritesAlert()"
+				(appClickOutside)="closeRemoveFromFavoritesAlert()"
 			/>
 		</div>
 	}

@@ -1,9 +1,10 @@
 import {effect, inject, Injectable} from '@angular/core';
 import {NotificationAlertService} from '@features/notification-alert';
-import {AddPieceToFavoritesService} from '@features/piece/addToFavorites/add-piece-to-favorites.service';
-import {AddPieceToListService} from '@features/piece/addToList/add-piece-to-list.service';
-import {EditPieceService} from '@features/piece/edit/edit-piece.service';
-import {RemovePieceFromListService} from '@features/piece/removeFromList/remove-piece-from-list.service';
+import {AddPieceToFavoritesService} from '@features/piece/addToFavorites';
+import {AddPieceToListService} from '@features/piece/addToList';
+import {EditPieceService} from '@features/piece/edit';
+import {RemovePieceFromFavoritesService} from '@features/piece/removeFromFavorites';
+import {RemovePieceFromListService} from '@features/piece/removeFromList';
 
 @Injectable({providedIn: 'root'})
 export class ErrorHandlingService {
@@ -12,6 +13,9 @@ export class ErrorHandlingService {
 	private readonly editPiece = inject(EditPieceService);
 	private readonly removePieceFromList = inject(RemovePieceFromListService);
 	private readonly addPieceToFavorites = inject(AddPieceToFavoritesService);
+	private readonly removePieceFromFavorites = inject(
+		RemovePieceFromFavoritesService,
+	);
 
 	constructor() {
 		effect(() => {
@@ -66,6 +70,21 @@ export class ErrorHandlingService {
 			}
 
 			this.addPieceToFavorites.resetStatus();
+		});
+
+		effect(() => {
+			if (this.removePieceFromFavorites.hasError()) {
+				this.notificationAlert.showError(
+					'Error removing piece from favorites.',
+				);
+			}
+			if (this.removePieceFromFavorites.hasSuccess()) {
+				this.notificationAlert.showSuccess(
+					'Piece removed from your favorites successfully.',
+				);
+			}
+
+			this.removePieceFromFavorites.resetStatus();
 		});
 	}
 }

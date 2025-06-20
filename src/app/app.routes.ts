@@ -1,15 +1,15 @@
 import {Routes} from '@angular/router';
+import {BaseLayoutComponent} from '@core/layouts';
+import {HomePageComponent} from '@pages';
 
 export const routes: Routes = [
 	{
 		path: '',
-		loadComponent: () =>
-			import('@core/layouts').then(m => m.BaseLayoutComponent),
+		component: BaseLayoutComponent,
 		children: [
 			{
 				path: '',
-				loadComponent: () =>
-					import('@pages').then(m => m.HomePageComponent),
+				component: HomePageComponent,
 			},
 			{
 				path: 'catalog',

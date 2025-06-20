@@ -14,6 +14,7 @@ import {
 import {AddPieceToFavoritesAlertComponent} from '@features/piece/addToFavorites';
 import {AddPieceToListFormComponent} from '@features/piece/addToList';
 import {FetchPieceByIdService} from '@features/piece/fetchById';
+import {RemovePieceFromFavoritesAlertComponent} from '@features/piece/removeFromFavorites';
 import {
 	ButtonComponent,
 	ContainerComponent,
@@ -32,6 +33,7 @@ import {ClickOutsideDirective} from '@shared/lib';
 		ButtonComponent,
 		AddPieceToListFormComponent,
 		AddPieceToFavoritesAlertComponent,
+		RemovePieceFromFavoritesAlertComponent,
 		ModalContainerComponent,
 		ClickOutsideDirective,
 		AddPieceToListButtonComponent,
@@ -49,6 +51,7 @@ export class PiecePageComponent implements OnInit {
 	};
 	readonly addToListModalIsOpen = signal<boolean>(false);
 	readonly addToFavoritesAlertIsOpen = signal<boolean>(false);
+	readonly removeFromFavoritesAlertIsOpen = signal<boolean>(false);
 
 	ngOnInit() {
 		this.fetch();
@@ -77,6 +80,19 @@ export class PiecePageComponent implements OnInit {
 
 	closeAddToFavoritesAlert() {
 		this.addToFavoritesAlertIsOpen.set(false);
+	}
+
+	onRemoveFromFavorites() {
+		this.fetch();
+		this.closeRemoveFromFavoritesAlert();
+	}
+
+	openRemoveFromFavoritesAlert() {
+		this.removeFromFavoritesAlertIsOpen.set(true);
+	}
+
+	closeRemoveFromFavoritesAlert() {
+		this.removeFromFavoritesAlertIsOpen.set(false);
 	}
 
 	private fetch() {
