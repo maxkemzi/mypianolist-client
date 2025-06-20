@@ -10,7 +10,31 @@
 		}
 
 		@if (composer.data(); as composer) {
-			<app-composer-details [composer]="composer" />
+			<app-composer-details [composer]="composer">
+				<ng-container slot="actions">
+					<button
+						appButton
+						size="sm"
+						variant="outline"
+						(click)="openAddToFavoritesAlert()"
+					>
+						Add to Favorites
+					</button>
+				</ng-container>
+			</app-composer-details>
 		}
 	</div>
 </section>
+
+@if (addToFavoritesAlertIsOpen()) {
+	@if (composer.data(); as composer) {
+		<div appModalContainer>
+			<app-add-composer-to-favorites-alert
+				[composer]="composer"
+				(appConfirm)="onAddToFavorites()"
+				(appCancel)="closeAddToFavoritesAlert()"
+				(appClickOutside)="closeAddToFavoritesAlert()"
+			/>
+		</div>
+	}
+}
