@@ -5,7 +5,7 @@ import {
 	makeStateKey,
 	signal,
 } from '@angular/core';
-import {Composer} from '@entities/composer';
+import {CompleteComposer} from '@entities/composer';
 import {Observable, catchError, of, tap} from 'rxjs';
 import {FetchComposerByIdApi} from './fetch-composer-by-id.api';
 
@@ -14,11 +14,13 @@ export class FetchComposerByIdService {
 	private readonly api = inject(FetchComposerByIdApi);
 	private readonly state = inject(TransferState);
 
-	private readonly _data = signal<Composer | null | undefined>(undefined);
+	private readonly _data = signal<CompleteComposer | null | undefined>(
+		undefined,
+	);
 
 	readonly data = this._data.asReadonly();
 
-	fetch(id: string): Observable<Composer | null> {
+	fetch(id: string): Observable<CompleteComposer | null> {
 		const key = this.getDataKey(id);
 
 		const stored = this.state.get(key, undefined);
@@ -41,6 +43,6 @@ export class FetchComposerByIdService {
 	}
 
 	private getDataKey(id: string) {
-		return makeStateKey<Composer>('composer_' + id);
+		return makeStateKey<CompleteComposer>('composer_' + id);
 	}
 }

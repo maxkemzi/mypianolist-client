@@ -8,3 +8,8 @@ export interface Composer {
 	bornAt: string;
 	diedAt: string | null;
 }
+
+export interface CompleteComposer extends Composer {
+	favorites: number;
+	inFavorites?: boolean;
+}

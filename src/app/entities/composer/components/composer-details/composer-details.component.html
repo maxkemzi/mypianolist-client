@@ -11,9 +11,13 @@
 		<h3 class="mb-4" weight="normal">{{ lifeSpan() }}</h3>
 		<ul class="flex gap-4 mb-4">
 			<li>
-				<app-info-item title="Favorites" value="100,000" />
+				<app-info-item
+					title="Favorites"
+					[value]="composer().favorites.toString()"
+				/>
 			</li>
 		</ul>
+		<ng-content select="[slot=actions]" />
 		<p class="mb-7">{{ composer().biography }}</p>
 	</div>
 </div>

@@ -1,5 +1,5 @@
 import {Component, computed, inject, input} from '@angular/core';
-import {Composer} from '@entities/composer/composer.model';
+import {CompleteComposer} from '@entities/composer/composer.model';
 import {ComposerUtils} from '@entities/composer/composer.utils';
 import {InfoItemComponent, TypographyComponent} from '@shared/components';
 
@@ -11,7 +11,7 @@ import {InfoItemComponent, TypographyComponent} from '@shared/components';
 export class ComposerDetailsComponent {
 	private readonly utils = inject(ComposerUtils);
 
-	readonly composer = input.required<Composer>();
+	readonly composer = input.required<CompleteComposer>();
 
 	readonly image = computed(() => {
 		const {image} = this.composer();
