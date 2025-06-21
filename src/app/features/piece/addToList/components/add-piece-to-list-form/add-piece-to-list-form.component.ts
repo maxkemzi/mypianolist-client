@@ -42,7 +42,6 @@ export class AddPieceToListFormComponent {
 			status: new FormControl<PieceStatusType | ''>('', {
 				validators: Validators.required,
 				nonNullable: true,
-				updateOn: 'submit',
 			}),
 			score: new FormControl('', {nonNullable: true}),
 			startedAt: new FormControl('', {nonNullable: true}),
