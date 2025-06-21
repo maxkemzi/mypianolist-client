@@ -10,22 +10,13 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {ReactiveFormsModule} from '@angular/forms';
 import {ComposerUtils} from '@entities/composer';
 import {Piece} from '@entities/piece';
-import {
-	ButtonComponent,
-	ModalComponent,
-	TypographyComponent,
-} from '@shared/components';
+import {AlertComponent, TypographyComponent} from '@shared/components';
 import {AddPieceToFavoritesService} from '../../add-piece-to-favorites.service';
 
 @Component({
 	selector: 'app-add-piece-to-favorites-alert',
 	templateUrl: './add-piece-to-favorites-alert.component.html',
-	imports: [
-		ModalComponent,
-		ReactiveFormsModule,
-		ButtonComponent,
-		TypographyComponent,
-	],
+	imports: [ReactiveFormsModule, TypographyComponent, AlertComponent],
 })
 export class AddPieceToFavoritesAlertComponent {
 	private readonly destroyRef = inject(DestroyRef);
