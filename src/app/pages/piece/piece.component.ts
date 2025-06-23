@@ -16,8 +16,8 @@ import {AddPieceToListFormComponent} from '@features/piece/addToList';
 import {FetchPieceByIdService} from '@features/piece/fetchById';
 import {RemovePieceFromFavoritesAlertComponent} from '@features/piece/removeFromFavorites';
 import {
-	ButtonComponent,
 	ContainerComponent,
+	FavoritesButtonComponent,
 	ModalContainerComponent,
 	TypographyComponent,
 } from '@shared/components';
@@ -30,13 +30,13 @@ import {ClickOutsideDirective} from '@shared/lib';
 		ContainerComponent,
 		TypographyComponent,
 		PieceDetailsComponent,
-		ButtonComponent,
 		AddPieceToListFormComponent,
 		AddPieceToFavoritesAlertComponent,
 		RemovePieceFromFavoritesAlertComponent,
 		ModalContainerComponent,
 		ClickOutsideDirective,
 		AddPieceToListButtonComponent,
+		FavoritesButtonComponent,
 	],
 })
 export class PiecePageComponent implements OnInit {

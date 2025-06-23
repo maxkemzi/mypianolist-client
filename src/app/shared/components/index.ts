@@ -11,3 +11,4 @@ export {InfoItemComponent} from './info-item';
 export {TabComponent} from './tab';
 export {ModalContainerComponent} from './modal-container';
 export {AlertComponent} from './alert';
+export {FavoritesButtonComponent} from './favorites-button';

@@ -16,23 +16,12 @@
 		@if (composer.data(); as composer) {
 			<app-composer-details [composer]="composer">
 				<ng-container slot="actions">
-					<button
-						appButton
-						class="mb-4"
-						size="sm"
-						variant="outline"
-						(click)="
-							composer.inFavorites
-								? openRemoveFromFavoritesAlert()
-								: openAddToFavoritesAlert()
-						"
-					>
-						{{
-							composer.inFavorites
-								? 'Remove from Favorites'
-								: 'Add to Favorites'
-						}}
-					</button>
+					<app-favorites-button
+						class="block mb-4"
+						[inFavorites]="!!composer.inFavorites"
+						(appAddToFavorites)="openAddToFavoritesAlert()"
+						(appRemoveFromFavorites)="openRemoveFromFavoritesAlert()"
+					/>
 				</ng-container>
 			</app-composer-details>
 		}

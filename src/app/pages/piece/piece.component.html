@@ -20,25 +20,11 @@
 						[status]="piece.status"
 						(appClick)="openAddToListModal()"
 					/>
-					@if (!piece.inFavorites) {
-						<button
-							appButton
-							size="sm"
-							variant="outline"
-							(click)="openAddToFavoritesAlert()"
-						>
-							Add to Favorites
-						</button>
-					} @else {
-						<button
-							appButton
-							size="sm"
-							variant="outline"
-							(click)="openRemoveFromFavoritesAlert()"
-						>
-							Remove from Favorites
-						</button>
-					}
+					<app-favorites-button
+						[inFavorites]="!!piece.inFavorites"
+						(appAddToFavorites)="openAddToFavoritesAlert()"
+						(appRemoveFromFavorites)="openRemoveFromFavoritesAlert()"
+					/>
 				</div>
 			</app-piece-details>
 		}

@@ -14,6 +14,7 @@ import {RemoveComposerFromFavoritesAlertComponent} from '@features/composer/remo
 import {
 	ButtonComponent,
 	ContainerComponent,
+	FavoritesButtonComponent,
 	ModalContainerComponent,
 	TypographyComponent,
 } from '@shared/components';
@@ -31,6 +32,7 @@ import {ClickOutsideDirective} from '@shared/lib';
 		ButtonComponent,
 		ModalContainerComponent,
 		RemoveComposerFromFavoritesAlertComponent,
+		FavoritesButtonComponent,
 	],
 })
 export class ComposerPageComponent implements OnInit {
