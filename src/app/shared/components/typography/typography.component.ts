@@ -32,11 +32,16 @@ export class TypographyComponent extends ClassMergeDirective {
 			inherit: 'text-inherit',
 			text: 'text-text',
 			primary: 'text-primary',
+			secondary: 'text-secondary',
+			background: 'text-background',
+			backgroundDarker: 'text-background-darker',
+			surface: 'text-surface',
+			surfaceLighter: 'text-surface-lighter',
 			success: 'text-success',
 			error: 'text-error',
 			warning: 'text-warning',
 			info: 'text-info',
-			surfaceLighter: 'text-surface-lighter',
+			disabled: 'text-disabled',
 		};
 
 		const SIZE_TO_CLASSES_MAPPING: Record<Size, string> = {

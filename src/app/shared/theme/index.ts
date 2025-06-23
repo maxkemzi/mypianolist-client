@@ -1,2 +1,2 @@
 export {ThemeUtils} from './theme.utils';
-export type {ThemeColor} from './types';
+export {ThemeColor, type ThemeColorType} from './types';

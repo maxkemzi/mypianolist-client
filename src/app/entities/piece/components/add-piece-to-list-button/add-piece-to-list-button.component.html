@@ -1,7 +1,8 @@
 <button
 	appButton
-	[class]="bgColorClass"
 	size="sm"
+	[color]="buttonColor"
+	[variant]="buttonVariant"
 	[disabled]="status() !== undefined"
 	(click)="appClick.emit()"
 >

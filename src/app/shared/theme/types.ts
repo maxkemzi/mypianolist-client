@@ -4,10 +4,12 @@ const ThemeColor = {
 	BACKGROUND: 'background',
 	BACKGROUND_DARKER: 'backgroundDarker',
 	SURFACE: 'surface',
+	SURFACE_LIGHTER: 'surfaceLighter',
 	TEXT: 'text',
 	SUCCESS: 'success',
 	INFO: 'info',
 	ERROR: 'error',
+	WARNING: 'warning',
 	DISABLED: 'disabled',
 } as const;
 
