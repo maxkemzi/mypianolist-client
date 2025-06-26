@@ -1,11 +1,11 @@
 import {computed, inject, Injectable, signal} from '@angular/core';
 import {RequestStatus} from '@shared/lib';
 import {catchError, of, tap} from 'rxjs';
-import {RemovePieceFromFavoritesApi} from './remove-piece-from-favorites.api';
+import {PiecesApi} from '../pieces.api';
 
 @Injectable({providedIn: 'root'})
 export class RemovePieceFromFavoritesService {
-	private readonly api = inject(RemovePieceFromFavoritesApi);
+	private readonly api = inject(PiecesApi);
 
 	private readonly _status = signal<RequestStatus>('idle');
 
@@ -15,7 +15,7 @@ export class RemovePieceFromFavoritesService {
 
 	remove(id: string) {
 		this._status.set('loading');
-		return this.api.remove(id).pipe(
+		return this.api.removeFromFavorites(id).pipe(
 			tap(() => {
 				this._status.set('success');
 			}),

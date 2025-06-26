@@ -1,11 +1,11 @@
 import {computed, inject, Injectable, signal} from '@angular/core';
 import {RequestStatus} from '@shared/lib';
 import {catchError, of, tap} from 'rxjs';
-import {RemovePieceFromListApi} from './remove-piece-from-list.api';
+import {PiecesApi} from '../pieces.api';
 
 @Injectable({providedIn: 'root'})
 export class RemovePieceFromListService {
-	private readonly api = inject(RemovePieceFromListApi);
+	private readonly api = inject(PiecesApi);
 
 	private readonly _status = signal<RequestStatus>('idle');
 
@@ -15,7 +15,7 @@ export class RemovePieceFromListService {
 
 	remove(id: string) {
 		this._status.set('loading');
-		return this.api.remove(id).pipe(
+		return this.api.removeFromList(id).pipe(
 			tap(() => {
 				this._status.set('success');
 			}),

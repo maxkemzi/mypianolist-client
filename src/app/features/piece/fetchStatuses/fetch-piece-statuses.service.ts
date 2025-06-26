@@ -7,11 +7,11 @@ import {
 } from '@angular/core';
 import {PieceStatusType} from '@entities/piece';
 import {catchError, finalize, of, tap} from 'rxjs';
-import {FetchPieceStatusesApi} from './fetch-piece-statuses.api';
+import {PiecesApi} from '../pieces.api';
 
 @Injectable({providedIn: 'root'})
 export class FetchPieceStatusesService {
-	private readonly api = inject(FetchPieceStatusesApi);
+	private readonly api = inject(PiecesApi);
 	private readonly state = inject(TransferState);
 	private readonly key = makeStateKey<PieceStatusType[]>('statuses');
 
@@ -32,7 +32,7 @@ export class FetchPieceStatusesService {
 
 		this._isLoading.set(true);
 		this._hasError.set(false);
-		return this.api.fetch().pipe(
+		return this.api.fetchStatuses().pipe(
 			tap(res => {
 				this.setData(res);
 			}),

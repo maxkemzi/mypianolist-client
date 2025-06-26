@@ -2,11 +2,11 @@ import {inject, Injectable, signal} from '@angular/core';
 import {CompletePiece} from '@entities/piece';
 import {DataCacheService, withCache} from '@shared/lib';
 import {catchError, finalize, of, tap} from 'rxjs';
-import {FetchPieceByIdApi} from './fetch-piece-by-id.api';
+import {PiecesApi} from '../pieces.api';
 
 @Injectable({providedIn: 'root'})
 export class FetchPieceByIdService {
-	private readonly api = inject(FetchPieceByIdApi);
+	private readonly api = inject(PiecesApi);
 	private readonly dataCache = inject(DataCacheService);
 	private readonly CACHE_PREFIX = 'piece';
 

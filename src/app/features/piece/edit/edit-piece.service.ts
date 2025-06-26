@@ -1,12 +1,12 @@
 import {computed, inject, Injectable, signal} from '@angular/core';
+import {PieceStatusType} from '@entities/piece';
 import {RequestStatus} from '@shared/lib';
-import {catchError, finalize, of, tap} from 'rxjs';
-import {EditPieceApi} from './edit-piece.api';
-import {EditPiecePayload} from './edit-piece.model';
+import {catchError, of, tap} from 'rxjs';
+import {PiecesApi} from '../pieces.api';
 
 @Injectable({providedIn: 'root'})
 export class EditPieceService {
-	private readonly api = inject(EditPieceApi);
+	private readonly api = inject(PiecesApi);
 
 	private readonly _status = signal<RequestStatus>('idle');
 
@@ -14,7 +14,15 @@ export class EditPieceService {
 	readonly hasError = computed(() => this._status() === 'error');
 	readonly hasSuccess = computed(() => this._status() === 'success');
 
-	edit(id: string, payload: EditPiecePayload) {
+	edit(
+		id: string,
+		payload: {
+			status?: PieceStatusType;
+			score?: number;
+			startedAt?: string;
+			finishedAt?: string;
+		},
+	) {
 		this._status.set('loading');
 		return this.api.edit(id, payload).pipe(
 			tap(() => {

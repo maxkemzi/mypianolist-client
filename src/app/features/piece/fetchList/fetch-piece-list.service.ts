@@ -2,25 +2,21 @@ import {inject, Injectable} from '@angular/core';
 import {DataCacheService, withCache} from '@shared/lib';
 import {catchError, finalize, map, Observable, of, tap} from 'rxjs';
 import {FetchPiecesService} from '../fetch-pieces.service';
-import {
-	FetchParams,
-	FetchPieceListApi,
-	FetchResponse,
-} from './fetch-piece-list.api';
+import {FetchParams, PiecesApi, UserPiecesResponse} from '../pieces.api';
 
 @Injectable({providedIn: 'root'})
 export class FetchPieceListService extends FetchPiecesService<
-	FetchResponse,
+	UserPiecesResponse,
 	FetchParams
 > {
 	private readonly dataCache = inject(DataCacheService);
-	private readonly api = inject(FetchPieceListApi);
+	private readonly api = inject(PiecesApi);
 	private readonly CACHE_PREFIX = 'piece_list';
 
-	fetch(params: FetchParams = {}): Observable<FetchResponse | null> {
+	fetch(params: FetchParams = {}): Observable<UserPiecesResponse | null> {
 		this._isLoading.set(true);
 		this._hasError.set(false);
-		return this.api.fetchAll({limit: this._limit(), ...params}).pipe(
+		return this.api.fetchList({limit: this._limit(), ...params}).pipe(
 			withCache(
 				() => this.dataCache.get(this.CACHE_PREFIX, params),
 				value => this.dataCache.set(this.CACHE_PREFIX, params, value),
