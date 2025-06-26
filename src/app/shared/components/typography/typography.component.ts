@@ -20,6 +20,7 @@ export class TypographyComponent extends ClassMergeDirective {
 			h1: 'h1',
 			h2: 'h2',
 			h3: 'h3',
+			h4: 'h4',
 			p: 'body1',
 		};
 
@@ -80,6 +81,11 @@ export class TypographyComponent extends ClassMergeDirective {
 				size: 'base',
 				color: 'text',
 				weight: 'normal',
+			},
+			h4: {
+				size: 'xl',
+				color: 'text',
+				weight: 'medium',
 			},
 			h3: {
 				size: '2xl',

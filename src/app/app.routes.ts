@@ -37,6 +37,11 @@ export const routes: Routes = [
 				loadComponent: () =>
 					import('@pages').then(m => m.ListPageComponent),
 			},
+			{
+				path: 'profile',
+				loadComponent: () =>
+					import('@pages').then(m => m.ProfilePageComponent),
+			},
 		],
 	},
 	{

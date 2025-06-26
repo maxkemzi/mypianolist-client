@@ -56,6 +56,11 @@ export class ProfileComponent {
 		this.dropdownIsOpen.update(value => !value);
 	}
 
+	onProfileClick() {
+		this.router.navigate(['/profile']);
+		this.dropdownIsOpen.set(false);
+	}
+
 	onLogoutClick() {
 		this.isLoggingOut.set(true);
 		this.auth
