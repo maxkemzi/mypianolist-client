@@ -1,11 +1,11 @@
 import {computed, inject, Injectable, signal} from '@angular/core';
 import {RequestStatus} from '@shared/lib';
 import {catchError, of, tap} from 'rxjs';
-import {AddComposerToFavoritesApi} from './add-composer-to-favorites.api';
+import {ComposerApi} from '../composer.api';
 
 @Injectable({providedIn: 'root'})
 export class AddComposerToFavoritesService {
-	private readonly api = inject(AddComposerToFavoritesApi);
+	private readonly api = inject(ComposerApi);
 
 	private readonly _status = signal<RequestStatus>('idle');
 
@@ -15,7 +15,7 @@ export class AddComposerToFavoritesService {
 
 	add(id: string) {
 		this._status.set('loading');
-		return this.api.add(id).pipe(
+		return this.api.addToFavorites(id).pipe(
 			tap(() => {
 				this._status.set('success');
 			}),

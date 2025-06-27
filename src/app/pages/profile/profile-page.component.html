@@ -68,7 +68,25 @@
 							</div>
 						}
 
-						<h4>Composers</h4>
+						<h4 class="mb-2">Composers</h4>
+
+						@if (composers.isLoading()) {
+							<p>Loading...</p>
+						} @else if (composers.hasError()) {
+							<p>Something went wrong fetching favorite composers.</p>
+						} @else if (composers.data().length === 0) {
+							<p>There are no favorite composers.</p>
+						} @else {
+							<div class="flex gap-2 mb-4">
+								@for (composer of composers.data(); track composer.id) {
+									<a [routerLink]="['/composers', composer.id]">
+										<app-favorite-composer-card
+											[composer]="composer"
+										/>
+									</a>
+								}
+							</div>
+						}
 					</div>
 
 					<div>

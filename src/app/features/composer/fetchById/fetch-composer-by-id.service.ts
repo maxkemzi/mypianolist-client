@@ -2,11 +2,11 @@ import {Injectable, inject, signal} from '@angular/core';
 import {CompleteComposer} from '@entities/composer';
 import {DataCacheService, withCache} from '@shared/lib';
 import {catchError, finalize, of, tap} from 'rxjs';
-import {FetchComposerByIdApi} from './fetch-composer-by-id.api';
+import {ComposerApi} from '../composer.api';
 
 @Injectable({providedIn: 'root'})
 export class FetchComposerByIdService {
-	private readonly api = inject(FetchComposerByIdApi);
+	private readonly api = inject(ComposerApi);
 	private readonly dataCache = inject(DataCacheService);
 	private readonly CACHE_PREFIX = 'composer';
 

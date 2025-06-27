@@ -1,19 +1,23 @@
 import {inject, Injectable} from '@angular/core';
 import {DataCacheService, withCache} from '@shared/lib';
 import {catchError, finalize, map, Observable, of, tap} from 'rxjs';
-import {PaginatedFetchService} from '../../paginated-fetch.service';
-import {FetchParams, PiecesApi, UserPiecesResponse} from '../pieces.api';
+import {ComposerApi, ComposersResponse} from '../composer.api';
+import {AuthService} from '@features/auth';
+import {PaginatedFetchService} from '@features/paginated-fetch.service';
 
 @Injectable({providedIn: 'root'})
-export class FetchPieceListService extends PaginatedFetchService<UserPiecesResponse> {
+export class FetchFavoriteComposersService extends PaginatedFetchService<ComposersResponse> {
 	private readonly dataCache = inject(DataCacheService);
-	private readonly api = inject(PiecesApi);
-	private readonly CACHE_PREFIX = 'piece_list';
+	private readonly api = inject(ComposerApi);
+	private readonly auth = inject(AuthService);
+	private readonly CACHE_PREFIX = 'favorite_composers';
 
-	fetch(params: FetchParams = {}): Observable<UserPiecesResponse | null> {
+	fetchWithAuth(): Observable<ComposersResponse | null> {
 		this.setIsLoading(true);
 		this.setHasError(false);
-		return this.api.fetchList({limit: this.limit(), ...params}).pipe(
+
+		const params = {username: this.auth.user()?.username};
+		return this.api.fetchFavoriteWithAuth().pipe(
 			withCache(
 				() => this.dataCache.get(this.CACHE_PREFIX, params),
 				value => this.dataCache.set(this.CACHE_PREFIX, params, value),

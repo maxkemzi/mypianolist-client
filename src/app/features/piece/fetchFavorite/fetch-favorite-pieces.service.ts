@@ -1,42 +1,47 @@
 import {inject, Injectable} from '@angular/core';
 import {DataCacheService, withCache} from '@shared/lib';
 import {catchError, finalize, map, Observable, of, tap} from 'rxjs';
-import {FetchPiecesService} from '../fetch-pieces.service';
+import {PaginatedFetchService} from '../../paginated-fetch.service';
 import {CompletePiecesResponse, FetchParams, PiecesApi} from '../pieces.api';
+import {AuthService} from '@features/auth';
 
 @Injectable({providedIn: 'root'})
-export class FetchFavoritePiecesService extends FetchPiecesService<CompletePiecesResponse> {
+export class FetchFavoritePiecesService extends PaginatedFetchService<CompletePiecesResponse> {
 	private readonly dataCache = inject(DataCacheService);
 	private readonly api = inject(PiecesApi);
+	private readonly auth = inject(AuthService);
 	private readonly CACHE_PREFIX = 'favorite_pieces';
 
 	fetchWithAuth(
 		params: FetchParams = {},
 	): Observable<CompletePiecesResponse | null> {
-		this._isLoading.set(true);
-		this._hasError.set(false);
+		this.setIsLoading(true);
+		this.setHasError(false);
+
+		const completeParams = {...params, username: this.auth.user()?.username};
 		return this.api
-			.fetchFavoriteWithAuth({limit: this._limit(), ...params})
+			.fetchFavoriteWithAuth({limit: this.limit(), ...completeParams})
 			.pipe(
 				withCache(
-					() => this.dataCache.get(this.CACHE_PREFIX, params),
-					value => this.dataCache.set(this.CACHE_PREFIX, params, value),
+					() => this.dataCache.get(this.CACHE_PREFIX, completeParams),
+					value =>
+						this.dataCache.set(this.CACHE_PREFIX, completeParams, value),
 				),
 				tap(res => {
 					this.setValues(res.data);
 
 					if (res.fromCache) {
-						this._isLoading.set(false);
+						this.setIsLoading(false);
 					}
 				}),
 				map(res => res.data),
 				catchError(() => {
-					this._hasError.set(true);
+					this.setHasError(true);
 					this.resetValues();
 					return of();
 				}),
 				finalize(() => {
-					this._isLoading.set(false);
+					this.setIsLoading(false);
 				}),
 			);
 	}
