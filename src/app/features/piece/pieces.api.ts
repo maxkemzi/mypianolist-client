@@ -40,7 +40,7 @@ export class PiecesApi {
 		});
 	}
 
-	fetchFavoriteWithAuth(params: FetchParams) {
+	fetchFavoriteByAuth(params: FetchParams) {
 		return this.api.get<CompletePiecesResponse>('/users/favorite-pieces', {
 			params: this.buildParams(params),
 		});
@@ -86,7 +86,7 @@ export class PiecesApi {
 		return this.api.get<PieceStatusType[]>('/users/pieces/statuses');
 	}
 
-	fetchStatsWithAuth() {
+	fetchStatsByAuth() {
 		return this.api.get<PieceStatsResponse>('/users/pieces/stats');
 	}
 

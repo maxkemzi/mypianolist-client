@@ -19,12 +19,12 @@ export class FetchPieceStatsService {
 	readonly isLoading = this._isLoading.asReadonly();
 	readonly hasError = this._hasError.asReadonly();
 
-	fetchWithAuth() {
+	fetchByAuth() {
 		this._isLoading.set(true);
 		this._hasError.set(false);
 
 		const params = {username: this.auth.user()?.username};
-		return this.api.fetchStatsWithAuth().pipe(
+		return this.api.fetchStatsByAuth().pipe(
 			withCache(
 				() => this.dataCache.get(this.CACHE_PREFIX, params),
 				value => this.dataCache.set(this.CACHE_PREFIX, params, value),

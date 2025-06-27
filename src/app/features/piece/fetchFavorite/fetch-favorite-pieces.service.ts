@@ -12,7 +12,7 @@ export class FetchFavoritePiecesService extends PaginatedFetchService<CompletePi
 	private readonly auth = inject(AuthService);
 	private readonly CACHE_PREFIX = 'favorite_pieces';
 
-	fetchWithAuth(
+	fetchByAuth(
 		params: FetchParams = {},
 	): Observable<CompletePiecesResponse | null> {
 		this.setIsLoading(true);
@@ -20,7 +20,7 @@ export class FetchFavoritePiecesService extends PaginatedFetchService<CompletePi
 
 		const completeParams = {...params, username: this.auth.user()?.username};
 		return this.api
-			.fetchFavoriteWithAuth({limit: this.limit(), ...completeParams})
+			.fetchFavoriteByAuth({limit: this.limit(), ...completeParams})
 			.pipe(
 				withCache(
 					() => this.dataCache.get(this.CACHE_PREFIX, completeParams),

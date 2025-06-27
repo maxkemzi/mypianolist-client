@@ -12,12 +12,12 @@ export class FetchFavoriteComposersService extends PaginatedFetchService<Compose
 	private readonly auth = inject(AuthService);
 	private readonly CACHE_PREFIX = 'favorite_composers';
 
-	fetchWithAuth(): Observable<ComposersResponse | null> {
+	fetchByAuth(): Observable<ComposersResponse | null> {
 		this.setIsLoading(true);
 		this.setHasError(false);
 
 		const params = {username: this.auth.user()?.username};
-		return this.api.fetchFavoriteWithAuth().pipe(
+		return this.api.fetchFavoriteByAuth().pipe(
 			withCache(
 				() => this.dataCache.get(this.CACHE_PREFIX, params),
 				value => this.dataCache.set(this.CACHE_PREFIX, params, value),

@@ -1,4 +1,4 @@
-import {Component, inject, input, OnInit} from '@angular/core';
+import {Component, DestroyRef, inject, input, OnInit} from '@angular/core';
 import {FetchPieceStatsService} from '@features/piece/fetchStats';
 import {FetchUserProfileService} from '@features/user/profile/fetch';
 import {
@@ -12,6 +12,8 @@ import {FavoritePieceCardComponent} from '@entities/piece';
 import {RouterLink} from '@angular/router';
 import {FetchFavoriteComposersService} from '@features/composer/fetchFavorite';
 import {FavoriteComposerCardComponent} from '@entities/composer';
+import {forkJoin} from 'rxjs';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 @Component({
 	selector: 'app-profile-page',
@@ -33,6 +35,7 @@ export class ProfilePageComponent implements OnInit {
 	private readonly fetchFavoriteComposers = inject(
 		FetchFavoriteComposersService,
 	);
+	private readonly destroyRef = inject(DestroyRef);
 
 	readonly username = input<string>();
 	readonly profile = {
@@ -58,10 +61,14 @@ export class ProfilePageComponent implements OnInit {
 
 	ngOnInit(): void {
 		if (!this.username()) {
-			this.fetchUserProfile.fetchWithAuth().subscribe();
-			this.fetchPieceStats.fetchWithAuth().subscribe();
-			this.fetchFavoritePieces.fetchWithAuth().subscribe();
-			this.fetchFavoriteComposers.fetchWithAuth().subscribe();
+			forkJoin([
+				this.fetchUserProfile.fetchByAuth(),
+				this.fetchPieceStats.fetchByAuth(),
+				this.fetchFavoritePieces.fetchByAuth(),
+				this.fetchFavoriteComposers.fetchByAuth(),
+			])
+				.pipe(takeUntilDestroyed(this.destroyRef))
+				.subscribe();
 		}
 	}
 

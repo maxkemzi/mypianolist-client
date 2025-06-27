@@ -8,7 +8,7 @@ type FetchResponse = UserProfile;
 export class UserProfileApi {
 	private readonly api = inject(Api);
 
-	fetchWithAuth() {
+	fetchByAuth() {
 		return this.api.get<FetchResponse>('/users/profile');
 	}
 }

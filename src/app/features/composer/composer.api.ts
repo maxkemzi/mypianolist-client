@@ -8,7 +8,7 @@ export type ComposersResponse = PaginationResponse<Composer>;
 export class ComposerApi {
 	private readonly api = inject(Api);
 
-	fetchFavoriteWithAuth() {
+	fetchFavoriteByAuth() {
 		return this.api.get<ComposersResponse>('/users/favorite-composers');
 	}
 
