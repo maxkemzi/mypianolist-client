@@ -1,12 +1,10 @@
 import {Injectable, signal} from '@angular/core';
 import {Piece} from '@entities/piece';
 import {PaginationResponse} from '@shared/lib';
-import {Observable} from 'rxjs';
 
 @Injectable({providedIn: 'root'})
 export abstract class FetchPiecesService<
 	Response extends PaginationResponse<Piece>,
-	Params extends object,
 > {
 	private readonly InitialValue = {
 		DATA: [],
@@ -40,8 +38,6 @@ export abstract class FetchPiecesService<
 	readonly hasMore = this._hasMore.asReadonly();
 	readonly isLoading = this._isLoading.asReadonly();
 	readonly hasError = this._hasError.asReadonly();
-
-	abstract fetch(params: Params): Observable<Response | null>;
 
 	protected setValues(res: Response) {
 		this._data.set(res.content);

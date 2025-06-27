@@ -19,7 +19,7 @@ export class FetchPieceStatsService {
 	readonly isLoading = this._isLoading.asReadonly();
 	readonly hasError = this._hasError.asReadonly();
 
-	fetchByAuth() {
+	fetchWithAuth() {
 		this._isLoading.set(true);
 		this._hasError.set(false);
 

@@ -40,6 +40,12 @@ export class PiecesApi {
 		});
 	}
 
+	fetchFavoriteWithAuth(params: FetchParams) {
+		return this.api.get<CompletePiecesResponse>('/users/favorite-pieces', {
+			params: this.buildParams(params),
+		});
+	}
+
 	private buildParams({
 		search,
 		genre,

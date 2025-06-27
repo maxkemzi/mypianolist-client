@@ -20,12 +20,12 @@ export class FetchUserProfileService {
 	readonly isLoading = this._isLoading.asReadonly();
 	readonly hasError = this._hasError.asReadonly();
 
-	fetchByAuth() {
+	fetchWithAuth() {
 		this._isLoading.set(true);
 		this._hasError.set(false);
 
 		const params = {username: this.auth.user()?.username};
-		return this.api.fetchByAuth().pipe(
+		return this.api.fetchWithAuth().pipe(
 			withCache(
 				() => this.dataCache.get(this.CACHE_PREFIX, params),
 				value => this.dataCache.set(this.CACHE_PREFIX, params, value),

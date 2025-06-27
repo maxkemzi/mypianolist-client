@@ -5,10 +5,7 @@ import {FetchPiecesService} from '../fetch-pieces.service';
 import {CompletePiecesResponse, FetchParams, PiecesApi} from '../pieces.api';
 
 @Injectable({providedIn: 'root'})
-export class FetchAllPiecesService extends FetchPiecesService<
-	CompletePiecesResponse,
-	FetchParams
-> {
+export class FetchAllPiecesService extends FetchPiecesService<CompletePiecesResponse> {
 	private readonly dataCache = inject(DataCacheService);
 	private readonly api = inject(PiecesApi);
 	private readonly CACHE_PREFIX = 'pieces';

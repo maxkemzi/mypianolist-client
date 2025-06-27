@@ -3,75 +3,85 @@
 	<div appContainer size="md">
 		@if (profile.isLoading()) {
 			<p>Loading...</p>
-		}
-
-		@if (profile.hasError()) {
+		} @else if (profile.hasError()) {
 			<p>Something went wrong fetching the profile.</p>
-		}
-
-		@if (profile.data() === null) {
+		} @else if (profile.data() === null) {
 			<p>The profile doesn't exist.</p>
-		}
+		} @else {
+			@if (profile.data(); as profile) {
+				<div class="grid grid-cols-[225px_1fr] grid-rows-[225px_1fr] gap-6">
+					<div class="bg-red">
+						<img
+							class="rounded-lg"
+							width="225"
+							height="225"
+							[src]="profile.avatar ? `/server/${profile.avatar}` : '/images/avatar.jpg'"
+							[alt]="`${profile.username} avatar`"
+						/>
+					</div>
+					<div class="row-span-2">
+						<h3 class="mb-2">{{ profile.username }}</h3>
+						<p class="mb-4">
+							{{ profile.biography || 'No biography yet.' }}
+						</p>
 
-		@if (profile.data(); as profile) {
-			<div class="grid grid-cols-[225px_1fr] gap-6">
-				<div class="bg-red">
-					<img
-						class="rounded-lg"
-						width="225"
-						height="225"
-						[src]="profile.avatar ? `/server/${profile.avatar}` : '/images/avatar.jpg'"
-						[alt]="`${profile.username} avatar`"
-					/>
-				</div>
-				<div class="row-span-2">
-					<h3 class="mb-2">{{ profile.username }}</h3>
-					<p class="mb-4">
-						{{ profile.biography || 'No biography yet.' }}
-					</p>
-
-					@if (stats.isLoading()) {
-						<p>Loading...</p>
-					}
-
-					@if (stats.hasError()) {
-						<p>Something went wrong fetching statistics.</p>
-					}
-
-					@if (stats.data() === null) {
-						<p>The statistics doesn't exist.</p>
-					}
-
-					@if (stats.data(); as stats) {
-						<div
-							class="grid grid-cols-[fit-content(100%)_fit-content(100%)] gap-x-2 gap-y-1 mb-4"
-						>
-							<app-status-label />
-							<p weight="medium">{{ stats.total }}</p>
-							@for (
-								statusStat of stats.statuses;
-								track statusStat.status
-							) {
-								<app-status-label [status]="statusStat.status" />
-								<p weight="medium">{{ statusStat.count }}</p>
+						@if (stats.isLoading()) {
+							<p>Loading...</p>
+						} @else if (stats.hasError()) {
+							<p>Something went wrong fetching statistics.</p>
+						} @else if (stats.data() === null) {
+							<p>The statistics doesn't exist.</p>
+						} @else {
+							@if (stats.data(); as stats) {
+								<div
+									class="grid grid-cols-[fit-content(100%)_fit-content(100%)] gap-x-2 gap-y-1 mb-4"
+								>
+									<app-status-label />
+									<p weight="medium">{{ stats.total }}</p>
+									@for (
+										statusStat of stats.statuses;
+										track statusStat.status
+									) {
+										<app-status-label [status]="statusStat.status" />
+										<p weight="medium">{{ statusStat.count }}</p>
+									}
+								</div>
 							}
-						</div>
-					}
-					<h3 class="mb-3">Favorites</h3>
-					<h4>Pieces</h4>
-					<h4>Composers</h4>
-				</div>
+						}
 
-				<div>
-					<p class="mb-4 text-center">
-						Joined
-						<span weight="medium">{{
-							formatJoinedAt(profile.createdAt)
-						}}</span>
-					</p>
-					<button appButton class="w-full">Piano List</button>
+						<h3 class="mb-3">Favorites</h3>
+						<h4 class="mb-2">Pieces</h4>
+
+						@if (pieces.isLoading()) {
+							<p>Loading...</p>
+						} @else if (pieces.hasError()) {
+							<p>Something went wrong fetching favorite pieces.</p>
+						} @else if (pieces.data().length === 0) {
+							<p>There are no favorite pieces.</p>
+						} @else {
+							<div class="flex gap-2 mb-4">
+								@for (piece of pieces.data(); track piece.id) {
+									<a [routerLink]="['/pieces', piece.id]">
+										<app-favorite-piece-card [piece]="piece" />
+									</a>
+								}
+							</div>
+						}
+
+						<h4>Composers</h4>
+					</div>
+
+					<div>
+						<p class="mb-4 text-center">
+							Joined
+							<span weight="medium">{{
+								formatJoinedAt(profile.createdAt)
+							}}</span>
+						</p>
+						<button appButton class="w-full">Piano List</button>
+					</div>
 				</div>
-			</div>
+			}
 		}
 	</div>
 </section>

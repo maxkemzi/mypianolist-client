@@ -7,6 +7,9 @@ import {
 	TypographyComponent,
 } from '@shared/components';
 import {StatusLabelComponent} from './components/status-label/status-label.component';
+import {FetchFavoritePiecesService} from '@features/piece/fetchFavorite';
+import {FavoritePieceCardComponent} from '@entities/piece';
+import {RouterLink} from '@angular/router';
 
 @Component({
 	selector: 'app-profile-page',
@@ -16,11 +19,14 @@ import {StatusLabelComponent} from './components/status-label/status-label.compo
 		TypographyComponent,
 		ButtonComponent,
 		StatusLabelComponent,
+		FavoritePieceCardComponent,
+		RouterLink,
 	],
 })
 export class ProfilePageComponent implements OnInit {
 	private readonly fetchUserProfile = inject(FetchUserProfileService);
 	private readonly fetchPieceStats = inject(FetchPieceStatsService);
+	private readonly fetchFavoritePieces = inject(FetchFavoritePiecesService);
 
 	readonly username = input<string>();
 	readonly profile = {
@@ -33,11 +39,17 @@ export class ProfilePageComponent implements OnInit {
 		isLoading: this.fetchPieceStats.isLoading,
 		hasError: this.fetchPieceStats.hasError,
 	};
+	readonly pieces = {
+		data: this.fetchFavoritePieces.data,
+		isLoading: this.fetchFavoritePieces.isLoading,
+		hasError: this.fetchFavoritePieces.hasError,
+	};
 
 	ngOnInit(): void {
 		if (!this.username()) {
-			this.fetchUserProfile.fetchByAuth().subscribe();
-			this.fetchPieceStats.fetchByAuth().subscribe();
+			this.fetchUserProfile.fetchWithAuth().subscribe();
+			this.fetchPieceStats.fetchWithAuth().subscribe();
+			this.fetchFavoritePieces.fetchWithAuth().subscribe();
 		}
 	}
 
