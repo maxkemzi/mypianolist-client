@@ -41,6 +41,35 @@ export class FetchFavoriteComposersService extends PaginatedFetchService<Compose
 		);
 	}
 
+	fetchByUsername(username: string): Observable<ComposersResponse | null> {
+		this.setIsLoading(true);
+		this.setHasError(false);
+
+		const params = {username};
+		return this.api.fetchFavoriteByUsername(username).pipe(
+			withCache(
+				() => this.dataCache.get(this.CACHE_PREFIX, params),
+				value => this.dataCache.set(this.CACHE_PREFIX, params, value),
+			),
+			tap(res => {
+				this.setValues(res.data);
+
+				if (res.fromCache) {
+					this.setIsLoading(false);
+				}
+			}),
+			map(res => res.data),
+			catchError(() => {
+				this.setHasError(true);
+				this.resetValues();
+				return of();
+			}),
+			finalize(() => {
+				this.setIsLoading(false);
+			}),
+		);
+	}
+
 	clearCache() {
 		this.dataCache.removeByPrefix(this.CACHE_PREFIX);
 	}

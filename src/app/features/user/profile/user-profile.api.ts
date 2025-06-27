@@ -11,4 +11,8 @@ export class UserProfileApi {
 	fetchByAuth() {
 		return this.api.get<FetchResponse>('/users/profile');
 	}
+
+	fetchByUsername(username: string) {
+		return this.api.get<FetchResponse>(`/users/${username}/profile`);
+	}
 }

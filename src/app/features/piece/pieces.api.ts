@@ -46,6 +46,13 @@ export class PiecesApi {
 		});
 	}
 
+	fetchFavoriteByUsername(username: string, params: FetchParams) {
+		return this.api.get<CompletePiecesResponse>(
+			`/users/${username}/favorite-pieces`,
+			{params: this.buildParams(params)},
+		);
+	}
+
 	private buildParams({
 		search,
 		genre,
@@ -88,6 +95,12 @@ export class PiecesApi {
 
 	fetchStatsByAuth() {
 		return this.api.get<PieceStatsResponse>('/users/pieces/stats');
+	}
+
+	fetchStatsByUsername(username: string) {
+		return this.api.get<PieceStatsResponse>(
+			`/users/${username}/pieces/stats`,
+		);
 	}
 
 	edit(

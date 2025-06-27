@@ -12,6 +12,12 @@ export class ComposerApi {
 		return this.api.get<ComposersResponse>('/users/favorite-composers');
 	}
 
+	fetchFavoriteByUsername(username: string) {
+		return this.api.get<ComposersResponse>(
+			`/users/${username}/favorite-composers`,
+		);
+	}
+
 	fetchById(id: string) {
 		return this.api.get<CompleteComposer>(`/composers/${id}`);
 	}

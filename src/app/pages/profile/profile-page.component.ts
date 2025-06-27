@@ -60,12 +60,22 @@ export class ProfilePageComponent implements OnInit {
 	};
 
 	ngOnInit(): void {
-		if (!this.username()) {
+		const username = this.username();
+		if (!username) {
 			forkJoin([
 				this.fetchUserProfile.fetchByAuth(),
 				this.fetchPieceStats.fetchByAuth(),
 				this.fetchFavoritePieces.fetchByAuth(),
 				this.fetchFavoriteComposers.fetchByAuth(),
+			])
+				.pipe(takeUntilDestroyed(this.destroyRef))
+				.subscribe();
+		} else {
+			forkJoin([
+				this.fetchUserProfile.fetchByUsername(username),
+				this.fetchPieceStats.fetchByUsername(username),
+				this.fetchFavoritePieces.fetchByUsername(username),
+				this.fetchFavoriteComposers.fetchByUsername(username),
 			])
 				.pipe(takeUntilDestroyed(this.destroyRef))
 				.subscribe();

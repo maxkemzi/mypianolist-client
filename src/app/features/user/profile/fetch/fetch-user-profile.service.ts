@@ -48,6 +48,34 @@ export class FetchUserProfileService {
 		);
 	}
 
+	fetchByUsername(username: string) {
+		this._isLoading.set(true);
+		this._hasError.set(false);
+
+		const params = {username};
+		return this.api.fetchByUsername(username).pipe(
+			withCache(
+				() => this.dataCache.get(this.CACHE_PREFIX, params),
+				value => this.dataCache.set(this.CACHE_PREFIX, params, value),
+			),
+			tap(res => {
+				this._data.set(res.data);
+
+				if (res.fromCache) {
+					this._isLoading.set(false);
+				}
+			}),
+			catchError(() => {
+				this._hasError.set(true);
+				this._data.set(null);
+				return of();
+			}),
+			finalize(() => {
+				this._isLoading.set(false);
+			}),
+		);
+	}
+
 	clearCache() {
 		this.dataCache.removeByPrefix(this.CACHE_PREFIX);
 	}

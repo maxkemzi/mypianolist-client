@@ -46,6 +46,44 @@ export class FetchFavoritePiecesService extends PaginatedFetchService<CompletePi
 			);
 	}
 
+	fetchByUsername(
+		username: string,
+		params: FetchParams = {},
+	): Observable<CompletePiecesResponse | null> {
+		this.setIsLoading(true);
+		this.setHasError(false);
+
+		const completeParams = {...params, username};
+		return this.api
+			.fetchFavoriteByUsername(username, {
+				limit: this.limit(),
+				...completeParams,
+			})
+			.pipe(
+				withCache(
+					() => this.dataCache.get(this.CACHE_PREFIX, completeParams),
+					value =>
+						this.dataCache.set(this.CACHE_PREFIX, completeParams, value),
+				),
+				tap(res => {
+					this.setValues(res.data);
+
+					if (res.fromCache) {
+						this.setIsLoading(false);
+					}
+				}),
+				map(res => res.data),
+				catchError(() => {
+					this.setHasError(true);
+					this.resetValues();
+					return of();
+				}),
+				finalize(() => {
+					this.setIsLoading(false);
+				}),
+			);
+	}
+
 	clearCache() {
 		this.dataCache.removeByPrefix(this.CACHE_PREFIX);
 	}
