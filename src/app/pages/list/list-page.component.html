@@ -14,7 +14,7 @@
 				<li>
 					<a routerLink="./">
 						<app-tab [isActive]="status() === undefined"
-							>All pieces</app-tab
+							>All Pieces</app-tab
 						>
 					</a>
 				</li>
@@ -36,12 +36,24 @@
 				@for (piece of pieceList.data(); track piece.id; let i = $index) {
 					<tr appPieceListTableRow [number]="i + 1" [piece]="piece">
 						<div class="flex gap-2" slot="actions">
-							<app-edit-piece-button
-								(appClick)="openEditPieceModal(piece)"
-							/>
-							<app-remove-piece-from-list-button
-								(appClick)="openRemovePieceAlert(piece)"
-							/>
+							@if (isAuth()) {
+								<ng-container>
+									<app-edit-piece-button
+										(appClick)="openEditPieceModal(piece)"
+									/>
+									<app-remove-piece-from-list-button
+										(appClick)="openRemovePieceAlert(piece)"
+									/>
+								</ng-container>
+							} @else if (piece.status === undefined) {
+								<button (click)="openAddPieceModal(piece)">
+									<i
+										appTypography
+										class="ph ph-plus-square"
+										color="success"
+									></i>
+								</button>
+							}
 						</div>
 					</tr>
 				}
@@ -64,6 +76,16 @@
 				[piece]="piece"
 				(appSubmit)="onEditPieceSubmit()"
 				(appClickOutside)="closeEditPieceModal()"
+			/>
+		</div>
+	}
+
+	@if (pieceToAdd(); as piece) {
+		<div appModalContainer>
+			<app-add-piece-to-list-form
+				[piece]="piece"
+				(appSubmit)="onAddPieceSubmit()"
+				(appClickOutside)="closeAddPieceModal()"
 			/>
 		</div>
 	}

@@ -1,7 +1,5 @@
-import {inject} from '@angular/core';
 import {Routes} from '@angular/router';
 import {BaseLayoutComponent} from '@core/layouts';
-import {AuthService} from '@features/auth';
 import {HomePageComponent} from '@pages';
 
 export const routes: Routes = [
@@ -33,11 +31,6 @@ export const routes: Routes = [
 				path: 'composers/:id',
 				loadComponent: () =>
 					import('@pages').then(m => m.ComposerPageComponent),
-			},
-			{
-				path: 'list',
-				loadComponent: () =>
-					import('@pages').then(m => m.ListPageComponent),
 			},
 			{
 				path: 'list/:username',

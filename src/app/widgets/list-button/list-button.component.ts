@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, input} from '@angular/core';
 import {RouterLink} from '@angular/router';
 
 @Component({
@@ -6,4 +6,6 @@ import {RouterLink} from '@angular/router';
 	templateUrl: './list-button.component.html',
 	imports: [RouterLink],
 })
-export class ListButtonComponent {}
+export class ListButtonComponent {
+	readonly username = input.required<string>();
+}

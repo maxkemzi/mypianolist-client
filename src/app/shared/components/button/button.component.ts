@@ -44,7 +44,7 @@ export class ButtonComponent extends ClassMergeDirective {
 			this.COLOR_TO_BG_CLASS_WITH_OPACITY_MAPPING[this.color()];
 
 		return twJoin(
-			'block font-semibold rounded-lg',
+			'block font-semibold rounded-lg text-center',
 			this.size() === 'md' && 'py-2 px-7',
 			this.size() === 'sm' && 'py-1.5 px-4',
 			this.variant() === 'primary' && bgClass,

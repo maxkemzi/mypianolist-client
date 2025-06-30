@@ -80,7 +80,12 @@
 								formatJoinedAt(profile.createdAt)
 							}}</span>
 						</p>
-						<button appButton class="w-full">Piano List</button>
+						<a
+							appButton
+							class="w-full"
+							[routerLink]="['/list', profile.username]"
+							>Piano List</a
+						>
 					</div>
 				</div>
 			} @else {

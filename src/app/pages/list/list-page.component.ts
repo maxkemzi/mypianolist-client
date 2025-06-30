@@ -1,5 +1,6 @@
 import {
 	Component,
+	computed,
 	DestroyRef,
 	effect,
 	inject,
@@ -17,6 +18,8 @@ import {
 	PieceUtils,
 	UserPiece,
 } from '@entities/piece';
+import {AuthService} from '@features/auth';
+import {AddPieceToListFormComponent} from '@features/piece/add-to-list';
 import {
 	EditPieceButtonComponent,
 	EditPieceFormComponent,
@@ -51,18 +54,22 @@ import {ClickOutsideDirective} from '@shared/lib';
 		EditPieceFormComponent,
 		PieceListTableRowComponent,
 		PieceListTableHeadComponent,
+		AddPieceToListFormComponent,
 	],
 })
 export class ListPageComponent implements OnInit {
+	private readonly auth = inject(AuthService);
 	private readonly fetchPieceList = inject(FetchPieceListService);
 	private readonly fetchPieceStatuses = inject(FetchPieceStatusesService);
 	private readonly pieceUtils = inject(PieceUtils);
 	private readonly destroyRef = inject(DestroyRef);
 
-	readonly username = input<string>();
+	readonly username = input.required<string>();
 	readonly status = input<PieceStatusType>();
+	readonly isAuth = computed(() => this.auth.user() !== null);
 	readonly pieceToRemove = signal<Piece | null>(null);
 	readonly pieceToEdit = signal<UserPiece | null>(null);
+	readonly pieceToAdd = signal<Piece | null>(null);
 	readonly pieceList = {
 		data: this.fetchPieceList.data,
 		page: this.fetchPieceList.page,
@@ -120,12 +127,27 @@ export class ListPageComponent implements OnInit {
 		this.closeEditPieceModal();
 	}
 
+	openAddPieceModal(piece: Piece) {
+		this.pieceToAdd.set(piece);
+	}
+
+	closeAddPieceModal() {
+		this.pieceToAdd.set(null);
+	}
+
+	onAddPieceSubmit() {
+		this.fetchList();
+		this.closeAddPieceModal();
+	}
+
 	private fetchList() {
+		const user = this.auth.user();
 		const username = this.username();
 		const status = this.status();
-		const fetch = username
-			? this.fetchPieceList.fetchByUsername(username, {status})
-			: this.fetchPieceList.fetchByAuth({status});
+		const fetch =
+			user && username === user.username
+				? this.fetchPieceList.fetchByAuth({status})
+				: this.fetchPieceList.fetchByUsername(username, {status});
 
 		fetch.pipe(takeUntilDestroyed(this.destroyRef)).subscribe();
 	}
