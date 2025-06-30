@@ -2,7 +2,7 @@ import {Component, DestroyRef, inject, OnInit} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {RouterLink} from '@angular/router';
 import {GenreCardComponent} from '@entities/genre';
-import {FetchAllGenresService} from '@features/genre/fetchAll';
+import {FetchAllGenresService} from '@features/genre/fetch-all';
 import {ContainerComponent, TypographyComponent} from '@shared/components';
 
 @Component({

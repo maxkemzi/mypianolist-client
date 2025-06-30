@@ -8,9 +8,9 @@ import {
 } from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {ComposerDetailsComponent} from '@entities/composer';
-import {AddComposerToFavoritesAlertComponent} from '@features/composer/addToFavorites';
-import {FetchComposerByIdService} from '@features/composer/fetchById';
-import {RemoveComposerFromFavoritesAlertComponent} from '@features/composer/removeFromFavorites';
+import {AddComposerToFavoritesAlertComponent} from '@features/composer/add-to-favorites';
+import {FetchComposerByIdService} from '@features/composer/fetch-by-id';
+import {RemoveComposerFromFavoritesAlertComponent} from '@features/composer/remove-from-favorites';
 import {
 	ContainerComponent,
 	FavoritesButtonComponent,

@@ -1,5 +1,5 @@
 import {Component, DestroyRef, inject, input, OnInit} from '@angular/core';
-import {FetchPieceStatsService} from '@features/piece/fetchStats';
+import {FetchPieceStatsService} from '@features/piece/fetch-stats';
 import {FetchUserProfileService} from '@features/user/profile/fetch';
 import {
 	ButtonComponent,
@@ -7,10 +7,10 @@ import {
 	TypographyComponent,
 } from '@shared/components';
 import {StatusLabelComponent} from './components/status-label/status-label.component';
-import {FetchFavoritePiecesService} from '@features/piece/fetchFavorite';
+import {FetchFavoritePiecesService} from '@features/piece/fetch-favorite';
 import {FavoritePieceCardComponent} from '@entities/piece';
 import {RouterLink} from '@angular/router';
-import {FetchFavoriteComposersService} from '@features/composer/fetchFavorite';
+import {FetchFavoriteComposersService} from '@features/composer/fetch-favorite';
 import {FavoriteComposerCardComponent} from '@entities/composer';
 import {forkJoin} from 'rxjs';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';

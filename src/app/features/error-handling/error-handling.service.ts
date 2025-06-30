@@ -1,12 +1,12 @@
 import {effect, inject, Injectable} from '@angular/core';
-import {AddComposerToFavoritesService} from '@features/composer/addToFavorites';
-import {RemoveComposerFromFavoritesService} from '@features/composer/removeFromFavorites';
+import {AddComposerToFavoritesService} from '@features/composer/add-to-favorites';
+import {RemoveComposerFromFavoritesService} from '@features/composer/remove-from-favorites';
 import {NotificationAlertService} from '@features/notification-alert';
-import {AddPieceToFavoritesService} from '@features/piece/addToFavorites';
-import {AddPieceToListService} from '@features/piece/addToList';
+import {AddPieceToFavoritesService} from '@features/piece/add-to-favorites';
+import {AddPieceToListService} from '@features/piece/add-to-list';
 import {EditPieceService} from '@features/piece/edit';
-import {RemovePieceFromFavoritesService} from '@features/piece/removeFromFavorites';
-import {RemovePieceFromListService} from '@features/piece/removeFromList';
+import {RemovePieceFromFavoritesService} from '@features/piece/remove-from-favorites';
+import {RemovePieceFromListService} from '@features/piece/remove-from-list';
 
 @Injectable({providedIn: 'root'})
 export class ErrorHandlingService {

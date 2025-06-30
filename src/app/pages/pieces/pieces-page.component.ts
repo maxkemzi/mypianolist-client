@@ -17,8 +17,8 @@ import {
 	PieceSort,
 } from '@entities/piece';
 import {PaginationComponent} from '@features/pagination';
-import {AddPieceToListFormComponent} from '@features/piece/addToList';
-import {FetchAllPiecesService} from '@features/piece/fetchAll';
+import {AddPieceToListFormComponent} from '@features/piece/add-to-list';
+import {FetchAllPiecesService} from '@features/piece/fetch-all';
 import {
 	ContainerComponent,
 	DropdownComponent,

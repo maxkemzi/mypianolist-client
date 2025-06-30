@@ -9,7 +9,7 @@ import {
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {PieceStatusType, UserPiece} from '@entities/piece';
-import {PieceStatusesSelect} from '@features/piece/fetchStatuses';
+import {PieceStatusesSelect} from '@features/piece/fetch-statuses';
 import {
 	ButtonComponent,
 	FormFieldComponent,

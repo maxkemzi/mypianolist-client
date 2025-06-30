@@ -21,12 +21,12 @@ import {
 	EditPieceButtonComponent,
 	EditPieceFormComponent,
 } from '@features/piece/edit';
-import {FetchPieceListService} from '@features/piece/fetchList';
-import {FetchPieceStatusesService} from '@features/piece/fetchStatuses';
+import {FetchPieceListService} from '@features/piece/fetch-list';
+import {FetchPieceStatusesService} from '@features/piece/fetch-statuses';
 import {
 	RemovePieceFromListAlertComponent,
 	RemovePieceFromListButtonComponent,
-} from '@features/piece/removeFromList';
+} from '@features/piece/remove-from-list';
 import {
 	ContainerComponent,
 	ModalContainerComponent,

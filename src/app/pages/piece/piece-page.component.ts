@@ -11,10 +11,10 @@ import {
 	AddPieceToListButtonComponent,
 	PieceDetailsComponent,
 } from '@entities/piece';
-import {AddPieceToFavoritesAlertComponent} from '@features/piece/addToFavorites';
-import {AddPieceToListFormComponent} from '@features/piece/addToList';
-import {FetchPieceByIdService} from '@features/piece/fetchById';
-import {RemovePieceFromFavoritesAlertComponent} from '@features/piece/removeFromFavorites';
+import {AddPieceToFavoritesAlertComponent} from '@features/piece/add-to-favorites';
+import {AddPieceToListFormComponent} from '@features/piece/add-to-list';
+import {FetchPieceByIdService} from '@features/piece/fetch-by-id';
+import {RemovePieceFromFavoritesAlertComponent} from '@features/piece/remove-from-favorites';
 import {
 	ContainerComponent,
 	FavoritesButtonComponent,

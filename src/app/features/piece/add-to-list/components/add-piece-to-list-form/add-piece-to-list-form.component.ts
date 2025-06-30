@@ -7,7 +7,7 @@ import {
 	Validators,
 } from '@angular/forms';
 import {Piece, PieceStatusType} from '@entities/piece';
-import {PieceStatusesSelect} from '@features/piece/fetchStatuses';
+import {PieceStatusesSelect} from '@features/piece/fetch-statuses';
 import {
 	ButtonComponent,
 	FormFieldComponent,
