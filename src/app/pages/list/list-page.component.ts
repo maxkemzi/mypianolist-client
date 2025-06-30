@@ -59,6 +59,10 @@ export class ListPageComponent implements OnInit {
 	private readonly pieceUtils = inject(PieceUtils);
 	private readonly destroyRef = inject(DestroyRef);
 
+	readonly username = input<string>();
+	readonly status = input<PieceStatusType>();
+	readonly pieceToRemove = signal<Piece | null>(null);
+	readonly pieceToEdit = signal<UserPiece | null>(null);
 	readonly pieceList = {
 		data: this.fetchPieceList.data,
 		page: this.fetchPieceList.page,
@@ -72,11 +76,6 @@ export class ListPageComponent implements OnInit {
 		isLoading: this.fetchPieceStatuses.isLoading,
 		hasError: this.fetchPieceStatuses.hasError,
 	};
-
-	readonly status = input<PieceStatusType>();
-
-	readonly pieceToRemove = signal<Piece | null>(null);
-	readonly pieceToEdit = signal<UserPiece | null>(null);
 
 	ngOnInit() {
 		this.fetchPieceStatuses
@@ -122,9 +121,12 @@ export class ListPageComponent implements OnInit {
 	}
 
 	private fetchList() {
-		this.fetchPieceList
-			.fetch({status: this.status()})
-			.pipe(takeUntilDestroyed(this.destroyRef))
-			.subscribe();
+		const username = this.username();
+		const status = this.status();
+		const fetch = username
+			? this.fetchPieceList.fetchByUsername(username, {status})
+			: this.fetchPieceList.fetchByAuth({status});
+
+		fetch.pipe(takeUntilDestroyed(this.destroyRef)).subscribe();
 	}
 }

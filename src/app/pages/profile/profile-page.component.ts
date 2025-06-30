@@ -57,9 +57,7 @@ export class ProfilePageComponent implements OnInit {
 		this.hasError.set(false);
 
 		const username = this.username();
-		let fetch;
-
-		fetch = username
+		const fetch = username
 			? forkJoin([
 					this.fetchUserProfile.fetchByUsername(username),
 					this.fetchPieceStats.fetchByUsername(username),

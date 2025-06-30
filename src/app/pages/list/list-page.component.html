@@ -12,7 +12,7 @@
 		} @else {
 			<ul class="flex justify-center items-center gap-4">
 				<li>
-					<a routerLink="/list">
+					<a routerLink="./">
 						<app-tab [isActive]="status() === undefined"
 							>All pieces</app-tab
 						>
@@ -20,7 +20,7 @@
 				</li>
 				@for (statusItem of pieceStatuses.data(); track statusItem) {
 					<li>
-						<a routerLink="/list" [queryParams]="{status: statusItem}">
+						<a routerLink="./" [queryParams]="{status: statusItem}">
 							<app-tab [isActive]="status() === statusItem">{{
 								getStatusText(statusItem)
 							}}</app-tab>

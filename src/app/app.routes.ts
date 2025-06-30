@@ -38,6 +38,11 @@ export const routes: Routes = [
 					import('@pages').then(m => m.ListPageComponent),
 			},
 			{
+				path: 'list/:username',
+				loadComponent: () =>
+					import('@pages').then(m => m.ListPageComponent),
+			},
+			{
 				path: 'profile',
 				loadComponent: () =>
 					import('@pages').then(m => m.ProfilePageComponent),

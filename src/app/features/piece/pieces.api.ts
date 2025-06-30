@@ -34,8 +34,14 @@ export class PiecesApi {
 		});
 	}
 
-	fetchList(params: FetchParams) {
+	fetchListByAuth(params: FetchParams) {
 		return this.api.get<UserPiecesResponse>('/users/pieces', {
+			params: this.buildParams(params),
+		});
+	}
+
+	fetchListByUsername(username: string, params: FetchParams) {
+		return this.api.get<UserPiecesResponse>(`/users/${username}/pieces`, {
 			params: this.buildParams(params),
 		});
 	}
