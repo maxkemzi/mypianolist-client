@@ -1,5 +1,7 @@
+import {inject} from '@angular/core';
 import {Routes} from '@angular/router';
 import {BaseLayoutComponent} from '@core/layouts';
+import {AuthService} from '@features/auth';
 import {HomePageComponent} from '@pages';
 
 export const routes: Routes = [
@@ -41,11 +43,6 @@ export const routes: Routes = [
 				path: 'list/:username',
 				loadComponent: () =>
 					import('@pages').then(m => m.ListPageComponent),
-			},
-			{
-				path: 'profile',
-				loadComponent: () =>
-					import('@pages').then(m => m.ProfilePageComponent),
 			},
 			{
 				path: 'profile/:username',

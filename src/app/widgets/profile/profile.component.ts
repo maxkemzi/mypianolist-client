@@ -57,7 +57,7 @@ export class ProfileComponent {
 	}
 
 	onProfileClick() {
-		this.router.navigate(['/profile']);
+		this.router.navigate(['/profile', this.username()]);
 		this.dropdownIsOpen.set(false);
 	}
 
