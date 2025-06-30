@@ -7,7 +7,7 @@ import {ContainerComponent, TypographyComponent} from '@shared/components';
 
 @Component({
 	selector: 'app-catalog-page',
-	templateUrl: './catalog.component.html',
+	templateUrl: './catalog-page.component.html',
 	imports: [
 		ContainerComponent,
 		TypographyComponent,

@@ -4,7 +4,7 @@ import {ContainerComponent} from '@shared/components';
 
 @Component({
 	selector: 'app-auth-page',
-	templateUrl: './auth.component.html',
+	templateUrl: './auth-page.component.html',
 	imports: [ContainerComponent, RouterOutlet],
 })
 export class AuthPageComponent {}

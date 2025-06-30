@@ -19,7 +19,6 @@ import {
 import {PaginationComponent} from '@features/pagination';
 import {AddPieceToListFormComponent} from '@features/piece/addToList';
 import {FetchAllPiecesService} from '@features/piece/fetchAll';
-import {FetchPieceListService} from '@features/piece/fetchList';
 import {
 	ContainerComponent,
 	DropdownComponent,
@@ -33,7 +32,7 @@ import {ButtonComponent} from '../../shared/components/button/button.component';
 
 @Component({
 	selector: 'app-pieces-page',
-	templateUrl: './pieces.component.html',
+	templateUrl: './pieces-page.component.html',
 	imports: [
 		ContainerComponent,
 		PieceCardComponent,
@@ -54,7 +53,6 @@ export class PiecesPageComponent {
 	private readonly router = inject(Router);
 	private readonly route = inject(ActivatedRoute);
 	private readonly fetchAllPieces = inject(FetchAllPiecesService);
-	private readonly fetchPieceList = inject(FetchPieceListService);
 	private readonly destroyRef = inject(DestroyRef);
 
 	readonly pieces = {

@@ -7,14 +7,10 @@ import {
 	signal,
 } from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {
-	AddPieceToListButtonComponent,
-	PieceDetailsComponent,
-} from '@entities/piece';
-import {AddPieceToFavoritesAlertComponent} from '@features/piece/addToFavorites';
-import {AddPieceToListFormComponent} from '@features/piece/addToList';
-import {FetchPieceByIdService} from '@features/piece/fetchById';
-import {RemovePieceFromFavoritesAlertComponent} from '@features/piece/removeFromFavorites';
+import {ComposerDetailsComponent} from '@entities/composer';
+import {AddComposerToFavoritesAlertComponent} from '@features/composer/addToFavorites';
+import {FetchComposerByIdService} from '@features/composer/fetchById';
+import {RemoveComposerFromFavoritesAlertComponent} from '@features/composer/removeFromFavorites';
 import {
 	ContainerComponent,
 	FavoritesButtonComponent,
@@ -24,49 +20,34 @@ import {
 import {ClickOutsideDirective} from '@shared/lib';
 
 @Component({
-	selector: 'app-piece-page',
-	templateUrl: './piece.component.html',
+	selector: 'app-composer-page',
+	templateUrl: './composer-page.component.html',
 	imports: [
 		ContainerComponent,
 		TypographyComponent,
-		PieceDetailsComponent,
-		AddPieceToListFormComponent,
-		AddPieceToFavoritesAlertComponent,
-		RemovePieceFromFavoritesAlertComponent,
-		ModalContainerComponent,
+		ComposerDetailsComponent,
+		AddComposerToFavoritesAlertComponent,
 		ClickOutsideDirective,
-		AddPieceToListButtonComponent,
+		ModalContainerComponent,
+		RemoveComposerFromFavoritesAlertComponent,
 		FavoritesButtonComponent,
 	],
 })
-export class PiecePageComponent implements OnInit {
-	private readonly fetchPieceById = inject(FetchPieceByIdService);
+export class ComposerPageComponent implements OnInit {
+	private readonly fetchComposerById = inject(FetchComposerByIdService);
 	private readonly destroyRef = inject(DestroyRef);
 
 	readonly id = input.required<string>();
-	readonly piece = {
-		data: this.fetchPieceById.data,
-		isLoading: this.fetchPieceById.isLoading,
-		hasError: this.fetchPieceById.hasError,
+	readonly composer = {
+		data: this.fetchComposerById.data,
+		isLoading: this.fetchComposerById.isLoading,
+		hasError: this.fetchComposerById.hasError,
 	};
-	readonly addToListModalIsOpen = signal<boolean>(false);
 	readonly addToFavoritesAlertIsOpen = signal<boolean>(false);
 	readonly removeFromFavoritesAlertIsOpen = signal<boolean>(false);
 
 	ngOnInit() {
 		this.fetch();
-	}
-
-	onAddToListSubmit() {
-		this.closeAddToListModal();
-	}
-
-	openAddToListModal() {
-		this.addToListModalIsOpen.set(true);
-	}
-
-	closeAddToListModal() {
-		this.addToListModalIsOpen.set(false);
 	}
 
 	onAddToFavorites() {
@@ -96,7 +77,7 @@ export class PiecePageComponent implements OnInit {
 	}
 
 	private fetch() {
-		this.fetchPieceById
+		this.fetchComposerById
 			.fetch(this.id())
 			.pipe(takeUntilDestroyed(this.destroyRef))
 			.subscribe();

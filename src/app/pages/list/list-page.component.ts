@@ -37,7 +37,7 @@ import {ClickOutsideDirective} from '@shared/lib';
 
 @Component({
 	selector: 'app-list-page',
-	templateUrl: './list.component.html',
+	templateUrl: './list-page.component.html',
 	imports: [
 		TypographyComponent,
 		TabComponent,

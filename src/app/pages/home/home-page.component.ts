@@ -3,7 +3,7 @@ import {ContainerComponent, TypographyComponent} from '@shared/components';
 
 @Component({
 	selector: 'app-home-page',
-	templateUrl: './home.component.html',
+	templateUrl: './home-page.component.html',
 	imports: [ContainerComponent, TypographyComponent],
 })
 export class HomePageComponent {}
