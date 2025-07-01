@@ -42,41 +42,25 @@
 					pieces.isLoading() ? '...' : pieces.totalCount()
 				}}</span>
 			</p>
-			<div class="relative">
-				<button
-					class="flex items-center gap-2"
-					type="button"
-					(click)="toggleSortDropdownIsOpen()"
+			<app-sort-dropdown [(menuIsOpen)]="sortDropdownMenuIsOpen">
+				<app-dropdown-item
+					[isActive]="sort() === undefined"
+					(appClick)="onSortClick(undefined)"
+					>Date</app-dropdown-item
 				>
-					<span>Sort by</span>
 
-					<i class="ph ph-caret-down"></i>
-				</button>
-				@if (sortDropdownIsOpen()) {
-					<app-dropdown
-						class="absolute top-full left-0 min-w-full pt-2"
-						(appClickOutside)="closeSortDropdown()"
-					>
-						<app-dropdown-item
-							[isActive]="sort() === undefined"
-							(appClick)="onSortClick(undefined)"
-							>Date</app-dropdown-item
-						>
+				<app-dropdown-item
+					[isActive]="sort() === 'learners'"
+					(appClick)="onSortClick('learners')"
+					>Learners</app-dropdown-item
+				>
 
-						<app-dropdown-item
-							[isActive]="sort() === 'learners'"
-							(appClick)="onSortClick('learners')"
-							>Learners</app-dropdown-item
-						>
-
-						<app-dropdown-item
-							[isActive]="sort() === 'favorites'"
-							(appClick)="onSortClick('favorites')"
-							>Favorites</app-dropdown-item
-						>
-					</app-dropdown>
-				}
-			</div>
+				<app-dropdown-item
+					[isActive]="sort() === 'favorites'"
+					(appClick)="onSortClick('favorites')"
+					>Favorites</app-dropdown-item
+				>
+			</app-sort-dropdown>
 		</div>
 
 		@if (pieces.isLoading()) {

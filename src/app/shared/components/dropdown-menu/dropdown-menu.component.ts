@@ -2,10 +2,10 @@ import {Component} from '@angular/core';
 import {ClassMergeDirective} from '@shared/lib';
 
 @Component({
-	selector: 'app-dropdown',
-	templateUrl: './dropdown.component.html',
+	selector: 'app-dropdown-menu',
+	templateUrl: './dropdown-menu.component.html',
 })
-export class DropdownComponent extends ClassMergeDirective {
+export class DropdownMenuComponent extends ClassMergeDirective {
 	protected override defaultClass(): string {
 		return 'block';
 	}

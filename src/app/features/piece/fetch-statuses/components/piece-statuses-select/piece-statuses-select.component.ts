@@ -11,8 +11,8 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {PieceStatusType, PieceUtils} from '@entities/piece';
 import {
-	DropdownComponent,
 	DropdownItemComponent,
+	DropdownMenuComponent,
 	InputComponent,
 } from '@shared/components';
 import {ClickOutsideDirective} from '@shared/lib';
@@ -22,7 +22,7 @@ import {FetchPieceStatusesService} from '../../fetch-piece-statuses.service';
 	selector: 'app-piece-statuses-select',
 	templateUrl: './piece-statuses-select.component.html',
 	imports: [
-		DropdownComponent,
+		DropdownMenuComponent,
 		DropdownItemComponent,
 		InputComponent,
 		ClickOutsideDirective,
@@ -42,7 +42,7 @@ export class PieceStatusesSelect implements OnInit, ControlValueAccessor {
 
 	readonly value = signal<PieceStatusType | ''>('');
 	readonly disabled = signal<boolean>(false);
-	readonly isOpen = signal<boolean>(false);
+	readonly menuIsOpen = signal<boolean>(false);
 	readonly valueLabel = computed(() => {
 		const value = this.value();
 		return value ? this.statusToText(value) : value;
@@ -82,12 +82,12 @@ export class PieceStatusesSelect implements OnInit, ControlValueAccessor {
 	}
 
 	onClickOutside() {
-		this.isOpen.set(false);
+		this.menuIsOpen.set(false);
 		this.onTouched();
 	}
 
 	onFocus() {
-		this.isOpen.set(true);
+		this.menuIsOpen.set(true);
 	}
 
 	onSelect(status: PieceStatusType) {
@@ -95,6 +95,6 @@ export class PieceStatusesSelect implements OnInit, ControlValueAccessor {
 		this.onChange(this.value());
 		this.onTouched();
 
-		this.isOpen.set(false);
+		this.menuIsOpen.set(false);
 	}
 }

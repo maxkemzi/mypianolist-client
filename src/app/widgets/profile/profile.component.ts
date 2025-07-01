@@ -11,8 +11,8 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {Router} from '@angular/router';
 import {AuthService} from '@features/auth';
 import {
-	DropdownComponent,
 	DropdownItemComponent,
+	DropdownMenuComponent,
 	TypographyComponent,
 } from '@shared/components';
 import {ClickOutsideDirective} from '@shared/lib';
@@ -24,7 +24,7 @@ import {finalize} from 'rxjs';
 	imports: [
 		TypographyComponent,
 		ClickOutsideDirective,
-		DropdownComponent,
+		DropdownMenuComponent,
 		DropdownItemComponent,
 	],
 })

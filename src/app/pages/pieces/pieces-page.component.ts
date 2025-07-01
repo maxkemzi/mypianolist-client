@@ -21,10 +21,10 @@ import {AddPieceToListFormComponent} from '@features/piece/add-to-list';
 import {FetchAllPiecesService} from '@features/piece/fetch-all';
 import {
 	ContainerComponent,
-	DropdownComponent,
 	DropdownItemComponent,
 	InputComponent,
 	ModalContainerComponent,
+	SortDropdownComponent,
 	TypographyComponent,
 } from '@shared/components';
 import {ClickOutsideDirective} from '@shared/lib';
@@ -37,7 +37,6 @@ import {ButtonComponent} from '../../shared/components/button/button.component';
 		ContainerComponent,
 		PieceCardComponent,
 		TypographyComponent,
-		DropdownComponent,
 		DropdownItemComponent,
 		InputComponent,
 		ButtonComponent,
@@ -47,6 +46,7 @@ import {ButtonComponent} from '../../shared/components/button/button.component';
 		AddPieceToListFormComponent,
 		ModalContainerComponent,
 		AddPieceToListButtonComponent,
+		SortDropdownComponent,
 	],
 })
 export class PiecesPageComponent {
@@ -71,7 +71,7 @@ export class PiecesPageComponent {
 	readonly page = input<number>();
 
 	readonly searchValue = signal<string>('');
-	readonly sortDropdownIsOpen = signal<boolean>(false);
+	readonly sortDropdownMenuIsOpen = signal<boolean>(false);
 	readonly pieceToAddToList = signal<Piece | null>(null);
 
 	get iconClasses() {
@@ -100,17 +100,9 @@ export class PiecesPageComponent {
 		this.searchValue.set('');
 	}
 
-	toggleSortDropdownIsOpen() {
-		this.sortDropdownIsOpen.update(value => !value);
-	}
-
-	closeSortDropdown() {
-		this.sortDropdownIsOpen.set(false);
-	}
-
 	onSortClick(sort: PieceSort | undefined) {
 		this.addQueryParams({sort});
-		this.sortDropdownIsOpen.set(false);
+		this.sortDropdownMenuIsOpen.set(false);
 	}
 
 	onPageChange(page: number) {

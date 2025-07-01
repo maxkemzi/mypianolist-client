@@ -8,7 +8,7 @@
 		<i class="ph-fill ph-caret-down"></i>
 	</button>
 	@if (dropdownIsOpen()) {
-		<app-dropdown class="absolute top-full left-0 min-w-full pt-2">
+		<app-dropdown-menu class="absolute top-full left-0 min-w-full pt-2">
 			<app-dropdown-item (appClick)="onProfileClick()">
 				Profile
 			</app-dropdown-item>
@@ -18,7 +18,7 @@
 			>
 				Log out
 			</app-dropdown-item>
-		</app-dropdown>
+		</app-dropdown-menu>
 	}
 </div>
 @if (imageHasError()) {

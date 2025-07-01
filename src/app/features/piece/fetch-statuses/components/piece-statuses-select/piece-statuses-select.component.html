@@ -8,8 +8,8 @@
 		[disabled]="disabled()"
 	/>
 
-	@if (isOpen()) {
-		<app-dropdown class="absolute top-full left-0 min-w-full pt-2">
+	@if (menuIsOpen()) {
+		<app-dropdown-menu class="absolute top-full left-0 min-w-full pt-2">
 			@if (statuses.isLoading()) {
 				<p>Loading...</p>
 			} @else if (statuses.hasError()) {
@@ -26,6 +26,6 @@
 					>
 				}
 			}
-		</app-dropdown>
+		</app-dropdown-menu>
 	}
 </div>

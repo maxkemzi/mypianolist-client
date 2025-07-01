@@ -1,0 +1,9 @@
+<app-dropdown-button (appClick)="openMenu()"> Sort by </app-dropdown-button>
+@if (menuIsOpen()) {
+	<app-dropdown-menu
+		class="absolute top-full left-0 min-w-full pt-2"
+		(appClickOutside)="closeMenu()"
+	>
+		<ng-content />
+	</app-dropdown-menu>
+}
