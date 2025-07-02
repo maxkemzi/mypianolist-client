@@ -10,5 +10,8 @@ export class DropdownItemComponent {
 	readonly isActive = input<boolean, unknown>(false, {
 		transform: booleanAttribute,
 	});
+	readonly isDisabled = input<boolean, unknown>(false, {
+		transform: booleanAttribute,
+	});
 	readonly appClick = output<void>();
 }
