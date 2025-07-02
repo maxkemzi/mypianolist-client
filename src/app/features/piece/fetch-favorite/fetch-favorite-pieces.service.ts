@@ -2,7 +2,11 @@ import {inject, Injectable} from '@angular/core';
 import {DataCacheService, withCache} from '@shared/lib';
 import {catchError, finalize, map, Observable, of, tap} from 'rxjs';
 import {PaginatedFetchService} from '../../paginated-fetch.service';
-import {CompletePiecesResponse, FetchParams, PiecesApi} from '../pieces.api';
+import {
+	CompletePiecesResponse,
+	PiecesFetchParams,
+	PiecesApi,
+} from '../pieces.api';
 import {AuthService} from '@features/auth';
 
 @Injectable({providedIn: 'root'})
@@ -13,7 +17,7 @@ export class FetchFavoritePiecesService extends PaginatedFetchService<CompletePi
 	private readonly CACHE_PREFIX = 'favorite_pieces';
 
 	fetchByAuth(
-		params: FetchParams = {},
+		params: PiecesFetchParams = {},
 	): Observable<CompletePiecesResponse | null> {
 		this.setIsLoading(true);
 		this.setHasError(false);
@@ -48,7 +52,7 @@ export class FetchFavoritePiecesService extends PaginatedFetchService<CompletePi
 
 	fetchByUsername(
 		username: string,
-		params: FetchParams = {},
+		params: PiecesFetchParams = {},
 	): Observable<CompletePiecesResponse | null> {
 		this.setIsLoading(true);
 		this.setHasError(false);

@@ -12,7 +12,11 @@
 		} @else {
 			<ul class="flex justify-center items-center gap-4">
 				<li>
-					<a routerLink="./">
+					<a
+						routerLink="./"
+						[queryParams]="{status: undefined}"
+						queryParamsHandling="merge"
+					>
 						<app-tab [isActive]="status() === undefined"
 							>All Pieces</app-tab
 						>
@@ -20,7 +24,11 @@
 				</li>
 				@for (statusItem of pieceStatuses.data(); track statusItem) {
 					<li>
-						<a routerLink="./" [queryParams]="{status: statusItem}">
+						<a
+							routerLink="./"
+							[queryParams]="{status: statusItem}"
+							queryParamsHandling="merge"
+						>
 							<app-tab [isActive]="status() === statusItem">{{
 								getStatusText(statusItem)
 							}}</app-tab>
@@ -30,7 +38,26 @@
 			</ul>
 		}
 
-		<table class="w-full mt-7">
+		<div class="flex mb-2 mt-7">
+			<app-sort-dropdown
+				class="ml-auto"
+				[(menuIsOpen)]="sortDropdownMenuIsOpen"
+			>
+				<app-dropdown-item
+					[isActive]="sort() === undefined"
+					(appClick)="onSortClick(undefined)"
+					>Date</app-dropdown-item
+				>
+
+				<app-dropdown-item
+					[isActive]="sort() === 'score'"
+					(appClick)="onSortClick('score')"
+					>Score</app-dropdown-item
+				>
+			</app-sort-dropdown>
+		</div>
+
+		<table class="w-full">
 			<thead appPieceListTableHead></thead>
 			<tbody>
 				@for (piece of pieceList.data(); track piece.id; let i = $index) {

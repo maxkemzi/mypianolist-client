@@ -35,3 +35,5 @@ export interface UserPiece extends Piece {
 }
 
 export type PieceSort = 'created_at' | 'learners' | 'favorites';
+
+export type UserPieceSort = 'created_at' | 'score';

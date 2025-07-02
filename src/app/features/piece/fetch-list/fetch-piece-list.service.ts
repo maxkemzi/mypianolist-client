@@ -1,9 +1,13 @@
 import {inject, Injectable} from '@angular/core';
+import {AuthService} from '@features/auth';
 import {DataCacheService, withCache} from '@shared/lib';
 import {catchError, finalize, map, Observable, of, tap} from 'rxjs';
 import {PaginatedFetchService} from '../../paginated-fetch.service';
-import {FetchParams, PiecesApi, UserPiecesResponse} from '../pieces.api';
-import {AuthService} from '@features/auth';
+import {
+	PiecesApi,
+	UserPiecesFetchParams,
+	UserPiecesResponse,
+} from '../pieces.api';
 
 @Injectable({providedIn: 'root'})
 export class FetchPieceListService extends PaginatedFetchService<UserPiecesResponse> {
@@ -13,7 +17,7 @@ export class FetchPieceListService extends PaginatedFetchService<UserPiecesRespo
 	private readonly CACHE_PREFIX = 'piece_list';
 
 	fetchByAuth(
-		params: FetchParams = {},
+		params: UserPiecesFetchParams = {},
 	): Observable<UserPiecesResponse | null> {
 		this.setIsLoading(true);
 		this.setHasError(false);
@@ -45,7 +49,7 @@ export class FetchPieceListService extends PaginatedFetchService<UserPiecesRespo
 
 	fetchByUsername(
 		username: string,
-		params: FetchParams = {},
+		params: UserPiecesFetchParams = {},
 	): Observable<UserPiecesResponse | null> {
 		this.setIsLoading(true);
 		this.setHasError(false);

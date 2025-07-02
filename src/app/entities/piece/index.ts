@@ -8,6 +8,7 @@ export type {
 	UserPiece,
 	CompletePiece,
 	PieceSort,
+	UserPieceSort,
 } from './piece.model';
 export {PieceListTableRowComponent} from './components/piece-list-table-row/piece-list-table-row.component';
 export {PieceListTableHeadComponent} from './components/piece-list-table-head/piece-list-table-head.component';

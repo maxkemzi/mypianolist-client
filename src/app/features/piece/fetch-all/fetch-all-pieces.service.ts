@@ -2,7 +2,11 @@ import {inject, Injectable} from '@angular/core';
 import {DataCacheService, withCache} from '@shared/lib';
 import {catchError, finalize, map, Observable, of, tap} from 'rxjs';
 import {PaginatedFetchService} from '../../paginated-fetch.service';
-import {CompletePiecesResponse, FetchParams, PiecesApi} from '../pieces.api';
+import {
+	CompletePiecesResponse,
+	PiecesFetchParams,
+	PiecesApi,
+} from '../pieces.api';
 
 @Injectable({providedIn: 'root'})
 export class FetchAllPiecesService extends PaginatedFetchService<CompletePiecesResponse> {
@@ -10,7 +14,9 @@ export class FetchAllPiecesService extends PaginatedFetchService<CompletePiecesR
 	private readonly api = inject(PiecesApi);
 	private readonly CACHE_PREFIX = 'pieces';
 
-	fetch(params: FetchParams = {}): Observable<CompletePiecesResponse | null> {
+	fetch(
+		params: PiecesFetchParams = {},
+	): Observable<CompletePiecesResponse | null> {
 		this.setIsLoading(true);
 		this.setHasError(false);
 		return this.api.fetchAll({limit: this.limit(), ...params}).pipe(

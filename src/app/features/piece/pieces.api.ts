@@ -5,17 +5,21 @@ import {
 	PieceSort,
 	PieceStatusType,
 	UserPiece,
+	UserPieceSort,
 } from '@entities/piece';
 import {Api, PaginationResponse} from '@shared/lib';
 
 export type CompletePiecesResponse = PaginationResponse<CompletePiece>;
 export type UserPiecesResponse = PaginationResponse<UserPiece>;
-export interface FetchParams {
+interface FetchParams<Sort> {
 	search?: string;
 	genre?: string;
 	page?: number;
 	limit?: number;
-	sort?: PieceSort;
+	sort?: Sort;
+}
+export interface PiecesFetchParams extends FetchParams<PieceSort> {}
+export interface UserPiecesFetchParams extends FetchParams<UserPieceSort> {
 	status?: PieceStatusType;
 }
 
@@ -28,67 +32,45 @@ export interface PieceStatsResponse {
 export class PiecesApi {
 	private readonly api = inject(Api);
 
-	fetchAll(params: FetchParams) {
+	fetchAll(params: PiecesFetchParams) {
 		return this.api.get<CompletePiecesResponse>('/pieces', {
 			params: this.buildParams(params),
 		});
 	}
 
-	fetchListByAuth(params: FetchParams) {
+	fetchListByAuth(params: UserPiecesFetchParams) {
 		return this.api.get<UserPiecesResponse>('/users/pieces', {
 			params: this.buildParams(params),
 		});
 	}
 
-	fetchListByUsername(username: string, params: FetchParams) {
+	fetchListByUsername(username: string, params: UserPiecesFetchParams) {
 		return this.api.get<UserPiecesResponse>(`/users/${username}/pieces`, {
 			params: this.buildParams(params),
 		});
 	}
 
-	fetchFavoriteByAuth(params: FetchParams) {
+	fetchFavoriteByAuth(params: PiecesFetchParams) {
 		return this.api.get<CompletePiecesResponse>('/users/favorite-pieces', {
 			params: this.buildParams(params),
 		});
 	}
 
-	fetchFavoriteByUsername(username: string, params: FetchParams) {
+	fetchFavoriteByUsername(username: string, params: PiecesFetchParams) {
 		return this.api.get<CompletePiecesResponse>(
 			`/users/${username}/favorite-pieces`,
 			{params: this.buildParams(params)},
 		);
 	}
 
-	private buildParams({
-		search,
-		genre,
-		page,
-		limit,
-		status,
-		sort,
-	}: FetchParams = {}): HttpParams {
-		const params: Record<string, string | number> = {};
+	private buildParams(params = {}): HttpParams {
+		const fromObject = Object.entries(params).reduce(
+			(prev, [key, value]) =>
+				value != null ? {...prev, [key]: value} : prev,
+			{},
+		);
 
-		if (search) {
-			params['search'] = search;
-		}
-		if (genre) {
-			params['genre'] = genre;
-		}
-		if (page) {
-			params['page'] = page;
-		}
-		if (limit) {
-			params['limit'] = limit;
-		}
-		if (status) {
-			params['status'] = status;
-		}
-		if (sort) {
-			params['sort'] = sort;
-		}
-
-		return new HttpParams({fromObject: params});
+		return new HttpParams({fromObject});
 	}
 
 	fetchById(id: string) {

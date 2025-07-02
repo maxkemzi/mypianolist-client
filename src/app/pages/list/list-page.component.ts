@@ -9,14 +9,16 @@ import {
 	signal,
 } from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {RouterLink} from '@angular/router';
+import {ActivatedRoute, Params, Router, RouterLink} from '@angular/router';
 import {
 	Piece,
 	PieceListTableHeadComponent,
 	PieceListTableRowComponent,
+	PieceSort,
 	PieceStatusType,
 	PieceUtils,
 	UserPiece,
+	UserPieceSort,
 } from '@entities/piece';
 import {AuthService} from '@features/auth';
 import {AddPieceToListFormComponent} from '@features/piece/add-to-list';
@@ -32,7 +34,9 @@ import {
 } from '@features/piece/remove-from-list';
 import {
 	ContainerComponent,
+	DropdownItemComponent,
 	ModalContainerComponent,
+	SortDropdownComponent,
 	TabComponent,
 	TypographyComponent,
 } from '@shared/components';
@@ -55,6 +59,8 @@ import {ClickOutsideDirective} from '@shared/lib';
 		PieceListTableRowComponent,
 		PieceListTableHeadComponent,
 		AddPieceToListFormComponent,
+		SortDropdownComponent,
+		DropdownItemComponent,
 	],
 })
 export class ListPageComponent implements OnInit {
@@ -63,9 +69,12 @@ export class ListPageComponent implements OnInit {
 	private readonly fetchPieceStatuses = inject(FetchPieceStatusesService);
 	private readonly pieceUtils = inject(PieceUtils);
 	private readonly destroyRef = inject(DestroyRef);
+	private readonly router = inject(Router);
+	private readonly route = inject(ActivatedRoute);
 
 	readonly username = input.required<string>();
 	readonly status = input<PieceStatusType>();
+	readonly sort = input<UserPieceSort>();
 	readonly isAuth = computed(() => this.auth.user() !== null);
 	readonly pieceToRemove = signal<Piece | null>(null);
 	readonly pieceToEdit = signal<UserPiece | null>(null);
@@ -83,6 +92,7 @@ export class ListPageComponent implements OnInit {
 		isLoading: this.fetchPieceStatuses.isLoading,
 		hasError: this.fetchPieceStatuses.hasError,
 	};
+	readonly sortDropdownMenuIsOpen = signal<boolean>(false);
 
 	ngOnInit() {
 		this.fetchPieceStatuses
@@ -99,6 +109,11 @@ export class ListPageComponent implements OnInit {
 
 	getStatusText(status: PieceStatusType) {
 		return this.pieceUtils.statusToText(status);
+	}
+
+	onSortClick(sort: UserPieceSort | undefined) {
+		this.addQueryParams({sort});
+		this.sortDropdownMenuIsOpen.set(false);
 	}
 
 	openRemovePieceAlert(piece: Piece) {
@@ -144,11 +159,20 @@ export class ListPageComponent implements OnInit {
 		const user = this.auth.user();
 		const username = this.username();
 		const status = this.status();
+		const sort = this.sort();
 		const fetch =
 			user && username === user.username
-				? this.fetchPieceList.fetchByAuth({status})
-				: this.fetchPieceList.fetchByUsername(username, {status});
+				? this.fetchPieceList.fetchByAuth({status, sort})
+				: this.fetchPieceList.fetchByUsername(username, {status, sort});
 
 		fetch.pipe(takeUntilDestroyed(this.destroyRef)).subscribe();
+	}
+
+	private addQueryParams(params: Params) {
+		this.router.navigate([], {
+			relativeTo: this.route,
+			queryParams: params,
+			queryParamsHandling: 'merge',
+		});
 	}
 }
