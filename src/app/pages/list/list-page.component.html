@@ -38,11 +38,57 @@
 			</ul>
 		}
 
-		<div class="flex mb-2 mt-7">
-			<app-sort-dropdown
-				class="ml-auto"
-				[(menuIsOpen)]="sortDropdownMenuIsOpen"
-			>
+		<div class="flex justify-between items-center gap-4 mb-2 mt-7">
+			<p>
+				Pieces
+				<span weight="medium">{{
+					pieceList.isLoading() ? '...' : pieceList.totalCount()
+				}}</span>
+			</p>
+
+			<form (ngSubmit)="onSearch()">
+				<div class="relative">
+					<input
+						appInput
+						size="sm"
+						class="pr-10"
+						placeholder="Search List..."
+						[value]="searchValue()"
+						(input)="onSearchInput($event)"
+					/>
+
+					<div class="absolute right-4 top-1/2 translate-y-[-50%]">
+						@if (searchValue().length !== 0) {
+							<button
+								appButton
+								type="button"
+								[disabled]="pieceList.isLoading()"
+								(click)="onSearchClear()"
+							>
+								<i
+									appTypography
+									[class]="'ph ph-x'"
+									color="primary"
+								></i>
+							</button>
+						} @else {
+							<button
+								appButton
+								type="submit"
+								[disabled]="pieceList.isLoading()"
+							>
+								<i
+									appTypography
+									[class]="'ph ph-magnifying-glass'"
+									color="primary"
+								></i>
+							</button>
+						}
+					</div>
+				</div>
+			</form>
+
+			<app-sort-dropdown [(menuIsOpen)]="sortDropdownMenuIsOpen">
 				<app-dropdown-item
 					[isActive]="sort() === undefined"
 					(appClick)="onSortClick(undefined)"

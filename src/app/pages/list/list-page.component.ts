@@ -9,6 +9,7 @@ import {
 	signal,
 } from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {FormsModule} from '@angular/forms';
 import {ActivatedRoute, Params, Router, RouterLink} from '@angular/router';
 import {
 	Piece,
@@ -35,6 +36,7 @@ import {
 import {
 	ContainerComponent,
 	DropdownItemComponent,
+	InputComponent,
 	ModalContainerComponent,
 	SortDropdownComponent,
 	TabComponent,
@@ -61,6 +63,8 @@ import {ClickOutsideDirective} from '@shared/lib';
 		AddPieceToListFormComponent,
 		SortDropdownComponent,
 		DropdownItemComponent,
+		InputComponent,
+		FormsModule,
 	],
 })
 export class ListPageComponent implements OnInit {
@@ -75,6 +79,7 @@ export class ListPageComponent implements OnInit {
 	readonly username = input.required<string>();
 	readonly status = input<PieceStatusType>();
 	readonly sort = input<UserPieceSort>();
+	readonly search = input<string>();
 	readonly isAuth = computed(() => this.auth.user() !== null);
 	readonly pieceToRemove = signal<Piece | null>(null);
 	readonly pieceToEdit = signal<UserPiece | null>(null);
@@ -93,6 +98,7 @@ export class ListPageComponent implements OnInit {
 		hasError: this.fetchPieceStatuses.hasError,
 	};
 	readonly sortDropdownMenuIsOpen = signal<boolean>(false);
+	readonly searchValue = signal<string>('');
 
 	ngOnInit() {
 		this.fetchPieceStatuses
@@ -109,6 +115,22 @@ export class ListPageComponent implements OnInit {
 
 	getStatusText(status: PieceStatusType) {
 		return this.pieceUtils.statusToText(status);
+	}
+
+	onSearch() {
+		if (this.searchValue().length !== 0) {
+			this.addQueryParams({search: this.searchValue(), page: undefined});
+		}
+	}
+
+	onSearchInput(event: Event) {
+		const value = (event.target as HTMLInputElement).value;
+		this.searchValue.set(value.trim());
+	}
+
+	onSearchClear() {
+		this.addQueryParams({search: undefined, page: undefined});
+		this.searchValue.set('');
 	}
 
 	onSortClick(sort: UserPieceSort | undefined) {
@@ -158,12 +180,16 @@ export class ListPageComponent implements OnInit {
 	private fetchList() {
 		const user = this.auth.user();
 		const username = this.username();
-		const status = this.status();
-		const sort = this.sort();
+		const params = {
+			status: this.status(),
+			sort: this.sort(),
+			search: this.search(),
+		};
+
 		const fetch =
 			user && username === user.username
-				? this.fetchPieceList.fetchByAuth({status, sort})
-				: this.fetchPieceList.fetchByUsername(username, {status, sort});
+				? this.fetchPieceList.fetchByAuth(params)
+				: this.fetchPieceList.fetchByUsername(username, params);
 
 		fetch.pipe(takeUntilDestroyed(this.destroyRef)).subscribe();
 	}
