@@ -100,35 +100,47 @@
 			</app-sort-dropdown>
 		</div>
 
-		<table class="w-full">
-			<thead appPieceListTableHead></thead>
-			<tbody>
-				@for (piece of pieceList.data(); track piece.id; let i = $index) {
-					<tr appPieceListTableRow [number]="i + 1" [piece]="piece">
-						<div class="flex gap-2" slot="actions">
-							@if (isAuth()) {
-								<ng-container>
-									<app-edit-piece-button
-										(appClick)="openEditPieceModal(piece)"
-									/>
-									<app-remove-piece-from-list-button
-										(appClick)="openRemovePieceAlert(piece)"
-									/>
-								</ng-container>
-							} @else if (piece.status === undefined) {
-								<button (click)="openAddPieceModal(piece)">
-									<i
-										appTypography
-										class="ph ph-plus-square"
-										color="success"
-									></i>
-								</button>
-							}
-						</div>
-					</tr>
-				}
-			</tbody>
-		</table>
+		@if (pieceList.isLoading()) {
+			<p>Loading...</p>
+		} @else if (pieceList.hasError()) {
+			<p>Something went wrong.</p>
+		} @else if (pieceList.data().length === 0) {
+			<p>Your list is empty.</p>
+		} @else {
+			<table class="w-full">
+				<thead appPieceListTableHead></thead>
+				<tbody>
+					@for (
+						piece of pieceList.data();
+						track piece.id;
+						let i = $index
+					) {
+						<tr appPieceListTableRow [number]="i + 1" [piece]="piece">
+							<div class="flex gap-2" slot="actions">
+								@if (isAuth()) {
+									<ng-container>
+										<app-edit-piece-button
+											(appClick)="openEditPieceModal(piece)"
+										/>
+										<app-remove-piece-from-list-button
+											(appClick)="openRemovePieceAlert(piece)"
+										/>
+									</ng-container>
+								} @else if (piece.status === undefined) {
+									<button (click)="openAddPieceModal(piece)">
+										<i
+											appTypography
+											class="ph ph-plus-square"
+											color="success"
+										></i>
+									</button>
+								}
+							</div>
+						</tr>
+					}
+				</tbody>
+			</table>
+		}
 	</div>
 	@if (pieceToRemove(); as piece) {
 		<div appModalContainer>
