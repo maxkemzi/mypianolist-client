@@ -6,3 +6,4 @@ export {PiecePageComponent} from './piece/piece-page.component';
 export {ComposerPageComponent} from './composer/composer-page.component';
 export {ListPageComponent} from './list/list-page.component';
 export {ProfilePageComponent} from './profile/profile-page.component';
+export {SettingsPageComponent} from './settings/settings-page.component';

@@ -42,6 +42,12 @@ export const routes: Routes = [
 				loadComponent: () =>
 					import('@pages').then(m => m.ProfilePageComponent),
 			},
+
+			{
+				path: 'settings',
+				loadComponent: () =>
+					import('@pages').then(m => m.SettingsPageComponent),
+			},
 		],
 	},
 	{

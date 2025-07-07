@@ -1,0 +1,88 @@
+<div class="h-[88px] mb-10"></div>
+<section>
+	<div appContainer size="md">
+		<h1 class="text-center mb-7">Settings</h1>
+		@if (user(); as user) {
+			<div class="grid grid-cols-2 gap-6">
+				<form>
+					<h2 class="mb-4">Account</h2>
+					<app-form-field class="block mb-2" label="Username">
+						<input
+							appInput
+							[formControl]="usernameControl"
+							placeholder="username"
+							[defaultValue]="user.username"
+						/>
+					</app-form-field>
+					<button
+						appButton
+						type="submit"
+						size="sm"
+						[disabled]="usernameControl.untouched"
+					>
+						Submit
+					</button>
+				</form>
+				<div>
+					<h2 class="mb-4">Profile</h2>
+					<div class="flex flex-col items-start gap-4">
+						<div>
+							<img
+								class="block w-[225px] h-[225px] mb-2 object-cover object-center rounded-lg"
+								[src]="avatar()"
+								[alt]="`${user.username} avatar`"
+							/>
+							<div class="flex gap-2">
+								@if (uploadedAvatar()) {
+									<button
+										appButton
+										class="flex-1"
+										size="sm"
+										variant="outline"
+										(click)="resetAvatar()"
+									>
+										Reset
+									</button>
+								} @else {
+									<button
+										appButton
+										class="flex-1"
+										size="sm"
+										variant="outline"
+										(click)="openFilePicker()"
+									>
+										Upload
+									</button>
+								}
+								<button appButton class="flex-1" size="sm">
+									Submit
+								</button>
+							</div>
+							<input
+								#fileInput
+								type="file"
+								hidden
+								(change)="uploadAvatar($event)"
+							/>
+						</div>
+
+						<form class="w-full">
+							<app-form-field class="block mb-2" label="Biography">
+								<textarea
+									appInput
+									class="w-full max-w-[400px]"
+									rows="5"
+									placeholder="biography"
+									[formControl]="biographyControl"
+									[defaultValue]="user.biography || ''"
+								></textarea>
+							</app-form-field>
+
+							<button appButton size="sm">Submit</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		}
+	</div>
+</section>

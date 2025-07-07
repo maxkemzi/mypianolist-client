@@ -39,7 +39,10 @@ export class ProfileComponent {
 	readonly dropdownIsOpen = signal<boolean>(false);
 	readonly isLoggingOut = signal<boolean>(false);
 
-	readonly avatarPath = computed(() => `/images/${this.avatar()}`);
+	readonly avatarPath = computed(() => {
+		const avatar = this.avatar();
+		return avatar ? `/server${avatar}` : null;
+	});
 
 	@HostBinding('class')
 	get classes() {
@@ -58,6 +61,11 @@ export class ProfileComponent {
 
 	onProfileClick() {
 		this.router.navigate(['/profile', this.username()]);
+		this.dropdownIsOpen.set(false);
+	}
+
+	onSettingsClick() {
+		this.router.navigate(['/settings']);
 		this.dropdownIsOpen.set(false);
 	}
 

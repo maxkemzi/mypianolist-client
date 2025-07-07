@@ -12,6 +12,9 @@
 			<app-dropdown-item (appClick)="onProfileClick()">
 				Profile
 			</app-dropdown-item>
+			<app-dropdown-item (appClick)="onSettingsClick()">
+				Settings
+			</app-dropdown-item>
 			<app-dropdown-item
 				[isDisabled]="isLoggingOut()"
 				(appClick)="onLogoutClick()"
@@ -29,10 +32,8 @@
 	</div>
 } @else {
 	<img
-		class="block object-cover max-w-full rounded-full bg-surface"
+		class="block w-[50px] h-[50px] object-cover object-center rounded-full"
 		[src]="avatarPath()"
 		(error)="onImageError()"
-		width="50"
-		height="50"
 	/>
 }

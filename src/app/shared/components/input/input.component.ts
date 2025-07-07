@@ -3,7 +3,7 @@ import {ClassMergeDirective} from '@shared/lib';
 import {twJoin} from 'tailwind-merge';
 
 @Component({
-	selector: 'input[appInput]',
+	selector: 'input[appInput], textarea[appInput]',
 	template: '',
 })
 export class InputComponent extends ClassMergeDirective {
@@ -11,7 +11,7 @@ export class InputComponent extends ClassMergeDirective {
 
 	protected override defaultClass(): string {
 		return twJoin(
-			'bg-surface rounded-lg',
+			'block bg-surface rounded-lg',
 			this.size() === 'sm' && 'px-3 py-2',
 			this.size() === 'md' && 'px-4 py-3',
 		);
