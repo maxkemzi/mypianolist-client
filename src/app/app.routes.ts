@@ -1,5 +1,6 @@
 import {Routes} from '@angular/router';
 import {BaseLayoutComponent} from '@core/layouts';
+import {authGuard} from '@features/auth';
 import {HomePageComponent} from '@pages';
 
 export const routes: Routes = [
@@ -47,6 +48,7 @@ export const routes: Routes = [
 				path: 'settings',
 				loadComponent: () =>
 					import('@pages').then(m => m.SettingsPageComponent),
+				canActivate: [authGuard],
 			},
 		],
 	},

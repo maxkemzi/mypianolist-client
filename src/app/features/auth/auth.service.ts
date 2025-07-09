@@ -1,7 +1,7 @@
 import {isPlatformBrowser} from '@angular/common';
-import {inject, Injectable, PLATFORM_ID, signal} from '@angular/core';
+import {computed, inject, Injectable, PLATFORM_ID, signal} from '@angular/core';
 import {CookieService} from 'ngx-cookie-service';
-import {catchError, map, of, tap} from 'rxjs';
+import {catchError, finalize, map, of, tap} from 'rxjs';
 import {AuthApi} from './auth.api';
 import {AuthUser} from './auth.model';
 
@@ -12,8 +12,11 @@ export class AuthService {
 	private readonly platformId = inject(PLATFORM_ID);
 
 	private readonly _user = signal<AuthUser | null | undefined>(undefined);
+	private readonly _isLoading = signal<boolean>(false);
 
 	readonly user = this._user.asReadonly();
+	readonly isLoading = this._isLoading.asReadonly();
+	readonly isAuth = computed(() => this._user() != null);
 
 	signUp(body: {username: string; email: string; password: string}) {
 		return this.api.signUp(body);
@@ -30,9 +33,10 @@ export class AuthService {
 
 	refresh() {
 		if (!isPlatformBrowser(this.platformId)) {
-			return of(null);
+			return of();
 		}
 
+		this._isLoading.set(true);
 		return this.api.refresh().pipe(
 			tap(data => {
 				this._user.set(data.user);
@@ -43,7 +47,10 @@ export class AuthService {
 				this._user.set(null);
 				this.deleteAccessToken();
 
-				return of(null);
+				return of();
+			}),
+			finalize(() => {
+				this._isLoading.set(false);
 			}),
 		);
 	}
