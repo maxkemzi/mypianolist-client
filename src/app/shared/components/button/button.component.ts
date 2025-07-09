@@ -1,4 +1,11 @@
-import {Component, inject, input} from '@angular/core';
+import {
+	booleanAttribute,
+	Component,
+	computed,
+	HostBinding,
+	inject,
+	input,
+} from '@angular/core';
 import {ClassMergeDirective} from '@shared/lib';
 import {ThemeColor, ThemeUtils} from '@shared/theme';
 import {twJoin} from 'tailwind-merge';
@@ -34,14 +41,21 @@ export class ButtonComponent extends ClassMergeDirective {
 		[ThemeColor.DISABLED]: 'bg-disabled/15',
 	};
 
+	readonly disabled = input<boolean, unknown>(false, {
+		transform: booleanAttribute,
+	});
+
 	readonly variant = input<Variant>('primary');
 	readonly size = input<Size>('md');
 	readonly color = input<Color>('primary');
+	readonly finalColor = computed<Color>(() =>
+		this.disabled() ? 'disabled' : this.color(),
+	);
 
 	protected override defaultClass(): string {
-		const bgClass = this.themeUtils.colorToBgClass(this.color());
+		const bgClass = this.themeUtils.colorToBgClass(this.finalColor());
 		const bgClassWithOpacity =
-			this.COLOR_TO_BG_CLASS_WITH_OPACITY_MAPPING[this.color()];
+			this.COLOR_TO_BG_CLASS_WITH_OPACITY_MAPPING[this.finalColor()];
 
 		return twJoin(
 			'block font-semibold rounded-lg text-center',
@@ -52,9 +66,14 @@ export class ButtonComponent extends ClassMergeDirective {
 		);
 	}
 
+	@HostBinding('attr.disabled')
+	get isDisabled() {
+		return this.disabled() ? '' : null;
+	}
+
 	get textColor(): TypographyColor {
 		if (this.variant() === 'outline') {
-			return this.color();
+			return this.finalColor();
 		}
 
 		return 'text';
