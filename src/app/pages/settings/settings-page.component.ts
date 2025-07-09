@@ -1,15 +1,24 @@
 import {
 	Component,
 	computed,
+	DestroyRef,
 	effect,
 	ElementRef,
 	inject,
-	OnInit,
 	signal,
 	ViewChild,
 } from '@angular/core';
-import {FormControl, ReactiveFormsModule} from '@angular/forms';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {
+	AbstractControl,
+	FormControl,
+	FormsModule,
+	ReactiveFormsModule,
+	ValidationErrors,
+	Validators,
+} from '@angular/forms';
 import {AuthService} from '@features/auth';
+import {UpdateUsernameService} from '@features/user/update-username';
 import {
 	ButtonComponent,
 	ContainerComponent,
@@ -28,17 +37,28 @@ import {
 		InputComponent,
 		ButtonComponent,
 		ReactiveFormsModule,
+		FormsModule,
 	],
 })
 export class SettingsPageComponent {
+	private readonly destroyRef = inject(DestroyRef);
 	private readonly auth = inject(AuthService);
+	private readonly updateUsername = inject(UpdateUsernameService);
+
+	readonly user = this.auth.user;
 
 	@ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
-	readonly usernameControl = new FormControl('', {nonNullable: true});
+	readonly usernameControl = new FormControl('', {
+		validators: [
+			Validators.required,
+			this.usernameNotSameValidator(this.user()?.username),
+		],
+		nonNullable: true,
+	});
 	readonly avatarControl = new FormControl<File | null>(null);
 	readonly biographyControl = new FormControl('', {nonNullable: true});
 
-	readonly user = this.auth.user;
+	readonly usernameIsUpdating = this.updateUsername.isLoading;
 	readonly uploadedAvatar = signal<string | undefined>(undefined);
 	readonly avatar = computed(() => {
 		if (this.uploadedAvatar()) {
@@ -57,11 +77,44 @@ export class SettingsPageComponent {
 		effect(() => {
 			const user = this.user();
 			if (user) {
-				const {username, biography} = user;
-				this.usernameControl.reset(username);
-				this.biographyControl.reset(biography || '');
+				this.usernameControl.reset(user.username);
+				this.biographyControl.reset(user.biography || '');
 			}
 		});
+	}
+
+	usernameNotSameValidator(current?: string) {
+		return (control: AbstractControl): ValidationErrors | null => {
+			return current && control.value !== current
+				? null
+				: {usernameNotSame: true};
+		};
+	}
+
+	get usernameError(): string | undefined {
+		if (this.usernameControl?.touched) {
+			if (this.usernameControl?.errors?.['required']) {
+				return 'Username is required.';
+			}
+			if (this.usernameControl?.errors?.['usernameNotSame']) {
+				return 'Username must be different from the current one.';
+			}
+		}
+
+		return undefined;
+	}
+
+	onUsernameSubmit() {
+		this.usernameControl.markAsTouched();
+
+		if (this.usernameControl.invalid) {
+			return;
+		}
+
+		this.updateUsername
+			.update(this.usernameControl.value)
+			.pipe(takeUntilDestroyed(this.destroyRef))
+			.subscribe();
 	}
 
 	openFilePicker() {

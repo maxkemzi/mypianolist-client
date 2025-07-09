@@ -7,6 +7,7 @@ import {AddPieceToListService} from '@features/piece/add-to-list';
 import {EditPieceService} from '@features/piece/edit';
 import {RemovePieceFromFavoritesService} from '@features/piece/remove-from-favorites';
 import {RemovePieceFromListService} from '@features/piece/remove-from-list';
+import {UpdateUsernameService} from '@features/user/update-username';
 
 @Injectable({providedIn: 'root'})
 export class ErrorHandlingService {
@@ -53,6 +54,12 @@ export class ErrorHandlingService {
 			inject(RemoveComposerFromFavoritesService),
 			'Error removing composer from favorites.',
 			'Composer removed from your favorites successfully.',
+		);
+
+		this.handleStatus(
+			inject(UpdateUsernameService),
+			'Error updating username.',
+			'Username was updated successfully.',
 		);
 	}
 

@@ -4,9 +4,13 @@
 		<h1 class="text-center mb-7">Settings</h1>
 		@if (user(); as user) {
 			<div class="grid grid-cols-2 gap-6">
-				<form>
+				<form (ngSubmit)="onUsernameSubmit()">
 					<h2 class="mb-4">Account</h2>
-					<app-form-field class="block mb-2" label="Username">
+					<app-form-field
+						class="block mb-2"
+						label="Username"
+						[error]="usernameError"
+					>
 						<input
 							appInput
 							[formControl]="usernameControl"
@@ -18,7 +22,10 @@
 						appButton
 						type="submit"
 						size="sm"
-						[disabled]="usernameControl.untouched"
+						[disabled]="
+							(usernameControl.touched && usernameControl.invalid) ||
+							usernameIsUpdating()
+						"
 					>
 						Submit
 					</button>
