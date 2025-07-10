@@ -17,6 +17,15 @@
 				type="password"
 			/>
 		</app-form-field>
+
+		<app-form-field label="Confirm Password" [error]="confirmPasswordError">
+			<input
+				appInput
+				formControlName="confirmPassword"
+				placeholder="password"
+				type="password"
+			/>
+		</app-form-field>
 	</div>
 	<button appButton class="mb-2 w-full" type="submit">Sign Up</button>
 	<p>

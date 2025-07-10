@@ -1,5 +1,7 @@
 import {Component, DestroyRef, inject} from '@angular/core';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {
+	AbstractControl,
 	FormControl,
 	FormGroup,
 	ReactiveFormsModule,
@@ -15,7 +17,6 @@ import {
 	TypographyComponent,
 } from '@shared/components';
 import {AuthService} from '../auth.service';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 @Component({
 	selector: 'app-signup-form',
@@ -44,16 +45,27 @@ export class SignupFormComponent {
 			}),
 
 			email: new FormControl('', {
-				validators: Validators.email,
+				validators: [Validators.required, Validators.email],
 				nonNullable: true,
 			}),
 			password: new FormControl('', {
 				validators: Validators.required,
 				nonNullable: true,
 			}),
+			confirmPassword: new FormControl('', {
+				validators: Validators.required,
+				nonNullable: true,
+			}),
 		},
-		{updateOn: 'blur'},
+		{validators: [this.passwordsMatchValidator], updateOn: 'blur'},
 	);
+
+	passwordsMatchValidator(form: AbstractControl) {
+		const password = form.get('password')?.value;
+		const confirmPassword = form.get('confirmPassword')?.value;
+
+		return password !== confirmPassword ? {passwordsMismatch: true} : null;
+	}
 
 	get usernameError(): string | undefined {
 		const control = this.form.get('username');
@@ -93,6 +105,20 @@ export class SignupFormComponent {
 		return undefined;
 	}
 
+	get confirmPasswordError(): string | undefined {
+		const control = this.form.get('confirmPassword');
+
+		if (control?.touched) {
+			if (control.errors?.['required']) {
+				return 'Password confirmation is required.';
+			} else if (this.form.errors?.['passwordsMismatch']) {
+				return "Passwords doesn't match.";
+			}
+		}
+
+		return undefined;
+	}
+
 	onSubmit = () => {
 		this.form.markAllAsTouched();
 
@@ -100,8 +126,9 @@ export class SignupFormComponent {
 			return;
 		}
 
+		const {username, email, password} = this.form.getRawValue();
 		this.service
-			.signUp(this.form.getRawValue())
+			.signUp({username, email, password})
 			.pipe(takeUntilDestroyed(this.destroyRef))
 			.subscribe({
 				next: () => {
