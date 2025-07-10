@@ -7,6 +7,7 @@ import {AddPieceToListService} from '@features/piece/add-to-list';
 import {EditPieceService} from '@features/piece/edit';
 import {RemovePieceFromFavoritesService} from '@features/piece/remove-from-favorites';
 import {RemovePieceFromListService} from '@features/piece/remove-from-list';
+import {UpdateAvatarService} from '@features/user/profile/update-avatar';
 import {UpdateUsernameService} from '@features/user/update-username';
 
 @Injectable({providedIn: 'root'})
@@ -60,6 +61,12 @@ export class ErrorHandlingService {
 			inject(UpdateUsernameService),
 			'Error updating username.',
 			'Username was updated successfully.',
+		);
+
+		this.handleStatus(
+			inject(UpdateAvatarService),
+			'Error updating avatar.',
+			'Avatar was updated successfully.',
 		);
 	}
 

@@ -33,7 +33,7 @@
 				<div>
 					<h2 class="mb-4">Profile</h2>
 					<div class="flex flex-col items-start gap-4">
-						<div>
+						<form (ngSubmit)="onAvatarSubmit()">
 							<img
 								class="block w-[225px] h-[225px] mb-2 object-cover object-center rounded-lg"
 								[src]="avatar()"
@@ -61,7 +61,12 @@
 										Upload
 									</button>
 								}
-								<button appButton class="flex-1" size="sm">
+								<button
+									appButton
+									class="flex-1"
+									type="submit"
+									size="sm"
+								>
 									Submit
 								</button>
 							</div>
@@ -71,7 +76,7 @@
 								hidden
 								(change)="uploadAvatar($event)"
 							/>
-						</div>
+						</form>
 
 						<form class="w-full">
 							<app-form-field class="block mb-2" label="Biography">

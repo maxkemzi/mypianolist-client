@@ -18,6 +18,7 @@ import {
 	Validators,
 } from '@angular/forms';
 import {AuthService} from '@features/auth';
+import {UpdateAvatarService} from '@features/user/profile/update-avatar';
 import {UpdateUsernameService} from '@features/user/update-username';
 import {
 	ButtonComponent,
@@ -44,6 +45,7 @@ export class SettingsPageComponent {
 	private readonly destroyRef = inject(DestroyRef);
 	private readonly auth = inject(AuthService);
 	private readonly updateUsername = inject(UpdateUsernameService);
+	private readonly updateAvatar = inject(UpdateAvatarService);
 
 	readonly user = this.auth.user;
 
@@ -115,6 +117,20 @@ export class SettingsPageComponent {
 			.update(this.usernameControl.value)
 			.pipe(takeUntilDestroyed(this.destroyRef))
 			.subscribe();
+	}
+
+	onAvatarSubmit() {
+		const value = this.avatarControl.value;
+		if (value === null) {
+			return;
+		}
+
+		this.updateAvatar
+			.update(value)
+			.pipe(takeUntilDestroyed(this.destroyRef))
+			.subscribe();
+
+		this.avatarControl.reset();
 	}
 
 	openFilePicker() {

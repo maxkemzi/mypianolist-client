@@ -81,4 +81,8 @@ export class AuthService {
 	private deleteAccessToken() {
 		this.cookies.delete('accessToken', '/');
 	}
+
+	patchUser(payload: Partial<AuthUser>) {
+		this._user.update(prev => (prev != null ? {...prev, ...payload} : null));
+	}
 }
