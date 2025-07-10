@@ -60,7 +60,6 @@ export class SettingsPageComponent {
 	readonly avatarControl = new FormControl<File | null>(null);
 	readonly biographyControl = new FormControl('', {nonNullable: true});
 
-	readonly usernameIsUpdating = this.updateUsername.isLoading;
 	readonly uploadedAvatar = signal<string | undefined>(undefined);
 	readonly avatar = computed(() => {
 		if (this.uploadedAvatar()) {
@@ -119,6 +118,13 @@ export class SettingsPageComponent {
 			.subscribe();
 	}
 
+	get usernameSubmitButtonIsDisabled() {
+		return (
+			(this.usernameControl.touched && this.usernameControl.invalid) ||
+			this.updateUsername.isLoading()
+		);
+	}
+
 	onAvatarSubmit() {
 		const value = this.avatarControl.value;
 		if (value === null) {
@@ -131,6 +137,10 @@ export class SettingsPageComponent {
 			.subscribe();
 
 		this.avatarControl.reset();
+	}
+
+	get avatarSubmitButtonIsDisabled() {
+		return this.avatarControl.value === null || this.updateAvatar.isLoading();
 	}
 
 	openFilePicker() {

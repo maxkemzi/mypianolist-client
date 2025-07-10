@@ -47,10 +47,19 @@ export class ButtonComponent extends ClassMergeDirective {
 
 	readonly variant = input<Variant>('primary');
 	readonly size = input<Size>('md');
-	readonly color = input<Color>('primary');
-	readonly finalColor = computed<Color>(() =>
-		this.disabled() ? 'disabled' : this.color(),
-	);
+	readonly color = input<Color>();
+	readonly finalColor = computed<Color>(() => {
+		const color = this.color();
+		if (color) {
+			return color;
+		}
+
+		if (this.disabled()) {
+			return 'disabled';
+		}
+
+		return 'primary';
+	});
 
 	protected override defaultClass(): string {
 		const bgClass = this.themeUtils.colorToBgClass(this.finalColor());

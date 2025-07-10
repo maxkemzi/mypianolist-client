@@ -6,6 +6,6 @@ export class UserApi {
 	private readonly api = inject(Api);
 
 	updateUsername(username: string) {
-		return this.api.post('/users/username', {username});
+		return this.api.post<void>('/users/username', {username});
 	}
 }
