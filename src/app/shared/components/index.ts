@@ -14,3 +14,4 @@ export {ModalContainerComponent} from './modal-container';
 export {AlertComponent} from './alert';
 export {FavoritesButtonComponent} from './favorites-button';
 export {SortDropdownComponent} from './sort-dropdown';
+export {AvatarComponent} from './avatar';

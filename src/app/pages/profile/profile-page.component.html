@@ -10,8 +10,9 @@
 				<div class="grid grid-cols-[225px_1fr] grid-rows-[225px_1fr] gap-6">
 					<div class="bg-red">
 						<img
-							class="block w-[225px] h-[225px] object-cover object-center rounded-lg"
-							[src]="profile.avatar ? `/server/${profile.avatar}` : '/images/avatar.jpg'"
+							appAvatar
+							size="225"
+							[src]="profile.avatar ? `/server/${profile.avatar}` : undefined"
 							[alt]="`${profile.username} avatar`"
 						/>
 					</div>

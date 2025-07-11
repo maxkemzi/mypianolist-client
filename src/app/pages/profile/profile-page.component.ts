@@ -16,6 +16,7 @@ import {FetchFavoritePiecesService} from '@features/piece/fetch-favorite';
 import {FetchPieceStatsService} from '@features/piece/fetch-stats';
 import {FetchUserProfileService} from '@features/user/profile/fetch';
 import {
+	AvatarComponent,
 	ButtonComponent,
 	ContainerComponent,
 	TypographyComponent,
@@ -34,6 +35,7 @@ import {StatusLabelComponent} from './components/status-label/status-label.compo
 		FavoritePieceCardComponent,
 		RouterLink,
 		FavoriteComposerCardComponent,
+		AvatarComponent,
 	],
 })
 export class ProfilePageComponent implements OnInit {

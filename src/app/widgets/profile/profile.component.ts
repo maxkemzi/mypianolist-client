@@ -1,6 +1,5 @@
 import {
 	Component,
-	computed,
 	DestroyRef,
 	HostBinding,
 	inject,
@@ -8,15 +7,15 @@ import {
 	signal,
 } from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {Router} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import {AuthService} from '@features/auth';
 import {
+	AvatarComponent,
 	DropdownItemComponent,
 	DropdownMenuComponent,
 	TypographyComponent,
 } from '@shared/components';
 import {ClickOutsideDirective} from '@shared/lib';
-import {finalize} from 'rxjs';
 
 @Component({
 	selector: 'app-profile',
@@ -26,6 +25,8 @@ import {finalize} from 'rxjs';
 		ClickOutsideDirective,
 		DropdownMenuComponent,
 		DropdownItemComponent,
+		RouterLink,
+		AvatarComponent,
 	],
 })
 export class ProfileComponent {
@@ -38,11 +39,6 @@ export class ProfileComponent {
 	readonly imageHasError = signal<boolean>(false);
 	readonly dropdownIsOpen = signal<boolean>(false);
 	readonly isLoggingOut = this.auth.isLoggingOut;
-
-	readonly avatarPath = computed(() => {
-		const avatar = this.avatar();
-		return avatar ? `/server${avatar}` : null;
-	});
 
 	@HostBinding('class')
 	get classes() {
@@ -76,9 +72,5 @@ export class ProfileComponent {
 			.subscribe(() => {
 				this.router.navigate(['/auth/login']);
 			});
-	}
-
-	onImageError() {
-		this.imageHasError.set(true);
 	}
 }
