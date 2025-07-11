@@ -33,7 +33,7 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 })
 export class LoginFormComponent {
 	private readonly router = inject(Router);
-	private readonly service = inject(AuthService);
+	private readonly auth = inject(AuthService);
 	private readonly destroyRef = inject(DestroyRef);
 
 	readonly form = new FormGroup(
@@ -49,6 +49,7 @@ export class LoginFormComponent {
 		},
 		{updateOn: 'blur'},
 	);
+	readonly isLoading = this.auth.isLoggingIn;
 
 	get usernameError(): string | undefined {
 		const control = this.form.get('username');
@@ -81,7 +82,7 @@ export class LoginFormComponent {
 			return;
 		}
 
-		this.service
+		this.auth
 			.logIn(this.form.getRawValue())
 			.pipe(takeUntilDestroyed(this.destroyRef))
 			.subscribe({

@@ -14,7 +14,7 @@ export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot) => {
 	const injector = inject(Injector);
 	const platformId = inject(PLATFORM_ID);
 
-	return toObservable(auth.isLoading, {injector}).pipe(
+	return toObservable(auth.isRefreshing, {injector}).pipe(
 		skipWhile(isLoading => isLoading),
 		map(() => {
 			if (isPlatformServer(platformId)) {

@@ -12,21 +12,36 @@ export class AuthService {
 	private readonly platformId = inject(PLATFORM_ID);
 
 	private readonly _user = signal<AuthUser | null | undefined>(undefined);
-	private readonly _isLoading = signal<boolean>(false);
+	private readonly _isSigningUp = signal<boolean>(false);
+	private readonly _isLoggingIn = signal<boolean>(false);
+	private readonly _isRefreshing = signal<boolean>(false);
+	private readonly _isLoggingOut = signal<boolean>(false);
 
 	readonly user = this._user.asReadonly();
-	readonly isLoading = this._isLoading.asReadonly();
+	readonly isSigningUp = this._isSigningUp.asReadonly();
+	readonly isLoggingIn = this._isLoggingIn.asReadonly();
+	readonly isRefreshing = this._isRefreshing.asReadonly();
+	readonly isLoggingOut = this._isLoggingOut.asReadonly();
 	readonly isAuth = computed(() => this._user() != null);
 
 	signUp(body: {username: string; email: string; password: string}) {
-		return this.api.signUp(body);
+		this._isSigningUp.set(true);
+		return this.api.signUp(body).pipe(
+			finalize(() => {
+				this._isSigningUp.set(false);
+			}),
+		);
 	}
 
 	logIn(body: {username: string; password: string}) {
+		this._isLoggingIn.set(true);
 		return this.api.logIn(body).pipe(
 			tap(data => {
 				this._user.set(data.user);
 				this.setAccessToken(data.accessToken);
+			}),
+			finalize(() => {
+				this._isLoggingIn.set(false);
 			}),
 		);
 	}
@@ -36,7 +51,7 @@ export class AuthService {
 			return of();
 		}
 
-		this._isLoading.set(true);
+		this._isRefreshing.set(true);
 		return this.api.refresh().pipe(
 			tap(data => {
 				this._user.set(data.user);
@@ -50,16 +65,20 @@ export class AuthService {
 				return of();
 			}),
 			finalize(() => {
-				this._isLoading.set(false);
+				this._isRefreshing.set(false);
 			}),
 		);
 	}
 
 	logOut() {
+		this._isLoggingOut.set(true);
 		return this.api.logOut().pipe(
 			tap(() => {
 				this._user.set(null);
 				this.deleteAccessToken();
+			}),
+			finalize(() => {
+				this._isLoggingOut.set(false);
 			}),
 		);
 	}

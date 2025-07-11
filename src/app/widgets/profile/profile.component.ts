@@ -37,7 +37,7 @@ export class ProfileComponent {
 	readonly avatar = input<string | null>(null);
 	readonly imageHasError = signal<boolean>(false);
 	readonly dropdownIsOpen = signal<boolean>(false);
-	readonly isLoggingOut = signal<boolean>(false);
+	readonly isLoggingOut = this.auth.isLoggingOut;
 
 	readonly avatarPath = computed(() => {
 		const avatar = this.avatar();
@@ -70,13 +70,9 @@ export class ProfileComponent {
 	}
 
 	onLogoutClick() {
-		this.isLoggingOut.set(true);
 		this.auth
 			.logOut()
-			.pipe(
-				finalize(() => this.isLoggingOut.set(false)),
-				takeUntilDestroyed(this.destroyRef),
-			)
+			.pipe(takeUntilDestroyed(this.destroyRef))
 			.subscribe(() => {
 				this.router.navigate(['/auth/login']);
 			});

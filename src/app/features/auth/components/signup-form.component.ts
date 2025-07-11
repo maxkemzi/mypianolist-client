@@ -36,6 +36,7 @@ export class SignupFormComponent {
 	private readonly router = inject(Router);
 	private readonly service = inject(AuthService);
 	private readonly destroyRef = inject(DestroyRef);
+	private readonly auth = inject(AuthService);
 
 	readonly form = new FormGroup(
 		{
@@ -59,6 +60,7 @@ export class SignupFormComponent {
 		},
 		{validators: [this.passwordsMatchValidator], updateOn: 'blur'},
 	);
+	readonly isLoading = this.auth.isSigningUp;
 
 	passwordsMatchValidator(form: AbstractControl) {
 		const password = form.get('password')?.value;

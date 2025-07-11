@@ -27,7 +27,14 @@
 			/>
 		</app-form-field>
 	</div>
-	<button appButton class="mb-2 w-full" type="submit">Sign Up</button>
+	<button
+		appButton
+		class="mb-2 w-full"
+		type="submit"
+		[disabled]="(form.touched && form.invalid) || isLoading()"
+	>
+		Sign Up
+	</button>
 	<p>
 		Already have an account? <a appLink routerLink="/auth/login">Log In</a>
 	</p>
