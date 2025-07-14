@@ -1,7 +1,7 @@
 import {inject, Injectable, signal} from '@angular/core';
 import {UserProfile} from '@entities/user/profile';
 import {DataCacheService, withCache} from '@shared/lib';
-import {catchError, finalize, of, tap} from 'rxjs';
+import {catchError, finalize, map, of, tap} from 'rxjs';
 import {UserProfileApi} from '../user-profile.api';
 import {AuthService} from '@features/auth';
 
@@ -37,6 +37,7 @@ export class FetchUserProfileService {
 					this._isLoading.set(false);
 				}
 			}),
+			map(res => res.data),
 			catchError(() => {
 				this._hasError.set(true);
 				this._data.set(null);
@@ -65,6 +66,7 @@ export class FetchUserProfileService {
 					this._isLoading.set(false);
 				}
 			}),
+			map(res => res.data),
 			catchError(() => {
 				this._hasError.set(true);
 				this._data.set(null);

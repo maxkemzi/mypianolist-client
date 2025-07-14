@@ -1,0 +1,13 @@
+<form (ngSubmit)="onSubmit()">
+	<app-form-field class="block mb-2" label="Username" [error]="error">
+		<input appInput placeholder="username" [formControl]="control" />
+	</app-form-field>
+	<button
+		appButton
+		type="submit"
+		size="sm"
+		[disabled]="submitButtonIsDisabled"
+	>
+		Submit
+	</button>
+</form>

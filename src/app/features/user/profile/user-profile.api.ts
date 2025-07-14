@@ -20,4 +20,8 @@ export class UserProfileApi {
 
 		return this.api.post<UserProfile>('/users/profile/avatar', formData);
 	}
+
+	updateBiographyByAuth(biography: string) {
+		return this.api.patch<UserProfile>('/users/profile', {biography});
+	}
 }

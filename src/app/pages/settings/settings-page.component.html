@@ -2,94 +2,23 @@
 <section>
 	<div appContainer size="md">
 		<h1 class="text-center mb-7">Settings</h1>
-		@if (user(); as user) {
+		@if (profile.data(); as profile) {
 			<div class="grid grid-cols-2 gap-6">
-				<form (ngSubmit)="onUsernameSubmit()">
+				<div>
 					<h2 class="mb-4">Account</h2>
-					<app-form-field
-						class="block mb-2"
-						label="Username"
-						[error]="usernameError"
-					>
-						<input
-							appInput
-							[formControl]="usernameControl"
-							placeholder="username"
-							[defaultValue]="user.username"
-						/>
-					</app-form-field>
-					<button
-						appButton
-						type="submit"
-						size="sm"
-						[disabled]="usernameSubmitButtonIsDisabled"
-					>
-						Submit
-					</button>
-				</form>
+					<app-username-form [defaultUsername]="profile.username" />
+				</div>
 				<div>
 					<h2 class="mb-4">Profile</h2>
 					<div class="flex flex-col items-start gap-4">
-						<form (ngSubmit)="onAvatarSubmit()">
-							<img
-								class="block w-[225px] h-[225px] mb-2 object-cover object-center rounded-lg"
-								[src]="avatar()"
-								[alt]="`${user.username} avatar`"
-							/>
-							<div class="flex gap-2">
-								@if (uploadedAvatar()) {
-									<button
-										appButton
-										class="flex-1"
-										size="sm"
-										variant="outline"
-										(click)="resetAvatar()"
-									>
-										Reset
-									</button>
-								} @else {
-									<button
-										appButton
-										class="flex-1"
-										size="sm"
-										variant="outline"
-										(click)="openFilePicker()"
-									>
-										Upload
-									</button>
-								}
-								<button
-									appButton
-									class="flex-1"
-									type="submit"
-									size="sm"
-									[disabled]="avatarSubmitButtonIsDisabled"
-								>
-									Submit
-								</button>
-							</div>
-							<input
-								#fileInput
-								type="file"
-								hidden
-								(change)="uploadAvatar($event)"
-							/>
-						</form>
-
-						<form class="w-full">
-							<app-form-field class="block mb-2" label="Biography">
-								<textarea
-									appInput
-									class="w-full max-w-[400px]"
-									rows="5"
-									placeholder="biography"
-									[formControl]="biographyControl"
-									[defaultValue]="user.biography || ''"
-								></textarea>
-							</app-form-field>
-
-							<button appButton size="sm">Submit</button>
-						</form>
+						<app-avatar-form
+							[(defaultAvatar)]="profile.avatar"
+							[username]="profile.username"
+						/>
+						<app-biography-form
+							class="w-full"
+							[defaultBiography]="profile.biography"
+						/>
 					</div>
 				</div>
 			</div>

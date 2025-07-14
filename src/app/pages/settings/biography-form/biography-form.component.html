@@ -1,0 +1,15 @@
+<form (ngSubmit)="onSubmit()">
+	<app-form-field class="block mb-2" label="Biography" [error]="error">
+		<textarea
+			appInput
+			class="w-full max-w-[400px]"
+			rows="5"
+			placeholder="biography"
+			[formControl]="control"
+		></textarea>
+	</app-form-field>
+
+	<button appButton size="sm" [disabled]="submitButtonIsDisabled">
+		Submit
+	</button>
+</form>

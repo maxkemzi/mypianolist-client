@@ -1,0 +1,28 @@
+<form (ngSubmit)="onSubmit()">
+	<img
+		class="block w-[225px] h-[225px] mb-2 object-cover object-center rounded-lg"
+		[src]="imagePath()"
+		[alt]="`${username()} avatar`"
+	/>
+	<div class="flex gap-2">
+		<button
+			appButton
+			class="flex-1"
+			size="sm"
+			variant="outline"
+			(click)="previewPath() ? reset() : openFilePicker()"
+		>
+			{{ previewPath() ? 'Reset' : 'Upload' }}
+		</button>
+		<button
+			appButton
+			class="flex-1"
+			type="submit"
+			size="sm"
+			[disabled]="submitButtonIsDisabled"
+		>
+			Submit
+		</button>
+	</div>
+	<input #fileInput type="file" hidden (change)="upload($event)" />
+</form>
