@@ -1,4 +1,5 @@
 import {Component, DestroyRef, inject} from '@angular/core';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {
 	FormControl,
 	FormGroup,
@@ -14,8 +15,7 @@ import {
 	ModalComponent,
 	TypographyComponent,
 } from '@shared/components';
-import {AuthService} from '../auth.service';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {LoginService} from '../login.service';
 
 @Component({
 	selector: 'app-login-form',
@@ -33,23 +33,29 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 })
 export class LoginFormComponent {
 	private readonly router = inject(Router);
-	private readonly auth = inject(AuthService);
+	private readonly login = inject(LoginService);
 	private readonly destroyRef = inject(DestroyRef);
 
-	readonly form = new FormGroup(
-		{
-			username: new FormControl('', {
-				validators: Validators.required,
-				nonNullable: true,
-			}),
-			password: new FormControl('', {
-				validators: Validators.required,
-				nonNullable: true,
-			}),
-		},
-		{updateOn: 'blur'},
-	);
-	readonly isLoading = this.auth.isLoggingIn;
+	readonly form = new FormGroup({
+		username: new FormControl('', {
+			validators: Validators.required,
+			nonNullable: true,
+		}),
+		password: new FormControl('', {
+			validators: Validators.required,
+			nonNullable: true,
+		}),
+	});
+	readonly isLoading = this.login.isLoading;
+
+	get error() {
+		const error = this.login.error();
+		if (error?.code === 'wrong_credentials') {
+			return 'Wrong username or password.';
+		}
+
+		return undefined;
+	}
 
 	get usernameError(): string | undefined {
 		const control = this.form.get('username');
@@ -82,7 +88,7 @@ export class LoginFormComponent {
 			return;
 		}
 
-		this.auth
+		this.login
 			.logIn(this.form.getRawValue())
 			.pipe(takeUntilDestroyed(this.destroyRef))
 			.subscribe({

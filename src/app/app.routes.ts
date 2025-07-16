@@ -65,7 +65,9 @@ export const routes: Routes = [
 					{
 						path: 'login',
 						loadComponent: () =>
-							import('@features/auth').then(m => m.LoginFormComponent),
+							import('@features/auth/login').then(
+								m => m.LoginFormComponent,
+							),
 					},
 					{
 						path: 'signup',

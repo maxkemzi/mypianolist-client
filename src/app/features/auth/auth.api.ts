@@ -1,11 +1,15 @@
 import {inject, Injectable} from '@angular/core';
 import {Api} from '@shared/lib';
 import {AuthUser} from './auth.model';
+import {ApiError} from '@shared/lib/api';
 
 interface AuthResponse {
 	user: AuthUser;
 	accessToken: string;
 }
+
+type AuthApiErrorCode = 'wrong_credentials';
+export type AuthApiError = ApiError<AuthApiErrorCode>;
 
 @Injectable({providedIn: 'root'})
 export class AuthApi {

@@ -13,13 +13,11 @@ export class AuthService {
 
 	private readonly _user = signal<AuthUser | null | undefined>(undefined);
 	private readonly _isSigningUp = signal<boolean>(false);
-	private readonly _isLoggingIn = signal<boolean>(false);
 	private readonly _isRefreshing = signal<boolean>(false);
 	private readonly _isLoggingOut = signal<boolean>(false);
 
 	readonly user = this._user.asReadonly();
 	readonly isSigningUp = this._isSigningUp.asReadonly();
-	readonly isLoggingIn = this._isLoggingIn.asReadonly();
 	readonly isRefreshing = this._isRefreshing.asReadonly();
 	readonly isLoggingOut = this._isLoggingOut.asReadonly();
 	readonly isAuth = computed(() => this._user() != null);
@@ -29,19 +27,6 @@ export class AuthService {
 		return this.api.signUp(body).pipe(
 			finalize(() => {
 				this._isSigningUp.set(false);
-			}),
-		);
-	}
-
-	logIn(body: {username: string; password: string}) {
-		this._isLoggingIn.set(true);
-		return this.api.logIn(body).pipe(
-			tap(data => {
-				this._user.set(data.user);
-				this.setAccessToken(data.accessToken);
-			}),
-			finalize(() => {
-				this._isLoggingIn.set(false);
 			}),
 		);
 	}
@@ -88,7 +73,7 @@ export class AuthService {
 		return cookie || undefined;
 	}
 
-	private setAccessToken(token: string) {
+	setAccessToken(token: string) {
 		this.cookies.set('accessToken', token, {
 			path: '/',
 			secure: false,
@@ -99,6 +84,10 @@ export class AuthService {
 
 	private deleteAccessToken() {
 		this.cookies.delete('accessToken', '/');
+	}
+
+	setUser(payload: AuthUser) {
+		this._user.set(payload);
 	}
 
 	patchUser(payload: Partial<AuthUser>) {

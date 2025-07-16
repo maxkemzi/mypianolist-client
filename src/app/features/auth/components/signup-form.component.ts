@@ -58,7 +58,7 @@ export class SignupFormComponent {
 				nonNullable: true,
 			}),
 		},
-		{validators: [this.passwordsMatchValidator], updateOn: 'blur'},
+		{validators: [this.passwordsMatchValidator]},
 	);
 	readonly isLoading = this.auth.isSigningUp;
 

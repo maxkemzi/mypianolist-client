@@ -47,9 +47,7 @@ export interface PaginationResponse<T extends object> {
 	hasMore: boolean;
 }
 
-export type ApiErrorCode = 'max_upload_size_exceeded';
-
-export interface ApiError {
+export interface ApiError<C extends string = string> {
 	message: string;
-	code: ApiErrorCode;
+	code: C;
 }

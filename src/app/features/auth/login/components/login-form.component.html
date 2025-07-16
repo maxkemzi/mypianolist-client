@@ -1,5 +1,8 @@
 <form appModal [formGroup]="form" (ngSubmit)="onSubmit()">
 	<h1 class="mb-7 text-center">Login</h1>
+	@if (error) {
+		<p class="mb-4" color="error">{{ error }}</p>
+	}
 	<div class="flex flex-col gap-4 mb-7">
 		<app-form-field label="Username" [error]="usernameError">
 			<input appInput formControlName="username" placeholder="username" />

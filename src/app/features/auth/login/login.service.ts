@@ -1,31 +1,30 @@
 import {computed, inject, Injectable, signal} from '@angular/core';
 import {RequestStatus} from '@shared/lib';
 import {catchError, of, tap} from 'rxjs';
-import {UserProfileApi} from '../user-profile.api';
-import {AuthService} from '@features/auth';
-import {ApiError} from '@shared/lib/api';
-
-type UpdateAvatarApiError = ApiError<'max_upload_size_exceeded'>;
+import {AuthApi, AuthApiError} from '../auth.api';
+import {AuthService} from '../auth.service';
 
 @Injectable({providedIn: 'root'})
-export class UpdateAvatarService {
-	private readonly api = inject(UserProfileApi);
+export class LoginService {
+	private readonly api = inject(AuthApi);
 	private readonly auth = inject(AuthService);
 
 	private readonly _status = signal<RequestStatus>('idle');
-	private readonly _error = signal<UpdateAvatarApiError | null>(null);
+	private readonly _error = signal<AuthApiError | null>(null);
 
 	readonly error = this._error.asReadonly();
 	readonly isLoading = computed(() => this._status() === 'loading');
 	readonly hasError = computed(() => this._status() === 'error');
 	readonly hasSuccess = computed(() => this._status() === 'success');
 
-	update(avatar: File) {
+	logIn(body: {username: string; password: string}) {
 		this._status.set('loading');
 		this._error.set(null);
-		return this.api.updateAvatarByAuth(avatar).pipe(
-			tap(({avatar}) => {
-				this.auth.patchUser({avatar});
+		return this.api.logIn(body).pipe(
+			tap(data => {
+				this.auth.setUser(data.user);
+				this.auth.setAccessToken(data.accessToken);
+
 				this._status.set('success');
 			}),
 			catchError(e => {
@@ -33,13 +32,8 @@ export class UpdateAvatarService {
 				this._error.set({message, code});
 
 				this._status.set('error');
-
 				return of();
 			}),
 		);
-	}
-
-	resetStatus() {
-		this._status.set('idle');
 	}
 }
