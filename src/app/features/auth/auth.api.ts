@@ -8,7 +8,10 @@ interface AuthResponse {
 	accessToken: string;
 }
 
-type AuthApiErrorCode = 'wrong_credentials';
+type AuthApiErrorCode =
+	| 'wrong_credentials'
+	| 'user_with_username_already_exists'
+	| 'user_with_email_already_exists';
 export type AuthApiError = ApiError<AuthApiErrorCode>;
 
 @Injectable({providedIn: 'root'})

@@ -1,4 +1,3 @@
-export {SignupFormComponent} from './components/signup-form.component';
 export {authInterceptor} from './auth.interceptor';
 export {AuthService} from './auth.service';
 export {authGuard} from './auth.guard';

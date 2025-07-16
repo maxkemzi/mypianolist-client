@@ -16,7 +16,8 @@ import {
 	ModalComponent,
 	TypographyComponent,
 } from '@shared/components';
-import {AuthService} from '../auth.service';
+import {AuthService} from '../../auth.service';
+import {SignupService} from '../signup.service';
 
 @Component({
 	selector: 'app-signup-form',
@@ -36,7 +37,7 @@ export class SignupFormComponent {
 	private readonly router = inject(Router);
 	private readonly service = inject(AuthService);
 	private readonly destroyRef = inject(DestroyRef);
-	private readonly auth = inject(AuthService);
+	private readonly signup = inject(SignupService);
 
 	readonly form = new FormGroup(
 		{
@@ -60,7 +61,7 @@ export class SignupFormComponent {
 		},
 		{validators: [this.passwordsMatchValidator]},
 	);
-	readonly isLoading = this.auth.isSigningUp;
+	readonly isLoading = this.signup.isLoading;
 
 	passwordsMatchValidator(form: AbstractControl) {
 		const password = form.get('password')?.value;
@@ -70,8 +71,12 @@ export class SignupFormComponent {
 	}
 
 	get usernameError(): string | undefined {
-		const control = this.form.get('username');
+		const error = this.signup.error();
+		if (error?.code === 'user_with_username_already_exists') {
+			return 'User with that username already exists.';
+		}
 
+		const control = this.form.get('username');
 		if (control?.touched) {
 			if (control.errors?.['required']) {
 				return 'Username is required.';
@@ -82,8 +87,12 @@ export class SignupFormComponent {
 	}
 
 	get emailError(): string | undefined {
-		const control = this.form.get('email');
+		const error = this.signup.error();
+		if (error?.code === 'user_with_email_already_exists') {
+			return 'User with that email already exists.';
+		}
 
+		const control = this.form.get('email');
 		if (control?.touched) {
 			if (control.errors?.['required']) {
 				return 'Email is required.';
@@ -129,7 +138,7 @@ export class SignupFormComponent {
 		}
 
 		const {username, email, password} = this.form.getRawValue();
-		this.service
+		this.signup
 			.signUp({username, email, password})
 			.pipe(takeUntilDestroyed(this.destroyRef))
 			.subscribe({

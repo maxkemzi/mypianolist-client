@@ -72,7 +72,9 @@ export const routes: Routes = [
 					{
 						path: 'signup',
 						loadComponent: () =>
-							import('@features/auth').then(m => m.SignupFormComponent),
+							import('@features/auth/signup').then(
+								m => m.SignupFormComponent,
+							),
 					},
 				],
 			},

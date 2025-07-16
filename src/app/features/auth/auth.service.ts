@@ -12,24 +12,13 @@ export class AuthService {
 	private readonly platformId = inject(PLATFORM_ID);
 
 	private readonly _user = signal<AuthUser | null | undefined>(undefined);
-	private readonly _isSigningUp = signal<boolean>(false);
 	private readonly _isRefreshing = signal<boolean>(false);
 	private readonly _isLoggingOut = signal<boolean>(false);
 
 	readonly user = this._user.asReadonly();
-	readonly isSigningUp = this._isSigningUp.asReadonly();
 	readonly isRefreshing = this._isRefreshing.asReadonly();
 	readonly isLoggingOut = this._isLoggingOut.asReadonly();
 	readonly isAuth = computed(() => this._user() != null);
-
-	signUp(body: {username: string; email: string; password: string}) {
-		this._isSigningUp.set(true);
-		return this.api.signUp(body).pipe(
-			finalize(() => {
-				this._isSigningUp.set(false);
-			}),
-		);
-	}
 
 	refresh() {
 		if (!isPlatformBrowser(this.platformId)) {
