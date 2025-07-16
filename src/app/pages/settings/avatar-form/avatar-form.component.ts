@@ -10,14 +10,29 @@ import {
 	ViewChild,
 } from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {
+	FormControl,
+	FormsModule,
+	ReactiveFormsModule,
+	Validators,
+} from '@angular/forms';
 import {UpdateAvatarService} from '@features/user/profile/update-avatar';
-import {ButtonComponent} from '@shared/components';
+import {
+	AvatarComponent,
+	ButtonComponent,
+	FormFieldComponent,
+} from '@shared/components';
 
 @Component({
 	selector: 'app-avatar-form',
 	templateUrl: './avatar-form.component.html',
-	imports: [FormsModule, ReactiveFormsModule, ButtonComponent],
+	imports: [
+		FormsModule,
+		ReactiveFormsModule,
+		ButtonComponent,
+		AvatarComponent,
+		FormFieldComponent,
+	],
 })
 export class AvatarFormComponent {
 	private readonly destroyRef = inject(DestroyRef);
@@ -25,9 +40,12 @@ export class AvatarFormComponent {
 
 	readonly defaultAvatar = model.required<string | null>();
 	readonly username = input.required<string>();
+	readonly isLoading = this.updateAvatar.isLoading;
 
 	@ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
-	readonly control = new FormControl<File | null>(null);
+	readonly control = new FormControl<File | null>(null, {
+		validators: [Validators.required],
+	});
 
 	readonly previewPath = signal<string | undefined>(undefined);
 	readonly imagePath = computed(() => {
@@ -42,7 +60,24 @@ export class AvatarFormComponent {
 		return '/images/avatar.jpg';
 	});
 
+	get error(): string | undefined {
+		const error = this.updateAvatar.error();
+		if (error?.code === 'max_upload_size_exceeded') {
+			return 'Your picture is too big, make it smaller than 500Kb.';
+		}
+
+		if (this.control.touched) {
+			if (this.control.errors?.['required']) {
+				return 'You did not provide a picture to upload.';
+			}
+		}
+
+		return undefined;
+	}
+
 	onSubmit() {
+		this.control.markAsTouched();
+
 		const value = this.control.value;
 		if (value === null) {
 			return;
@@ -55,10 +90,6 @@ export class AvatarFormComponent {
 				this.defaultAvatar.set(avatar);
 				this.reset();
 			});
-	}
-
-	get submitButtonIsDisabled() {
-		return this.control.value === null || this.updateAvatar.isLoading();
 	}
 
 	openFilePicker() {

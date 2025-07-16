@@ -1,6 +1,6 @@
-import {Component, HostBinding, input} from '@angular/core';
-import {TypographyComponent} from '../typography';
+import {Component, input} from '@angular/core';
 import {ClassMergeDirective} from '@shared/lib';
+import {TypographyComponent} from '../typography';
 
 @Component({
 	selector: 'app-form-field',

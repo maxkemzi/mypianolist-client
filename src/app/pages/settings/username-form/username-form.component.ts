@@ -39,9 +39,11 @@ export class UsernameFormComponent {
 	});
 
 	constructor() {
-		toObservable(this.defaultUsername).subscribe(username => {
-			this.control.reset(username);
-		});
+		toObservable(this.defaultUsername)
+			.pipe(takeUntilDestroyed())
+			.subscribe(username => {
+				this.control.reset(username);
+			});
 	}
 
 	differentFromCurrentValidator(control: AbstractControl) {

@@ -5,6 +5,7 @@ import {
 	input,
 	signal,
 } from '@angular/core';
+import {takeUntilDestroyed, toObservable} from '@angular/core/rxjs-interop';
 import {ClassMergeDirective} from '@shared/lib';
 
 @Component({
@@ -17,6 +18,16 @@ export class AvatarComponent extends ClassMergeDirective {
 	readonly src = input<string>();
 	readonly size = input<string | number>(this.DEFAULT_SIZE);
 	readonly hasError = signal<boolean>(false);
+
+	constructor() {
+		super();
+
+		toObservable(this.src)
+			.pipe(takeUntilDestroyed())
+			.subscribe(() => {
+				this.hasError.set(false);
+			});
+	}
 
 	protected override defaultClass(): string {
 		return 'block object-cover object-center rounded-lg';

@@ -1,11 +1,4 @@
-import {
-	Component,
-	DestroyRef,
-	inject,
-	Injector,
-	input,
-	model,
-} from '@angular/core';
+import {Component, DestroyRef, inject, Injector, model} from '@angular/core';
 import {takeUntilDestroyed, toObservable} from '@angular/core/rxjs-interop';
 import {
 	AbstractControl,
@@ -44,9 +37,11 @@ export class BiographyFormComponent {
 	});
 
 	constructor() {
-		toObservable(this.defaultBiography).subscribe(biography => {
-			this.control.reset(biography || '');
-		});
+		toObservable(this.defaultBiography)
+			.pipe(takeUntilDestroyed())
+			.subscribe(biography => {
+				this.control.reset(biography || '');
+			});
 	}
 
 	differentFromCurrentValidator(control: AbstractControl) {
