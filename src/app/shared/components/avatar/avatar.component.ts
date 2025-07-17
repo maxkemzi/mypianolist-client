@@ -40,7 +40,8 @@ export class AvatarComponent extends ClassMergeDirective {
 
 	@HostBinding('attr.src')
 	get finalSrc() {
-		return this.hasError() ? '/images/avatar-fallback.svg' : this.src();
+		const src = this.src();
+		return src && !this.hasError() ? src : '/images/avatar-fallback.svg';
 	}
 
 	@HostBinding('style.width')
