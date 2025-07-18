@@ -2,6 +2,7 @@ import {
 	booleanAttribute,
 	Component,
 	computed,
+	ElementRef,
 	HostBinding,
 	inject,
 	input,
@@ -22,7 +23,6 @@ import {Color, Size, Variant} from './types';
 	imports: [TypographyComponent],
 })
 export class ButtonComponent extends ClassMergeDirective {
-	private readonly themeUtils = inject(ThemeUtils);
 	private readonly COLOR_TO_BG_CLASS_WITH_OPACITY_MAPPING: Record<
 		Color,
 		string
@@ -40,7 +40,10 @@ export class ButtonComponent extends ClassMergeDirective {
 		[ThemeColor.WARNING]: 'bg-warning/15',
 		[ThemeColor.DISABLED]: 'bg-disabled/15',
 	};
+	private readonly themeUtils = inject(ThemeUtils);
+	private readonly elRef = inject<ElementRef<HTMLElement>>(ElementRef);
 
+	readonly type = input<'submit'>();
 	readonly disabled = input<boolean, unknown>(false, {
 		transform: booleanAttribute,
 	});
@@ -75,9 +78,22 @@ export class ButtonComponent extends ClassMergeDirective {
 		);
 	}
 
+	@HostBinding('attr.type')
+	get finalType() {
+		if (this.isLinkElement()) return null;
+
+		return this.type() || 'button';
+	}
+
 	@HostBinding('attr.disabled')
-	get isDisabled() {
+	get finalDisabled() {
+		if (this.isLinkElement()) return null;
+
 		return this.disabled() ? '' : null;
+	}
+
+	private isLinkElement() {
+		return this.elRef.nativeElement.tagName === 'A';
 	}
 
 	get textColor(): TypographyColor {

@@ -5,15 +5,8 @@
 	</p>
 
 	<div class="flex items-center gap-4 justify-center">
-		<button appButton variant="outline" type="button" (click)="onCancel()">
-			Cancel
-		</button>
-		<button
-			appButton
-			type="button"
-			[disabled]="isLoading()"
-			(click)="onConfirm()"
-		>
+		<button appButton variant="outline" (click)="onCancel()">Cancel</button>
+		<button appButton [disabled]="isLoading()" (click)="onConfirm()">
 			Remove
 		</button>
 	</div>

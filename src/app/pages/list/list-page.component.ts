@@ -15,7 +15,6 @@ import {
 	Piece,
 	PieceListTableHeadComponent,
 	PieceListTableRowComponent,
-	PieceSort,
 	PieceStatusType,
 	PieceUtils,
 	UserPiece,

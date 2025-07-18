@@ -16,7 +16,6 @@ import {
 	ModalComponent,
 	TypographyComponent,
 } from '@shared/components';
-import {AuthService} from '../../auth.service';
 import {SignupService} from '../signup.service';
 
 @Component({

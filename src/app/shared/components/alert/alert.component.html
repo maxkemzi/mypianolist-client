@@ -2,15 +2,8 @@
 	<h3 class="text-center mb-1">{{ title() }}</h3>
 	<ng-content />
 	<div class="flex items-center gap-4 justify-center">
-		<button appButton variant="outline" type="button" (click)="onCancel()">
-			Cancel
-		</button>
-		<button
-			appButton
-			type="button"
-			[disabled]="confirmIsDisabled()"
-			(click)="onConfirm()"
-		>
+		<button appButton variant="outline" (click)="onCancel()">Cancel</button>
+		<button appButton [disabled]="confirmIsDisabled()" (click)="onConfirm()">
 			Confirm
 		</button>
 	</div>
