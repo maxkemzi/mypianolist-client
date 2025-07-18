@@ -9,6 +9,7 @@ import {
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {Router, RouterLink} from '@angular/router';
 import {AuthService} from '@features/auth';
+import {LogoutService} from '@features/auth/logout';
 import {
 	AvatarComponent,
 	DropdownItemComponent,
@@ -30,7 +31,7 @@ import {ClickOutsideDirective} from '@shared/lib';
 	],
 })
 export class ProfileComponent {
-	private readonly auth = inject(AuthService);
+	private readonly logout = inject(LogoutService);
 	private readonly router = inject(Router);
 	private readonly destroyRef = inject(DestroyRef);
 
@@ -38,7 +39,7 @@ export class ProfileComponent {
 	readonly avatar = input<string | null>(null);
 	readonly imageHasError = signal<boolean>(false);
 	readonly dropdownIsOpen = signal<boolean>(false);
-	readonly isLoggingOut = this.auth.isLoggingOut;
+	readonly isLoggingOut = this.logout.isLoading;
 
 	@HostBinding('class')
 	get classes() {
@@ -66,7 +67,7 @@ export class ProfileComponent {
 	}
 
 	onLogoutClick() {
-		this.auth
+		this.logout
 			.logOut()
 			.pipe(takeUntilDestroyed(this.destroyRef))
 			.subscribe(() => {

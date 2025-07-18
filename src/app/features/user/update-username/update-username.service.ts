@@ -1,6 +1,6 @@
 import {computed, inject, Injectable, signal} from '@angular/core';
 import {Router} from '@angular/router';
-import {AuthService} from '@features/auth';
+import {LogoutService} from '@features/auth/logout';
 import {RequestStatus} from '@shared/lib';
 import {catchError, of, switchMap, tap} from 'rxjs';
 import {UserApi} from '../user.api';
@@ -9,7 +9,7 @@ import {UserApi} from '../user.api';
 export class UpdateUsernameService {
 	private readonly api = inject(UserApi);
 	private readonly router = inject(Router);
-	private readonly auth = inject(AuthService);
+	private readonly logout = inject(LogoutService);
 
 	private readonly _status = signal<RequestStatus>('idle');
 
@@ -21,7 +21,7 @@ export class UpdateUsernameService {
 		this._status.set('loading');
 		return this.api.updateUsername(username).pipe(
 			switchMap(() =>
-				this.auth.logOut().pipe(
+				this.logout.logOut().pipe(
 					tap(() => {
 						this._status.set('success');
 						this.router.navigate(['/auth/login']);

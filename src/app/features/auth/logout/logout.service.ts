@@ -5,7 +5,7 @@ import {AuthApi, AuthApiError} from '../auth.api';
 import {AuthService} from '../auth.service';
 
 @Injectable({providedIn: 'root'})
-export class LoginService {
+export class LogoutService {
 	private readonly api = inject(AuthApi);
 	private readonly auth = inject(AuthService);
 
@@ -17,12 +17,12 @@ export class LoginService {
 	readonly hasError = computed(() => this._status() === 'error');
 	readonly hasSuccess = computed(() => this._status() === 'success');
 
-	logIn(body: {username: string; password: string}) {
+	logOut() {
 		this._status.set('loading');
 		this._error.set(null);
-		return this.api.logIn(body).pipe(
-			tap(data => {
-				this.auth.set(data.user, data.accessToken);
+		return this.api.logOut().pipe(
+			tap(() => {
+				this.auth.reset();
 				this._status.set('success');
 			}),
 			catchError(e => {
