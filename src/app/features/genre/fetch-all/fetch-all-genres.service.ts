@@ -24,7 +24,7 @@ export class FetchAllGenresService {
 	readonly hasError = this._hasError.asReadonly();
 
 	fetch(): Observable<Genre[] | null> {
-		const stored = this.state.get(this.key, undefined);
+		const stored = this.state.get(this.key, null);
 		if (stored) {
 			this._data.set(stored);
 			return of(stored);

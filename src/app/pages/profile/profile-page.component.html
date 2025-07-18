@@ -12,7 +12,7 @@
 						<img
 							appAvatar
 							size="225"
-							[src]="profile.avatar ? `/server/${profile.avatar}` : undefined"
+							[src]="profile.avatar ? `/server/${profile.avatar}` : null"
 							[alt]="`${profile.username} avatar`"
 						/>
 					</div>

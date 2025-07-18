@@ -57,7 +57,7 @@ export class UsernameFormComponent {
 		);
 	}
 
-	get error(): string | undefined {
+	get error(): string | null {
 		if (this.control?.touched) {
 			if (this.control?.errors?.['required']) {
 				return 'Username is required.';
@@ -67,7 +67,7 @@ export class UsernameFormComponent {
 			}
 		}
 
-		return undefined;
+		return null;
 	}
 
 	get submitButtonIsDisabled() {

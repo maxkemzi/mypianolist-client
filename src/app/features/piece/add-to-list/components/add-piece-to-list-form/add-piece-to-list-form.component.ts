@@ -52,7 +52,7 @@ export class AddPieceToListFormComponent {
 
 	readonly isLoading = this.service.isLoading;
 
-	get statusError(): string | undefined {
+	get statusError(): string | null {
 		const control = this.form.get('status');
 
 		if (control?.touched) {
@@ -61,7 +61,7 @@ export class AddPieceToListFormComponent {
 			}
 		}
 
-		return undefined;
+		return null;
 	}
 
 	onSubmit() {

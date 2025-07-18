@@ -1,7 +1,7 @@
 import {Observable, catchError, defer, map, of, tap} from 'rxjs';
 
 export function withCache<T>(
-	getCache: () => T | null | undefined,
+	getCache: () => T | null,
 	setCache: (value: T) => void,
 ): (source: Observable<T>) => Observable<{data: T; fromCache: boolean}> {
 	return (source$: Observable<T>) =>

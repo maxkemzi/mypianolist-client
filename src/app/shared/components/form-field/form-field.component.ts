@@ -9,7 +9,7 @@ import {TypographyComponent} from '../typography';
 })
 export class FormFieldComponent extends ClassMergeDirective {
 	readonly label = input<string>('Label');
-	readonly error = input<string>();
+	readonly error = input<string | null>();
 
 	protected override defaultClass(): string {
 		return 'inline-block w-full max-w-[275px]';

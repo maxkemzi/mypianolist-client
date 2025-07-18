@@ -57,9 +57,9 @@ export class AuthService {
 		);
 	}
 
-	getAccessToken(): string | undefined {
+	getAccessToken(): string | null {
 		const cookie = this.cookies.get('accessToken');
-		return cookie || undefined;
+		return cookie || null;
 	}
 
 	setAccessToken(token: string) {

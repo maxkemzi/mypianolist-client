@@ -86,7 +86,7 @@ export class PiecesPageComponent {
 
 	onSearch() {
 		if (this.searchValue().length !== 0) {
-			this.addQueryParams({search: this.searchValue(), page: undefined});
+			this.addQueryParams({search: this.searchValue(), page: null});
 		}
 	}
 
@@ -96,11 +96,11 @@ export class PiecesPageComponent {
 	}
 
 	onSearchClear() {
-		this.addQueryParams({search: undefined, page: undefined});
+		this.addQueryParams({search: null, page: null});
 		this.searchValue.set('');
 	}
 
-	onSortClick(sort: PieceSort | undefined) {
+	onSortClick(sort: PieceSort | null) {
 		this.addQueryParams({sort});
 		this.sortDropdownMenuIsOpen.set(false);
 	}

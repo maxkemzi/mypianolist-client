@@ -35,7 +35,6 @@ import {SignupService} from '../signup.service';
 })
 export class SignupFormComponent {
 	private readonly router = inject(Router);
-	private readonly service = inject(AuthService);
 	private readonly destroyRef = inject(DestroyRef);
 	private readonly signup = inject(SignupService);
 
@@ -70,7 +69,7 @@ export class SignupFormComponent {
 		return password !== confirmPassword ? {passwordsMismatch: true} : null;
 	}
 
-	get usernameError(): string | undefined {
+	get usernameError(): string | null {
 		const error = this.signup.error();
 		if (error?.code === 'user_with_username_already_exists') {
 			return 'User with that username already exists.';
@@ -83,10 +82,10 @@ export class SignupFormComponent {
 			}
 		}
 
-		return undefined;
+		return null;
 	}
 
-	get emailError(): string | undefined {
+	get emailError(): string | null {
 		const error = this.signup.error();
 		if (error?.code === 'user_with_email_already_exists') {
 			return 'User with that email already exists.';
@@ -101,10 +100,10 @@ export class SignupFormComponent {
 			}
 		}
 
-		return undefined;
+		return null;
 	}
 
-	get passwordError(): string | undefined {
+	get passwordError(): string | null {
 		const control = this.form.get('password');
 
 		if (control?.touched) {
@@ -113,10 +112,10 @@ export class SignupFormComponent {
 			}
 		}
 
-		return undefined;
+		return null;
 	}
 
-	get confirmPasswordError(): string | undefined {
+	get confirmPasswordError(): string | null {
 		const control = this.form.get('confirmPassword');
 
 		if (control?.touched) {
@@ -127,7 +126,7 @@ export class SignupFormComponent {
 			}
 		}
 
-		return undefined;
+		return null;
 	}
 
 	onSubmit = () => {

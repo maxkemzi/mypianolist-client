@@ -11,9 +11,9 @@ export class DataCacheService {
 	private readonly state = inject(TransferState);
 	private readonly keysByPrefix: Record<string, StateKey<any>[]> = {};
 
-	get<T>(prefix: string, params: object): T | undefined {
+	get<T>(prefix: string, params: object): T | null {
 		const key = makeStateKey<T>(this.serializeKey(prefix, params));
-		return this.state.get(key, undefined);
+		return this.state.get(key, null);
 	}
 
 	set<T>(prefix: string, params: object, value: T): void {

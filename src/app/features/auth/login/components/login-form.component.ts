@@ -48,16 +48,16 @@ export class LoginFormComponent {
 	});
 	readonly isLoading = this.login.isLoading;
 
-	get error() {
+	get error(): string | null {
 		const error = this.login.error();
 		if (error?.code === 'wrong_credentials') {
 			return 'Wrong username or password.';
 		}
 
-		return undefined;
+		return null;
 	}
 
-	get usernameError(): string | undefined {
+	get usernameError(): string | null {
 		const control = this.form.get('username');
 
 		if (control?.touched) {
@@ -66,10 +66,10 @@ export class LoginFormComponent {
 			}
 		}
 
-		return undefined;
+		return null;
 	}
 
-	get passwordError(): string | undefined {
+	get passwordError(): string | null {
 		const control = this.form.get('password');
 
 		if (control?.touched) {
@@ -78,7 +78,7 @@ export class LoginFormComponent {
 			}
 		}
 
-		return undefined;
+		return null;
 	}
 
 	onSubmit = () => {

@@ -47,7 +47,7 @@ export class AvatarFormComponent {
 		validators: [Validators.required],
 	});
 
-	readonly previewPath = signal<string | undefined>(undefined);
+	readonly previewPath = signal<string | null | undefined>(undefined);
 	readonly imagePath = computed(() => {
 		if (this.previewPath()) {
 			return this.previewPath();
@@ -57,10 +57,10 @@ export class AvatarFormComponent {
 			return `/server/${this.defaultAvatar()}`;
 		}
 
-		return '/images/avatar.jpg';
+		return null;
 	});
 
-	get error(): string | undefined {
+	get error() {
 		const error = this.updateAvatar.error();
 		if (error?.code === 'max_upload_size_exceeded') {
 			return 'Your picture is too big, make it smaller than 500Kb.';
@@ -72,7 +72,7 @@ export class AvatarFormComponent {
 			}
 		}
 
-		return undefined;
+		return null;
 	}
 
 	onSubmit() {
@@ -114,7 +114,7 @@ export class AvatarFormComponent {
 	}
 
 	reset() {
-		this.previewPath.set(undefined);
+		this.previewPath.set(null);
 		this.control.reset();
 	}
 }

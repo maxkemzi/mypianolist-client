@@ -14,7 +14,7 @@
 				<li>
 					<a
 						routerLink="./"
-						[queryParams]="{status: undefined}"
+						[queryParams]="{status: null}"
 						queryParamsHandling="merge"
 					>
 						<app-tab [isActive]="status() === undefined"
@@ -88,7 +88,7 @@
 			>
 				<app-dropdown-item
 					[isActive]="sort() === undefined"
-					(appClick)="onSortClick(undefined)"
+					(appClick)="onSortClick(null)"
 					>Date</app-dropdown-item
 				>
 

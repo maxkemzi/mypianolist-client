@@ -57,14 +57,14 @@ export class BiographyFormComponent {
 		);
 	}
 
-	get error(): string | undefined {
+	get error(): string | null {
 		if (this.control?.touched) {
 			if (this.control?.errors?.['notDifferentFromCurrent']) {
 				return 'Biography must be different from the current one.';
 			}
 		}
 
-		return undefined;
+		return null;
 	}
 
 	get submitButtonIsDisabled() {

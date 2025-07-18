@@ -119,7 +119,7 @@ export class ListPageComponent implements OnInit {
 
 	onSearch() {
 		if (this.searchValue().length !== 0) {
-			this.addQueryParams({search: this.searchValue(), page: undefined});
+			this.addQueryParams({search: this.searchValue(), page: null});
 		}
 	}
 
@@ -129,11 +129,11 @@ export class ListPageComponent implements OnInit {
 	}
 
 	onSearchClear() {
-		this.addQueryParams({search: undefined, page: undefined});
+		this.addQueryParams({search: null, page: null});
 		this.searchValue.set('');
 	}
 
-	onSortClick(sort: UserPieceSort | undefined) {
+	onSortClick(sort: UserPieceSort | null) {
 		this.addQueryParams({sort});
 		this.sortDropdownMenuIsOpen.set(false);
 	}

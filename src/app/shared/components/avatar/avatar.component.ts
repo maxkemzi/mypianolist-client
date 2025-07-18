@@ -15,7 +15,7 @@ import {ClassMergeDirective} from '@shared/lib';
 export class AvatarComponent extends ClassMergeDirective {
 	private readonly DEFAULT_SIZE = 50;
 
-	readonly src = input<string>();
+	readonly src = input<string | null>();
 	readonly size = input<string | number>(this.DEFAULT_SIZE);
 	readonly hasError = signal<boolean>(false);
 

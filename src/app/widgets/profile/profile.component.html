@@ -27,7 +27,7 @@
 <a [routerLink]="['/profile', username()]">
 	<img
 		appAvatar
-		[src]="avatar() ? `/server${avatar()}` : undefined"
+		[src]="avatar() ? `/server${avatar()}` : null"
 		[alt]="`${username()} avatar`"
 	/>
 </a>

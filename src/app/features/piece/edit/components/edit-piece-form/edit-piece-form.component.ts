@@ -58,7 +58,7 @@ export class EditPieceFormComponent implements OnInit {
 		this.form.setValue({status, score: String(score), startedAt, finishedAt});
 	}
 
-	get statusError(): string | undefined {
+	get statusError(): string | null {
 		const control = this.form.get('status');
 
 		if (control?.touched) {
@@ -67,7 +67,7 @@ export class EditPieceFormComponent implements OnInit {
 			}
 		}
 
-		return undefined;
+		return null;
 	}
 
 	onSubmit() {
