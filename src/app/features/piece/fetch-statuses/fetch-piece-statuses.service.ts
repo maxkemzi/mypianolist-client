@@ -1,19 +1,14 @@
-import {
-	Injectable,
-	TransferState,
-	inject,
-	makeStateKey,
-	signal,
-} from '@angular/core';
+import {inject, Injectable, signal} from '@angular/core';
 import {PieceStatusType} from '@entities/piece';
-import {catchError, finalize, of, tap} from 'rxjs';
+import {DataCacheService, withCache} from '@shared/lib';
+import {catchError, finalize, map, Observable, of, tap} from 'rxjs';
 import {PiecesApi} from '../pieces.api';
 
 @Injectable({providedIn: 'root'})
 export class FetchPieceStatusesService {
+	private readonly CACHE_PREFIX = 'statuses';
+	private readonly dataCache = inject(DataCacheService);
 	private readonly api = inject(PiecesApi);
-	private readonly state = inject(TransferState);
-	private readonly key = makeStateKey<PieceStatusType[]>('statuses');
 
 	private readonly _data = signal<PieceStatusType[]>([]);
 	private readonly _isLoading = signal<boolean>(false);
@@ -23,37 +18,30 @@ export class FetchPieceStatusesService {
 	readonly isLoading = this._isLoading.asReadonly();
 	readonly hasError = this._hasError.asReadonly();
 
-	fetch() {
-		const stored = this.state.get(this.key, null);
-		if (stored) {
-			this._data.set(stored);
-			return of(stored);
-		}
-
+	fetch(): Observable<PieceStatusType[] | null> {
 		this._isLoading.set(true);
 		this._hasError.set(false);
 		return this.api.fetchStatuses().pipe(
+			withCache(
+				() => this.dataCache.get(this.CACHE_PREFIX, {}),
+				value => this.dataCache.set(this.CACHE_PREFIX, {}, value),
+			),
 			tap(res => {
-				this.setData(res);
+				this._data.set(res.data);
+
+				if (res.fromCache) {
+					this._isLoading.set(false);
+				}
 			}),
+			map(res => res.data),
 			catchError(() => {
 				this._hasError.set(true);
-				this.resetData();
-				return of(null);
+				this._data.set([]);
+				return of();
 			}),
 			finalize(() => {
 				this._isLoading.set(false);
 			}),
 		);
-	}
-
-	private setData(data: PieceStatusType[]) {
-		this._data.set(data);
-		this.state.set(this.key, data);
-	}
-
-	private resetData() {
-		this._data.set([]);
-		this.state.remove(this.key);
 	}
 }
