@@ -1,7 +1,7 @@
 import {Component, DestroyRef, inject, OnInit} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {RouterOutlet} from '@angular/router';
-import {AuthService} from '@features/auth';
+import {RefreshAuthService} from '@features/auth/refresh';
 import {ErrorHandlingService} from '@features/error-handling';
 import {
 	NotificationAlertsComponent,
@@ -14,7 +14,7 @@ import {
 	templateUrl: './app.component.html',
 })
 export class AppComponent implements OnInit {
-	private readonly auth = inject(AuthService);
+	private readonly refreshAuth = inject(RefreshAuthService);
 	private readonly destroyRef = inject(DestroyRef);
 	private readonly notificationAlert = inject(NotificationAlertService);
 
@@ -24,7 +24,10 @@ export class AppComponent implements OnInit {
 	constructor(private readonly errorHandling: ErrorHandlingService) {}
 
 	ngOnInit(): void {
-		this.auth.refresh().pipe(takeUntilDestroyed(this.destroyRef)).subscribe();
+		this.refreshAuth
+			.refresh()
+			.pipe(takeUntilDestroyed(this.destroyRef))
+			.subscribe();
 
 		this.destroyRef.onDestroy(() => {
 			this.notificationAlert.clearAll();

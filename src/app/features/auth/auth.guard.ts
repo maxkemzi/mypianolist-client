@@ -8,13 +8,15 @@ import {
 } from '@angular/router';
 import {first, map, skipWhile} from 'rxjs';
 import {AuthService} from './auth.service';
+import {RefreshAuthService} from './refresh';
 
 export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot) => {
 	const auth = inject(AuthService);
+	const refreshAuth = inject(RefreshAuthService);
 	const injector = inject(Injector);
 	const platformId = inject(PLATFORM_ID);
 
-	return toObservable(auth.isRefreshing, {injector}).pipe(
+	return toObservable(refreshAuth.isLoading, {injector}).pipe(
 		skipWhile(isLoading => isLoading),
 		map(() => {
 			if (isPlatformServer(platformId)) {
