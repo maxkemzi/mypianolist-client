@@ -21,6 +21,10 @@ export class UserProfileApi {
 		return this.api.post<UserProfile>('/users/profile/avatar', formData);
 	}
 
+	deleteAvatarByAuth() {
+		return this.api.delete<UserProfile>('/users/profile/avatar');
+	}
+
 	updateBiographyByAuth(biography: string) {
 		return this.api.patch<UserProfile>('/users/profile', {biography});
 	}

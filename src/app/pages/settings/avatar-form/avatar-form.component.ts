@@ -2,6 +2,7 @@ import {
 	Component,
 	computed,
 	DestroyRef,
+	effect,
 	ElementRef,
 	inject,
 	input,
@@ -11,17 +12,20 @@ import {
 } from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {
+	AbstractControl,
 	FormControl,
 	FormsModule,
 	ReactiveFormsModule,
 	Validators,
 } from '@angular/forms';
+import {DeleteAvatarService} from '@features/user/profile/delete-avatar';
 import {UpdateAvatarService} from '@features/user/profile/update-avatar';
 import {
 	AvatarComponent,
 	ButtonComponent,
 	FormFieldComponent,
 } from '@shared/components';
+import {defer, iif} from 'rxjs';
 
 @Component({
 	selector: 'app-avatar-form',
@@ -37,19 +41,23 @@ import {
 export class AvatarFormComponent {
 	private readonly destroyRef = inject(DestroyRef);
 	private readonly updateAvatar = inject(UpdateAvatarService);
+	private readonly deleteAvatar = inject(DeleteAvatarService);
 
 	readonly defaultAvatar = model.required<string | null>();
 	readonly username = input.required<string>();
-	readonly isLoading = this.updateAvatar.isLoading;
 
 	@ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
-	readonly control = new FormControl<File | null>(null, {
-		validators: [Validators.required],
-	});
+	readonly control = new FormControl<File | null | undefined>(
+		{value: undefined, disabled: false},
+		{validators: [this.avatarIsRequiredValidator], nonNullable: true},
+	);
 
+	readonly isLoading = computed(
+		() => this.updateAvatar.isLoading() || this.deleteAvatar.isLoading(),
+	);
 	readonly previewPath = signal<string | null | undefined>(undefined);
 	readonly imagePath = computed(() => {
-		if (this.previewPath()) {
+		if (this.previewPath() !== undefined) {
 			return this.previewPath();
 		}
 
@@ -59,6 +67,10 @@ export class AvatarFormComponent {
 
 		return null;
 	});
+
+	avatarIsRequiredValidator(control: AbstractControl) {
+		return control.value === undefined ? {required: true} : null;
+	}
 
 	get error() {
 		const error = this.updateAvatar.error();
@@ -79,12 +91,17 @@ export class AvatarFormComponent {
 		this.control.markAsTouched();
 
 		const value = this.control.value;
-		if (value === null) {
+		if (value === undefined) {
 			return;
 		}
 
-		this.updateAvatar
-			.update(value)
+		const deleteOrUpdateAvatar = iif(
+			() => value === null,
+			this.deleteAvatar.delete(),
+			this.updateAvatar.update(value!),
+		);
+
+		deleteOrUpdateAvatar
 			.pipe(takeUntilDestroyed(this.destroyRef))
 			.subscribe(({avatar}) => {
 				this.defaultAvatar.set(avatar);
@@ -114,7 +131,14 @@ export class AvatarFormComponent {
 	}
 
 	reset() {
-		this.previewPath.set(null);
+		this.previewPath.set(undefined);
 		this.control.reset();
+	}
+
+	remove() {
+		if (this.defaultAvatar() !== null) {
+			this.previewPath.set(null);
+			this.control.setValue(null);
+		}
 	}
 }

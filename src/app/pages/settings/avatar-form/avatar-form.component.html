@@ -7,7 +7,7 @@
 			[src]="imagePath()"
 			[alt]="`${username()} avatar`"
 		/>
-		<div class="flex gap-2">
+		<div class="flex gap-2 mb-2">
 			<button
 				appButton
 				class="flex-1"
@@ -20,13 +20,22 @@
 			<button
 				appButton
 				class="flex-1"
-				type="submit"
 				size="sm"
-				[disabled]="isLoading()"
+				variant="outline"
+				(click)="remove()"
 			>
-				Submit
+				Remove
 			</button>
 		</div>
+		<button
+			appButton
+			class="w-full"
+			type="submit"
+			size="sm"
+			[disabled]="isLoading()"
+		>
+			Submit
+		</button>
 		<input #fileInput type="file" hidden (change)="upload($event)" />
 	</app-form-field>
 </form>

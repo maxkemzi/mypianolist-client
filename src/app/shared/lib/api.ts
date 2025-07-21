@@ -29,8 +29,8 @@ export class Api {
 		return this.http.patch<T>(this.getFullUrl(url), ...restArgs);
 	}
 
-	delete(url: string, ...restArgs: DeleteArgsWithoutUrl) {
-		return this.http.delete(this.getFullUrl(url), ...restArgs);
+	delete<T>(url: string, ...restArgs: DeleteArgsWithoutUrl) {
+		return this.http.delete<T>(this.getFullUrl(url), ...restArgs);
 	}
 
 	private getFullUrl(url: string) {
