@@ -1,6 +1,6 @@
 import {computed, inject, Injectable, signal} from '@angular/core';
 import {RequestStatus} from '@shared/lib';
-import {catchError, of, tap} from 'rxjs';
+import {catchError, defer, of, tap} from 'rxjs';
 import {AuthApi, AuthApiError} from '../auth.api';
 import {AuthService} from '../auth.service';
 
@@ -18,21 +18,23 @@ export class LoginService {
 	readonly hasSuccess = computed(() => this._status() === 'success');
 
 	logIn(body: {username: string; password: string}) {
-		this._status.set('loading');
-		this._error.set(null);
-		return this.api.logIn(body).pipe(
-			tap(data => {
-				this.auth.set(data.user, data.accessToken);
-				this._status.set('success');
-			}),
-			catchError(e => {
-				const {message, code} = e.error;
-				this._error.set({message, code});
+		return defer(() => {
+			this._status.set('loading');
+			this._error.set(null);
+			return this.api.logIn(body).pipe(
+				tap(data => {
+					this.auth.set(data.user, data.accessToken);
+					this._status.set('success');
+				}),
+				catchError(e => {
+					const {message, code} = e.error;
+					this._error.set({message, code});
 
-				this._status.set('error');
+					this._status.set('error');
 
-				return of();
-			}),
-		);
+					return of();
+				}),
+			);
+		});
 	}
 }

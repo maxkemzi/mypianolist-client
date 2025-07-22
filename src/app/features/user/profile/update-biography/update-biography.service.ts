@@ -1,6 +1,6 @@
 import {computed, inject, Injectable, signal} from '@angular/core';
 import {RequestStatus} from '@shared/lib';
-import {catchError, of, tap} from 'rxjs';
+import {catchError, defer, of, tap} from 'rxjs';
 import {UserProfileApi} from '../user-profile.api';
 import {AuthService} from '@features/auth';
 
@@ -16,17 +16,19 @@ export class UpdateBiographyService {
 	readonly hasSuccess = computed(() => this._status() === 'success');
 
 	update(biography: string) {
-		this._status.set('loading');
-		return this.api.updateBiographyByAuth(biography).pipe(
-			tap(({biography}) => {
-				this.auth.patchUser({biography});
-				this._status.set('success');
-			}),
-			catchError(() => {
-				this._status.set('error');
-				return of();
-			}),
-		);
+		return defer(() => {
+			this._status.set('loading');
+			return this.api.updateBiographyByAuth(biography).pipe(
+				tap(({biography}) => {
+					this.auth.patchUser({biography});
+					this._status.set('success');
+				}),
+				catchError(() => {
+					this._status.set('error');
+					return of();
+				}),
+			);
+		});
 	}
 
 	resetStatus() {

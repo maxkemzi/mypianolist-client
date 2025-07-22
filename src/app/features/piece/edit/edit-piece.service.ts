@@ -1,7 +1,7 @@
 import {computed, inject, Injectable, signal} from '@angular/core';
 import {PieceStatusType} from '@entities/piece';
 import {RequestStatus} from '@shared/lib';
-import {catchError, of, tap} from 'rxjs';
+import {catchError, defer, of, tap} from 'rxjs';
 import {PiecesApi} from '../pieces.api';
 
 @Injectable({providedIn: 'root'})
@@ -23,16 +23,18 @@ export class EditPieceService {
 			finishedAt?: string;
 		},
 	) {
-		this._status.set('loading');
-		return this.api.edit(id, payload).pipe(
-			tap(() => {
-				this._status.set('success');
-			}),
-			catchError(() => {
-				this._status.set('error');
-				return of(null);
-			}),
-		);
+		return defer(() => {
+			this._status.set('loading');
+			return this.api.edit(id, payload).pipe(
+				tap(() => {
+					this._status.set('success');
+				}),
+				catchError(() => {
+					this._status.set('error');
+					return of(null);
+				}),
+			);
+		});
 	}
 
 	resetStatus() {

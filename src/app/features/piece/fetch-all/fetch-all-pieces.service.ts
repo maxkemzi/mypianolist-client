@@ -1,6 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import {DataCacheService, withCache} from '@shared/lib';
-import {catchError, finalize, map, Observable, of, tap} from 'rxjs';
+import {catchError, defer, finalize, map, Observable, of, tap} from 'rxjs';
 import {PaginatedFetchService} from '../../paginated-fetch.service';
 import {
 	CompletePiecesResponse,
@@ -17,30 +17,32 @@ export class FetchAllPiecesService extends PaginatedFetchService<CompletePiecesR
 	fetch(
 		params: PiecesFetchParams = {},
 	): Observable<CompletePiecesResponse | null> {
-		this.setIsLoading(true);
-		this.setHasError(false);
-		return this.api.fetchAll({limit: this.limit(), ...params}).pipe(
-			withCache(
-				() => this.dataCache.get(this.CACHE_PREFIX, params),
-				value => this.dataCache.set(this.CACHE_PREFIX, params, value),
-			),
-			tap(res => {
-				this.setValues(res.data);
+		return defer(() => {
+			this.setIsLoading(true);
+			this.setHasError(false);
+			return this.api.fetchAll({limit: this.limit(), ...params}).pipe(
+				withCache(
+					() => this.dataCache.get(this.CACHE_PREFIX, params),
+					value => this.dataCache.set(this.CACHE_PREFIX, params, value),
+				),
+				tap(res => {
+					this.setValues(res.data);
 
-				if (res.fromCache) {
+					if (res.fromCache) {
+						this.setIsLoading(false);
+					}
+				}),
+				map(res => res.data),
+				catchError(() => {
+					this.setHasError(true);
+					this.resetValues();
+					return of();
+				}),
+				finalize(() => {
 					this.setIsLoading(false);
-				}
-			}),
-			map(res => res.data),
-			catchError(() => {
-				this.setHasError(true);
-				this.resetValues();
-				return of();
-			}),
-			finalize(() => {
-				this.setIsLoading(false);
-			}),
-		);
+				}),
+			);
+		});
 	}
 
 	clearCache() {

@@ -1,7 +1,7 @@
 import {inject, Injectable, signal} from '@angular/core';
 import {PieceStatusType} from '@entities/piece';
 import {DataCacheService, withCache} from '@shared/lib';
-import {catchError, finalize, map, Observable, of, tap} from 'rxjs';
+import {catchError, defer, finalize, map, Observable, of, tap} from 'rxjs';
 import {PiecesApi} from '../pieces.api';
 
 @Injectable({providedIn: 'root'})
@@ -19,29 +19,31 @@ export class FetchPieceStatusesService {
 	readonly hasError = this._hasError.asReadonly();
 
 	fetch(): Observable<PieceStatusType[] | null> {
-		this._isLoading.set(true);
-		this._hasError.set(false);
-		return this.api.fetchStatuses().pipe(
-			withCache(
-				() => this.dataCache.get(this.CACHE_PREFIX, {}),
-				value => this.dataCache.set(this.CACHE_PREFIX, {}, value),
-			),
-			tap(res => {
-				this._data.set(res.data);
+		return defer(() => {
+			this._isLoading.set(true);
+			this._hasError.set(false);
+			return this.api.fetchStatuses().pipe(
+				withCache(
+					() => this.dataCache.get(this.CACHE_PREFIX, {}),
+					value => this.dataCache.set(this.CACHE_PREFIX, {}, value),
+				),
+				tap(res => {
+					this._data.set(res.data);
 
-				if (res.fromCache) {
+					if (res.fromCache) {
+						this._isLoading.set(false);
+					}
+				}),
+				map(res => res.data),
+				catchError(() => {
+					this._hasError.set(true);
+					this._data.set([]);
+					return of();
+				}),
+				finalize(() => {
 					this._isLoading.set(false);
-				}
-			}),
-			map(res => res.data),
-			catchError(() => {
-				this._hasError.set(true);
-				this._data.set([]);
-				return of();
-			}),
-			finalize(() => {
-				this._isLoading.set(false);
-			}),
-		);
+				}),
+			);
+		});
 	}
 }

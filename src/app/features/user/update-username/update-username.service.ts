@@ -2,7 +2,7 @@ import {computed, inject, Injectable, signal} from '@angular/core';
 import {Router} from '@angular/router';
 import {LogoutService} from '@features/auth/logout';
 import {RequestStatus} from '@shared/lib';
-import {catchError, of, switchMap, tap} from 'rxjs';
+import {catchError, defer, of, switchMap, tap} from 'rxjs';
 import {UserApi} from '../user.api';
 
 @Injectable({providedIn: 'root'})
@@ -18,21 +18,23 @@ export class UpdateUsernameService {
 	readonly hasSuccess = computed(() => this._status() === 'success');
 
 	update(username: string) {
-		this._status.set('loading');
-		return this.api.updateUsername(username).pipe(
-			switchMap(() =>
-				this.logout.logOut().pipe(
-					tap(() => {
-						this._status.set('success');
-						this.router.navigate(['/auth/login']);
-					}),
+		return defer(() => {
+			this._status.set('loading');
+			return this.api.updateUsername(username).pipe(
+				switchMap(() =>
+					this.logout.logOut().pipe(
+						tap(() => {
+							this._status.set('success');
+							this.router.navigate(['/auth/login']);
+						}),
+					),
 				),
-			),
-			catchError(() => {
-				this._status.set('error');
-				return of();
-			}),
-		);
+				catchError(() => {
+					this._status.set('error');
+					return of();
+				}),
+			);
+		});
 	}
 
 	resetStatus() {

@@ -1,6 +1,6 @@
 import {computed, inject, Injectable, signal} from '@angular/core';
 import {RequestStatus} from '@shared/lib';
-import {catchError, of, tap} from 'rxjs';
+import {catchError, defer, of, tap} from 'rxjs';
 import {ComposerApi} from '../composer.api';
 
 @Injectable({providedIn: 'root'})
@@ -14,16 +14,18 @@ export class AddComposerToFavoritesService {
 	readonly hasSuccess = computed(() => this._status() === 'success');
 
 	add(id: string) {
-		this._status.set('loading');
-		return this.api.addToFavorites(id).pipe(
-			tap(() => {
-				this._status.set('success');
-			}),
-			catchError(() => {
-				this._status.set('error');
-				return of(null);
-			}),
-		);
+		return defer(() => {
+			this._status.set('loading');
+			return this.api.addToFavorites(id).pipe(
+				tap(() => {
+					this._status.set('success');
+				}),
+				catchError(() => {
+					this._status.set('error');
+					return of(null);
+				}),
+			);
+		});
 	}
 
 	resetStatus() {

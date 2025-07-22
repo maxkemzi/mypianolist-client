@@ -1,7 +1,7 @@
 import {isPlatformBrowser} from '@angular/common';
 import {computed, inject, Injectable, PLATFORM_ID, signal} from '@angular/core';
 import {RequestStatus} from '@shared/lib';
-import {catchError, of, tap} from 'rxjs';
+import {catchError, defer, of, tap} from 'rxjs';
 import {AuthApi, AuthApiError} from '../auth.api';
 import {AuthService} from '../auth.service';
 
@@ -24,20 +24,22 @@ export class RefreshAuthService {
 			return of();
 		}
 
-		this._status.set('loading');
-		return this.api.refresh().pipe(
-			tap(data => {
-				this.auth.set(data.user, data.accessToken);
+		return defer(() => {
+			this._status.set('loading');
+			return this.api.refresh().pipe(
+				tap(data => {
+					this.auth.set(data.user, data.accessToken);
 
-				this._status.set('success');
-			}),
-			catchError(() => {
-				this.auth.reset();
+					this._status.set('success');
+				}),
+				catchError(() => {
+					this.auth.reset();
 
-				this._status.set('error');
+					this._status.set('error');
 
-				return of();
-			}),
-		);
+					return of();
+				}),
+			);
+		});
 	}
 }

@@ -1,7 +1,7 @@
 import {inject, Injectable, signal} from '@angular/core';
 import {AuthService} from '@features/auth';
 import {DataCacheService, withCache} from '@shared/lib';
-import {catchError, finalize, of, tap} from 'rxjs';
+import {catchError, defer, finalize, of, tap} from 'rxjs';
 import {PiecesApi, PieceStatsResponse} from '../pieces.api';
 
 @Injectable({providedIn: 'root'})
@@ -20,59 +20,63 @@ export class FetchPieceStatsService {
 	readonly hasError = this._hasError.asReadonly();
 
 	fetchByAuth() {
-		this._isLoading.set(true);
-		this._hasError.set(false);
+		return defer(() => {
+			this._isLoading.set(true);
+			this._hasError.set(false);
 
-		const params = {username: this.auth.user()?.username};
-		return this.api.fetchStatsByAuth().pipe(
-			withCache(
-				() => this.dataCache.get(this.CACHE_PREFIX, params),
-				value => this.dataCache.set(this.CACHE_PREFIX, params, value),
-			),
-			tap(res => {
-				this._data.set(res.data);
+			const params = {username: this.auth.user()?.username};
+			return this.api.fetchStatsByAuth().pipe(
+				withCache(
+					() => this.dataCache.get(this.CACHE_PREFIX, params),
+					value => this.dataCache.set(this.CACHE_PREFIX, params, value),
+				),
+				tap(res => {
+					this._data.set(res.data);
 
-				if (res.fromCache) {
+					if (res.fromCache) {
+						this._isLoading.set(false);
+					}
+				}),
+				catchError(() => {
+					this._hasError.set(true);
+					this._data.set(null);
+					return of();
+				}),
+				finalize(() => {
 					this._isLoading.set(false);
-				}
-			}),
-			catchError(() => {
-				this._hasError.set(true);
-				this._data.set(null);
-				return of();
-			}),
-			finalize(() => {
-				this._isLoading.set(false);
-			}),
-		);
+				}),
+			);
+		});
 	}
 
 	fetchByUsername(username: string) {
-		this._isLoading.set(true);
-		this._hasError.set(false);
+		return defer(() => {
+			this._isLoading.set(true);
+			this._hasError.set(false);
 
-		const params = {username};
-		return this.api.fetchStatsByUsername(username).pipe(
-			withCache(
-				() => this.dataCache.get(this.CACHE_PREFIX, params),
-				value => this.dataCache.set(this.CACHE_PREFIX, params, value),
-			),
-			tap(res => {
-				this._data.set(res.data);
+			const params = {username};
+			return this.api.fetchStatsByUsername(username).pipe(
+				withCache(
+					() => this.dataCache.get(this.CACHE_PREFIX, params),
+					value => this.dataCache.set(this.CACHE_PREFIX, params, value),
+				),
+				tap(res => {
+					this._data.set(res.data);
 
-				if (res.fromCache) {
+					if (res.fromCache) {
+						this._isLoading.set(false);
+					}
+				}),
+				catchError(() => {
+					this._hasError.set(true);
+					this._data.set(null);
+					return of();
+				}),
+				finalize(() => {
 					this._isLoading.set(false);
-				}
-			}),
-			catchError(() => {
-				this._hasError.set(true);
-				this._data.set(null);
-				return of();
-			}),
-			finalize(() => {
-				this._isLoading.set(false);
-			}),
-		);
+				}),
+			);
+		});
 	}
 
 	clearCache() {
