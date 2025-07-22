@@ -4,17 +4,30 @@
 		<h1 class="mb-7 text-center capitalize">{{ title() }}</h1>
 		<form class="flex justify-center mb-7" (ngSubmit)="onSearch()">
 			<div class="relative">
-				@if (searchValue().length !== 0) {
-					<button
-						type="button"
-						(click)="onSearchClear()"
-						[disabled]="pieces.isLoading()"
-					>
-						<i [class]="'ph ph-x ' + iconClasses"></i>
-					</button>
-				} @else {
-					<i [class]="'ph ph-magnifying-glass ' + iconClasses"></i>
-				}
+				<div class="absolute top-1/2 left-4 translate-y-[-50%]">
+					@if (searchValue().length !== 0) {
+						<button
+							class="flex"
+							type="button"
+							(click)="onSearchClear()"
+							[disabled]="pieces.isLoading()"
+						>
+							<i
+								appTypography
+								class="ph ph-x"
+								color="primary"
+								size="2xl"
+							></i>
+						</button>
+					} @else {
+						<i
+							appTypography
+							class="ph ph-magnifying-glass flex"
+							color="primary"
+							size="2xl"
+						></i>
+					}
+				</div>
 
 				<input
 					appInput

@@ -74,10 +74,6 @@ export class PiecesPageComponent {
 	readonly sortDropdownMenuIsOpen = signal<boolean>(false);
 	readonly pieceToAddToList = signal<Piece | null>(null);
 
-	get iconClasses() {
-		return 'text-2xl text-primary absolute top-1/2 left-4 translate-y-[-50%]';
-	}
-
 	constructor() {
 		effect(() => {
 			this.fetch();

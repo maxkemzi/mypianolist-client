@@ -63,16 +63,14 @@
 							[disabled]="pieceList.isLoading()"
 							(click)="onSearchClear()"
 						>
-							<i appTypography [class]="'ph ph-x'" color="primary"></i>
+							<i appTypography class="ph ph-x" color="primary"></i>
 						</button>
 					} @else {
-						<button type="submit" [disabled]="pieceList.isLoading()">
-							<i
-								appTypography
-								[class]="'ph ph-magnifying-glass'"
-								color="primary"
-							></i>
-						</button>
+						<i
+							appTypography
+							class="ph ph-magnifying-glass"
+							color="primary"
+						></i>
 					}
 				</div>
 			</form>
