@@ -6,6 +6,7 @@ import {ContainerComponent, TypographyComponent} from '@shared/components';
 import {AvatarFormComponent} from './avatar-form/avatar-form.component';
 import {BiographyFormComponent} from './biography-form/biography-form.component';
 import {UsernameFormComponent} from './username-form/username-form.component';
+import {PasswordFormComponent} from './password-form/password-form.component';
 
 @Component({
 	selector: 'app-settings-page',
@@ -18,6 +19,7 @@ import {UsernameFormComponent} from './username-form/username-form.component';
 		UsernameFormComponent,
 		BiographyFormComponent,
 		AvatarFormComponent,
+		PasswordFormComponent,
 	],
 })
 export class SettingsPageComponent implements OnInit {

@@ -6,11 +6,15 @@
 			<div class="grid grid-cols-2 gap-6">
 				<div>
 					<h2 class="mb-4">Account</h2>
-					<app-username-form [defaultUsername]="profile.username" />
+					<div class="flex flex-col gap-6">
+						<app-username-form [defaultUsername]="profile.username" />
+
+						<app-password-form />
+					</div>
 				</div>
 				<div>
 					<h2 class="mb-4">Profile</h2>
-					<div class="flex flex-col items-start gap-4">
+					<div class="flex flex-col gap-6">
 						<app-avatar-form
 							[(defaultAvatar)]="profile.avatar"
 							[username]="profile.username"

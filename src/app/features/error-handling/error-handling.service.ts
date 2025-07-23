@@ -10,6 +10,7 @@ import {RemovePieceFromListService} from '@features/piece/remove-from-list';
 import {DeleteAvatarService} from '@features/user/profile/delete-avatar';
 import {UpdateAvatarService} from '@features/user/profile/update-avatar';
 import {UpdateBiographyService} from '@features/user/profile/update-biography';
+import {UpdatePasswordService} from '@features/user/update-password';
 import {UpdateUsernameService} from '@features/user/update-username';
 
 @Injectable({providedIn: 'root'})
@@ -81,6 +82,12 @@ export class ErrorHandlingService {
 			inject(UpdateBiographyService),
 			'Error updating biography.',
 			'Biography was updated successfully.',
+		);
+
+		this.handleStatus(
+			inject(UpdatePasswordService),
+			'Error updating password.',
+			'Password was updated successfully.',
 		);
 	}
 

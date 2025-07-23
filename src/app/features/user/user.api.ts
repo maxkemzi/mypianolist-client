@@ -8,4 +8,8 @@ export class UserApi {
 	updateUsername(username: string) {
 		return this.api.post<void>('/users/username', {username});
 	}
+
+	updatePassword(password: string) {
+		return this.api.post<void>('/users/password', {password});
+	}
 }
