@@ -1,7 +1,6 @@
 import {Component, DestroyRef, inject} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {
-	AbstractControl,
 	FormControl,
 	FormGroup,
 	FormsModule,
@@ -13,8 +12,8 @@ import {
 	ButtonComponent,
 	FormFieldComponent,
 	InputComponent,
-	TypographyComponent,
 } from '@shared/components';
+import {passwordsMismatchValidator} from '@shared/lib/validators';
 
 @Component({
 	selector: 'app-password-form',
@@ -25,7 +24,6 @@ import {
 		FormsModule,
 		ButtonComponent,
 		InputComponent,
-		TypographyComponent,
 	],
 })
 export class PasswordFormComponent {
@@ -43,15 +41,8 @@ export class PasswordFormComponent {
 				nonNullable: true,
 			}),
 		},
-		{validators: this.passwordsMatchValidator},
+		{validators: passwordsMismatchValidator('password', 'confirmPassword')},
 	);
-
-	passwordsMatchValidator(form: AbstractControl) {
-		const password = form.get('password')?.value;
-		const confirmPassword = form.get('confirmPassword')?.value;
-
-		return password !== confirmPassword ? {passwordsMismatch: true} : null;
-	}
 
 	get passwordError(): string | null {
 		const error = this.updatePassword.error();

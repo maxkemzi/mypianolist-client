@@ -13,6 +13,7 @@ import {
 	FormFieldComponent,
 	InputComponent,
 } from '@shared/components';
+import {sameAsCurrentValidator} from '@shared/lib/validators';
 import {first, map} from 'rxjs';
 
 @Component({
@@ -32,9 +33,12 @@ export class UsernameFormComponent {
 	private readonly updateUsername = inject(UpdateUsernameService);
 
 	readonly defaultUsername = model.required<string>();
+	readonly defaultUsername$ = toObservable(this.defaultUsername, {
+		injector: this.injector,
+	});
 	readonly control = new FormControl('', {
 		validators: [Validators.required],
-		asyncValidators: [this.differentFromCurrentValidator.bind(this)],
+		asyncValidators: [sameAsCurrentValidator(this.defaultUsername$)],
 		nonNullable: true,
 	});
 
@@ -46,23 +50,12 @@ export class UsernameFormComponent {
 			});
 	}
 
-	differentFromCurrentValidator(control: AbstractControl) {
-		return toObservable(this.defaultUsername, {injector: this.injector}).pipe(
-			map(value => {
-				return value !== control.value
-					? null
-					: {notDifferentFromCurrent: true};
-			}),
-			first(),
-		);
-	}
-
 	get error(): string | null {
 		if (this.control?.touched) {
 			if (this.control?.errors?.['required']) {
 				return 'Username is required.';
 			}
-			if (this.control?.errors?.['notDifferentFromCurrent']) {
+			if (this.control?.errors?.['sameAsCurrent']) {
 				return 'Username must be different from the current one.';
 			}
 		}

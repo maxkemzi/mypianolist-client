@@ -12,6 +12,7 @@ import {
 	FormFieldComponent,
 	InputComponent,
 } from '@shared/components';
+import {sameAsCurrentValidator} from '@shared/lib/validators';
 import {first, map} from 'rxjs';
 
 @Component({
@@ -31,8 +32,11 @@ export class BiographyFormComponent {
 	private readonly updateBiography = inject(UpdateBiographyService);
 
 	readonly defaultBiography = model.required<string | null>();
+	readonly defaultBiography$ = toObservable(this.defaultBiography, {
+		injector: this.injector,
+	});
 	readonly control = new FormControl('', {
-		asyncValidators: [this.differentFromCurrentValidator.bind(this)],
+		asyncValidators: [sameAsCurrentValidator(this.defaultBiography$)],
 		nonNullable: true,
 	});
 
@@ -59,7 +63,7 @@ export class BiographyFormComponent {
 
 	get error(): string | null {
 		if (this.control?.touched) {
-			if (this.control?.errors?.['notDifferentFromCurrent']) {
+			if (this.control?.errors?.['sameAsCurrent']) {
 				return 'Biography must be different from the current one.';
 			}
 		}

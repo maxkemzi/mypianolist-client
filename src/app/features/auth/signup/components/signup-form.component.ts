@@ -1,7 +1,6 @@
 import {Component, DestroyRef, inject} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {
-	AbstractControl,
 	FormControl,
 	FormGroup,
 	ReactiveFormsModule,
@@ -17,6 +16,7 @@ import {
 	TypographyComponent,
 } from '@shared/components';
 import {SignupService} from '../signup.service';
+import {passwordsMismatchValidator} from '@shared/lib/validators';
 
 @Component({
 	selector: 'app-signup-form',
@@ -57,16 +57,9 @@ export class SignupFormComponent {
 				nonNullable: true,
 			}),
 		},
-		{validators: [this.passwordsMatchValidator]},
+		{validators: [passwordsMismatchValidator('password', 'confirmPassword')]},
 	);
 	readonly isLoading = this.signup.isLoading;
-
-	passwordsMatchValidator(form: AbstractControl) {
-		const password = form.get('password')?.value;
-		const confirmPassword = form.get('confirmPassword')?.value;
-
-		return password !== confirmPassword ? {passwordsMismatch: true} : null;
-	}
 
 	get usernameError(): string | null {
 		const error = this.signup.error();
