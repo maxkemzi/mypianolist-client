@@ -1,5 +1,5 @@
-<div class="h-[88px] mb-10"></div>
-<section>
+<div class="h-[88px]"></div>
+<section class="py-10">
 	<div appContainer size="md">
 		@if (isLoading()) {
 			<p>Loading...</p>
@@ -43,22 +43,24 @@
 						<h3 class="mb-3">Favorites</h3>
 						<h4 class="mb-2">Pieces</h4>
 
-						@if (pieces.data().length !== 0) {
-							<div class="flex gap-2 mb-4">
-								@for (piece of pieces.data(); track piece.id) {
-									<a [routerLink]="['/pieces', piece.id]">
-										<app-favorite-piece-card [piece]="piece" />
-									</a>
-								}
-							</div>
-						} @else {
-							<p>You have no favorite pieces.</p>
-						}
+						<div class="mb-4">
+							@if (pieces.data().length !== 0) {
+								<div class="flex gap-2">
+									@for (piece of pieces.data(); track piece.id) {
+										<a [routerLink]="['/pieces', piece.id]">
+											<app-favorite-piece-card [piece]="piece" />
+										</a>
+									}
+								</div>
+							} @else {
+								<p>You have no favorite pieces.</p>
+							}
+						</div>
 
 						<h4 class="mb-2">Composers</h4>
 
 						@if (composers.data().length !== 0) {
-							<div class="flex gap-2 mb-4">
+							<div class="flex gap-2">
 								@for (composer of composers.data(); track composer.id) {
 									<a [routerLink]="['/composers', composer.id]">
 										<app-favorite-composer-card

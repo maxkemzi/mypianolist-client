@@ -1,8 +1,8 @@
 <div class="shrink-0">
-	<img
-		class="w-[115px] rounded-lg"
-		[src]="composerImage()"
-		[alt]="piece().title"
+	<app-piece-image
+		[piece]="piece()"
+		[color]="isEven() ? 'background' : 'surface'"
+		width="115px"
 	/>
 </div>
 <div class="grow flex flex-col justify-between gap-2">

@@ -11,11 +11,12 @@ import {CompletePiece} from '@entities/piece/piece.model';
 import {TypographyComponent} from '@shared/components';
 import {ClassMergeDirective} from '@shared/lib';
 import {twJoin} from 'tailwind-merge';
+import {PieceImageComponent} from '../piece-image/piece-image.component';
 
 @Component({
 	selector: 'app-piece-card',
 	templateUrl: './piece-card.component.html',
-	imports: [TypographyComponent, RouterLink],
+	imports: [TypographyComponent, RouterLink, PieceImageComponent],
 })
 export class PieceCardComponent extends ClassMergeDirective {
 	private readonly composerUtils = inject(ComposerUtils);
@@ -28,10 +29,6 @@ export class PieceCardComponent extends ClassMergeDirective {
 		transform: booleanAttribute,
 	});
 
-	readonly composerImage = computed(() => {
-		const {image} = this.piece().composer;
-		return image ? `/server${image}` : null;
-	});
 	readonly composerName = computed(() =>
 		this.composerUtils.getCompactName(this.piece().composer),
 	);

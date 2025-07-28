@@ -2,9 +2,5 @@
 <div
 	class="absolute top-0 left-0 w-full h-full z-[-1] before:absolute before:top-0 before:left-0 before:w-full before:h-full before:bg-background/50"
 >
-	<img
-		class="w-full h-full object-center rounded-lg"
-		[src]="fullComposerImagePath()"
-		[alt]="piece().title"
-	/>
+	<app-piece-image [piece]="piece()" />
 </div>

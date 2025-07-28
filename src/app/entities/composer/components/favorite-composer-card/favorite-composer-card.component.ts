@@ -22,6 +22,6 @@ export class FavoriteComposerCardComponent extends ClassMergeDirective {
 	});
 
 	protected override defaultClass(): string {
-		return 'block relative w-[80px] h-[115px] p-1';
+		return 'block relative w-[90px] aspect-[22/33] p-1';
 	}
 }
