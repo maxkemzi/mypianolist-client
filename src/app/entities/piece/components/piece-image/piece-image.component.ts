@@ -11,6 +11,8 @@ export class PieceImageComponent {
 	readonly height = input<string>();
 	readonly color = input<'surface' | 'background'>('surface');
 
+	readonly hasError = signal<boolean>(false);
+
 	readonly src = computed(() => {
 		const composerImage = this.piece().composer.image;
 		const fallbackFilename =
@@ -22,8 +24,6 @@ export class PieceImageComponent {
 			? `/server${composerImage}`
 			: `/images/${fallbackFilename}`;
 	});
-
-	readonly hasError = signal<boolean>(false);
 
 	onError() {
 		this.hasError.set(true);

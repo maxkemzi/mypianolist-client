@@ -29,12 +29,7 @@
 	<h3 class="mb-4" weight="bold">Composer</h3>
 	<a class="inline-block" [routerLink]="['/composers', piece().composer.id]">
 		<div class="flex gap-2">
-			<img
-				class="object-cover rounded-lg"
-				[src]="composerImage()"
-				width="90"
-				[alt]="composerName()"
-			/>
+			<app-composer-image [composer]="piece().composer" width="90px" />
 			<div>
 				<p color="primary">{{ composerName() }}</p>
 				<p variant="body2">{{ composerLifeSpan() }}</p>

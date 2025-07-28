@@ -2,11 +2,12 @@ import {Component, computed, inject, input} from '@angular/core';
 import {CompleteComposer} from '@entities/composer/composer.model';
 import {ComposerUtils} from '@entities/composer/composer.utils';
 import {InfoItemComponent, TypographyComponent} from '@shared/components';
+import {ComposerImageComponent} from '../composer-image/composer-image.component';
 
 @Component({
 	selector: 'app-composer-details',
 	templateUrl: './composer-details.component.html',
-	imports: [TypographyComponent, InfoItemComponent],
+	imports: [TypographyComponent, InfoItemComponent, ComposerImageComponent],
 })
 export class ComposerDetailsComponent {
 	private readonly utils = inject(ComposerUtils);

@@ -3,11 +3,12 @@ import {Composer} from '@entities/composer/composer.model';
 import {ComposerUtils} from '@entities/composer/composer.utils';
 import {TypographyComponent} from '@shared/components';
 import {ClassMergeDirective} from '@shared/lib';
+import {ComposerImageComponent} from '../composer-image/composer-image.component';
 
 @Component({
 	selector: 'app-favorite-composer-card',
 	templateUrl: './favorite-composer-card.component.html',
-	imports: [TypographyComponent],
+	imports: [TypographyComponent, ComposerImageComponent],
 })
 export class FavoriteComposerCardComponent extends ClassMergeDirective {
 	private readonly composerUtils = inject(ComposerUtils);

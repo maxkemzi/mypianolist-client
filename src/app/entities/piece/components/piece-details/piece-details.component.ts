@@ -1,13 +1,19 @@
 import {Component, computed, inject, input} from '@angular/core';
 import {RouterLink} from '@angular/router';
 import {ComposerUtils} from '@entities/composer';
+import {ComposerImageComponent} from '@entities/composer/components/composer-image/composer-image.component';
 import {CompletePiece} from '@entities/piece/piece.model';
 import {InfoItemComponent, TypographyComponent} from '@shared/components';
 
 @Component({
 	selector: 'app-piece-details',
 	templateUrl: './piece-details.component.html',
-	imports: [TypographyComponent, RouterLink, InfoItemComponent],
+	imports: [
+		TypographyComponent,
+		RouterLink,
+		InfoItemComponent,
+		ComposerImageComponent,
+	],
 })
 export class PieceDetailsComponent {
 	private readonly composerUtils = inject(ComposerUtils);
