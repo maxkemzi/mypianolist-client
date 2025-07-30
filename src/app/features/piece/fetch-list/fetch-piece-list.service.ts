@@ -20,6 +20,7 @@ export class FetchPieceListService extends PaginatedFetchService<UserPiecesRespo
 		params: UserPiecesFetchParams = {},
 	): Observable<UserPiecesResponse | null> {
 		return defer(() => {
+			this.resetValues();
 			this.setIsLoading(true);
 			this.setHasError(false);
 
@@ -40,7 +41,6 @@ export class FetchPieceListService extends PaginatedFetchService<UserPiecesRespo
 				map(res => res.data),
 				catchError(() => {
 					this.setHasError(true);
-					this.resetValues();
 					return of();
 				}),
 				finalize(() => {
@@ -55,6 +55,7 @@ export class FetchPieceListService extends PaginatedFetchService<UserPiecesRespo
 		params: UserPiecesFetchParams = {},
 	): Observable<UserPiecesResponse | null> {
 		return defer(() => {
+			this.resetValues();
 			this.setIsLoading(true);
 			this.setHasError(false);
 
@@ -77,7 +78,6 @@ export class FetchPieceListService extends PaginatedFetchService<UserPiecesRespo
 					map(res => res.data),
 					catchError(() => {
 						this.setHasError(true);
-						this.resetValues();
 						return of();
 					}),
 					finalize(() => {

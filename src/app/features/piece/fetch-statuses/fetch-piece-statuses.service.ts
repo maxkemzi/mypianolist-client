@@ -20,6 +20,7 @@ export class FetchPieceStatusesService {
 
 	fetch(): Observable<PieceStatusType[] | null> {
 		return defer(() => {
+			this._data.set([]);
 			this._isLoading.set(true);
 			this._hasError.set(false);
 			return this.api.fetchStatuses().pipe(
@@ -37,7 +38,6 @@ export class FetchPieceStatusesService {
 				map(res => res.data),
 				catchError(() => {
 					this._hasError.set(true);
-					this._data.set([]);
 					return of();
 				}),
 				finalize(() => {

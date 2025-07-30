@@ -14,6 +14,7 @@ export class FetchFavoriteComposersService extends PaginatedFetchService<Compose
 
 	fetchByAuth(): Observable<ComposersResponse | null> {
 		return defer(() => {
+			this.resetValues();
 			this.setIsLoading(true);
 			this.setHasError(false);
 
@@ -33,7 +34,6 @@ export class FetchFavoriteComposersService extends PaginatedFetchService<Compose
 				map(res => res.data),
 				catchError(() => {
 					this.setHasError(true);
-					this.resetValues();
 					return of();
 				}),
 				finalize(() => {
@@ -45,6 +45,7 @@ export class FetchFavoriteComposersService extends PaginatedFetchService<Compose
 
 	fetchByUsername(username: string): Observable<ComposersResponse | null> {
 		return defer(() => {
+			this.resetValues();
 			this.setIsLoading(true);
 			this.setHasError(false);
 
@@ -64,7 +65,6 @@ export class FetchFavoriteComposersService extends PaginatedFetchService<Compose
 				map(res => res.data),
 				catchError(() => {
 					this.setHasError(true);
-					this.resetValues();
 					return of();
 				}),
 				finalize(() => {

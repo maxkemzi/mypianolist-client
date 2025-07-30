@@ -22,12 +22,9 @@ export class ComposerImageComponent {
 			? `/server${image}`
 			: `/images/composer-fallback.svg`;
 	});
+	readonly alt = computed(() => this.utils.getFullName(this.composer()));
 
 	onError() {
 		this.hasError.set(true);
-	}
-
-	get alt() {
-		return this.utils.getFullName(this.composer());
 	}
 }

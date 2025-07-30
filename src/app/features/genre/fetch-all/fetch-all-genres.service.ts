@@ -12,6 +12,7 @@ export class FetchAllGenresService extends PaginatedFetchService<GenresResponse>
 
 	fetch(): Observable<GenresResponse | null> {
 		return defer(() => {
+			this.resetValues();
 			this.setIsLoading(true);
 			this.setHasError(false);
 			return this.api.fetch().pipe(
@@ -29,7 +30,6 @@ export class FetchAllGenresService extends PaginatedFetchService<GenresResponse>
 				map(res => res.data),
 				catchError(() => {
 					this.setHasError(true);
-					this.resetValues();
 					return of();
 				}),
 				finalize(() => {

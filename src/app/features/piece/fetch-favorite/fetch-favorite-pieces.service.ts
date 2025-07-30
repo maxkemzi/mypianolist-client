@@ -20,6 +20,7 @@ export class FetchFavoritePiecesService extends PaginatedFetchService<CompletePi
 		params: PiecesFetchParams = {},
 	): Observable<CompletePiecesResponse | null> {
 		return defer(() => {
+			this.resetValues();
 			this.setIsLoading(true);
 			this.setHasError(false);
 
@@ -49,7 +50,6 @@ export class FetchFavoritePiecesService extends PaginatedFetchService<CompletePi
 					map(res => res.data),
 					catchError(() => {
 						this.setHasError(true);
-						this.resetValues();
 						return of();
 					}),
 					finalize(() => {
@@ -64,6 +64,7 @@ export class FetchFavoritePiecesService extends PaginatedFetchService<CompletePi
 		params: PiecesFetchParams = {},
 	): Observable<CompletePiecesResponse | null> {
 		return defer(() => {
+			this.resetValues();
 			this.setIsLoading(true);
 			this.setHasError(false);
 
@@ -93,7 +94,6 @@ export class FetchFavoritePiecesService extends PaginatedFetchService<CompletePi
 					map(res => res.data),
 					catchError(() => {
 						this.setHasError(true);
-						this.resetValues();
 						return of();
 					}),
 					finalize(() => {

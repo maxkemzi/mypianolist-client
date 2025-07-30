@@ -14,11 +14,6 @@ export class ComposerDetailsComponent {
 
 	readonly composer = input.required<CompleteComposer>();
 
-	readonly image = computed(() => {
-		const {image} = this.composer();
-		return image ? `/server${image}` : null;
-	});
-
 	readonly fullName = computed(() => this.utils.getFullName(this.composer()));
 
 	readonly lifeSpan = computed(() => {

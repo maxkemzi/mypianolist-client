@@ -21,6 +21,7 @@ export class FetchPieceStatsService {
 
 	fetchByAuth() {
 		return defer(() => {
+			this._data.set(null);
 			this._isLoading.set(true);
 			this._hasError.set(false);
 
@@ -39,7 +40,6 @@ export class FetchPieceStatsService {
 				}),
 				catchError(() => {
 					this._hasError.set(true);
-					this._data.set(null);
 					return of();
 				}),
 				finalize(() => {
@@ -51,6 +51,7 @@ export class FetchPieceStatsService {
 
 	fetchByUsername(username: string) {
 		return defer(() => {
+			this._data.set(null);
 			this._isLoading.set(true);
 			this._hasError.set(false);
 
@@ -69,7 +70,6 @@ export class FetchPieceStatsService {
 				}),
 				catchError(() => {
 					this._hasError.set(true);
-					this._data.set(null);
 					return of();
 				}),
 				finalize(() => {

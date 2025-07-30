@@ -18,6 +18,7 @@ export class FetchAllPiecesService extends PaginatedFetchService<CompletePiecesR
 		params: PiecesFetchParams = {},
 	): Observable<CompletePiecesResponse | null> {
 		return defer(() => {
+			this.resetValues();
 			this.setIsLoading(true);
 			this.setHasError(false);
 			return this.api.fetchAll({limit: this.limit(), ...params}).pipe(
@@ -35,7 +36,6 @@ export class FetchAllPiecesService extends PaginatedFetchService<CompletePiecesR
 				map(res => res.data),
 				catchError(() => {
 					this.setHasError(true);
-					this.resetValues();
 					return of();
 				}),
 				finalize(() => {

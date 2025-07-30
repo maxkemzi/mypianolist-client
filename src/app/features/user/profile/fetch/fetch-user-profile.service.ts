@@ -22,6 +22,7 @@ export class FetchUserProfileService {
 
 	fetchByAuth() {
 		return defer(() => {
+			this._data.set(null);
 			this._isLoading.set(true);
 			this._hasError.set(false);
 
@@ -41,7 +42,6 @@ export class FetchUserProfileService {
 				map(res => res.data),
 				catchError(() => {
 					this._hasError.set(true);
-					this._data.set(null);
 					return of();
 				}),
 				finalize(() => {
@@ -53,6 +53,7 @@ export class FetchUserProfileService {
 
 	fetchByUsername(username: string) {
 		return defer(() => {
+			this._data.set(null);
 			this._isLoading.set(true);
 			this._hasError.set(false);
 
@@ -72,7 +73,6 @@ export class FetchUserProfileService {
 				map(res => res.data),
 				catchError(() => {
 					this._hasError.set(true);
-					this._data.set(null);
 					return of();
 				}),
 				finalize(() => {

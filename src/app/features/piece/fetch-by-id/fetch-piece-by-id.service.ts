@@ -20,6 +20,7 @@ export class FetchPieceByIdService {
 
 	fetch(id: string) {
 		return defer(() => {
+			this._data.set(null);
 			this._isLoading.set(true);
 			this._hasError.set(false);
 			return this.api.fetchById(id).pipe(
@@ -36,7 +37,6 @@ export class FetchPieceByIdService {
 				}),
 				catchError(() => {
 					this._hasError.set(true);
-					this._data.set(null);
 					return of();
 				}),
 				finalize(() => {
