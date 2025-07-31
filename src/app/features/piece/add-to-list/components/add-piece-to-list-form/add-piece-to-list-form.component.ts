@@ -16,6 +16,7 @@ import {
 	TypographyComponent,
 } from '@shared/components';
 import {AddPieceToListService} from '../../add-piece-to-list.service';
+import {pastOrPresentValidator} from '@shared/lib/validators';
 
 @Component({
 	selector: 'app-add-piece-to-list-form',
@@ -44,8 +45,14 @@ export class AddPieceToListFormComponent {
 				nonNullable: true,
 			}),
 			score: new FormControl('', {nonNullable: true}),
-			startedAt: new FormControl('', {nonNullable: true}),
-			finishedAt: new FormControl('', {nonNullable: true}),
+			startedAt: new FormControl('', {
+				validators: pastOrPresentValidator,
+				nonNullable: true,
+			}),
+			finishedAt: new FormControl('', {
+				validators: pastOrPresentValidator,
+				nonNullable: true,
+			}),
 		},
 		{updateOn: 'blur'},
 	);
@@ -58,6 +65,30 @@ export class AddPieceToListFormComponent {
 		if (control?.touched) {
 			if (control?.errors?.['required']) {
 				return 'Status is required.';
+			}
+		}
+
+		return null;
+	}
+
+	get startedAtError(): string | null {
+		const control = this.form.get('startedAt');
+
+		if (control?.touched) {
+			if (control?.errors?.['pastOrPresent']) {
+				return 'Date must be in the past or present.';
+			}
+		}
+
+		return null;
+	}
+
+	get finishedAtError(): string | null {
+		const control = this.form.get('finishedAt');
+
+		if (control?.touched) {
+			if (control?.errors?.['pastOrPresent']) {
+				return 'Date must be in the past or present.';
 			}
 		}
 

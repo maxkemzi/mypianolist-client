@@ -28,4 +28,21 @@ const sameAsCurrentValidator = <T>(
 	};
 };
 
-export {passwordsMismatchValidator, sameAsCurrentValidator};
+const pastOrPresentValidator: ValidatorFn = (control: AbstractControl) => {
+	const value = control.value;
+	if (!value) return null;
+
+	const date = new Date(value);
+	const today = new Date();
+
+	date.setHours(0, 0, 0, 0);
+	today.setHours(0, 0, 0, 0);
+
+	return date > today ? {pastOrPresent: true} : null;
+};
+
+export {
+	passwordsMismatchValidator,
+	sameAsCurrentValidator,
+	pastOrPresentValidator,
+};

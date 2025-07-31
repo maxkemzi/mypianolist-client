@@ -22,7 +22,7 @@
 			/>
 		</app-form-field>
 
-		<app-form-field label="Start Date">
+		<app-form-field label="Start Date" [error]="startedAtError">
 			<input
 				appInput
 				class="w-full"
@@ -31,7 +31,7 @@
 			/>
 		</app-form-field>
 
-		<app-form-field label="Finish Date">
+		<app-form-field label="Finish Date" [error]="finishedAtError">
 			<input
 				appInput
 				class="w-full"
