@@ -10,7 +10,7 @@
 			<app-piece-statuses-select formControlName="status" />
 		</app-form-field>
 
-		<app-form-field label="Score">
+		<app-form-field label="Score" [error]="scoreError">
 			<input
 				appInput
 				class="w-full"

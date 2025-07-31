@@ -7,7 +7,12 @@ import {
 	output,
 } from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {
+	FormControl,
+	FormGroup,
+	ReactiveFormsModule,
+	Validators,
+} from '@angular/forms';
 import {PieceStatusType, UserPiece} from '@entities/piece';
 import {PieceStatusesSelect} from '@features/piece/fetch-statuses';
 import {
@@ -45,7 +50,10 @@ export class EditPieceFormComponent implements OnInit {
 			status: new FormControl<PieceStatusType | ''>('', {
 				nonNullable: true,
 			}),
-			score: new FormControl('', {nonNullable: true}),
+			score: new FormControl('', {
+				validators: [Validators.min(0), Validators.max(10)],
+				nonNullable: true,
+			}),
 			startedAt: new FormControl('', {
 				validators: pastOrPresentValidator,
 				nonNullable: true,
@@ -71,6 +79,21 @@ export class EditPieceFormComponent implements OnInit {
 		if (control?.touched) {
 			if (control?.errors?.['required']) {
 				return 'Status is required.';
+			}
+		}
+
+		return null;
+	}
+
+	get scoreError(): string | null {
+		const control = this.form.get('score');
+
+		if (control?.touched) {
+			if (control?.errors?.['min']) {
+				return 'Minimum score is 0.';
+			}
+			if (control?.errors?.['max']) {
+				return 'Maximum score is 10.';
 			}
 		}
 
