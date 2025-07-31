@@ -45,7 +45,7 @@
 
 						<div class="mb-4">
 							@if (pieces.data().length !== 0) {
-								<div class="flex gap-2">
+								<div class="flex gap-2 flex-wrap">
 									@for (piece of pieces.data(); track piece.id) {
 										<a [routerLink]="['/pieces', piece.id]">
 											<app-favorite-piece-card [piece]="piece" />
@@ -60,7 +60,7 @@
 						<h4 class="mb-2">Composers</h4>
 
 						@if (composers.data().length !== 0) {
-							<div class="flex gap-2">
+							<div class="flex gap-2 flex-wrap">
 								@for (composer of composers.data(); track composer.id) {
 									<a [routerLink]="['/composers', composer.id]">
 										<app-favorite-composer-card
