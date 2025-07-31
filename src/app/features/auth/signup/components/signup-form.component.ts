@@ -15,8 +15,8 @@ import {
 	ModalComponent,
 	TypographyComponent,
 } from '@shared/components';
+import {passwordsMatchValidator} from '@shared/lib/validators';
 import {SignupService} from '../signup.service';
-import {passwordsMismatchValidator} from '@shared/lib/validators';
 
 @Component({
 	selector: 'app-signup-form',
@@ -57,7 +57,7 @@ export class SignupFormComponent {
 				nonNullable: true,
 			}),
 		},
-		{validators: [passwordsMismatchValidator('password', 'confirmPassword')]},
+		{validators: [passwordsMatchValidator('password', 'confirmPassword')]},
 	);
 	readonly isLoading = this.signup.isLoading;
 
@@ -113,7 +113,7 @@ export class SignupFormComponent {
 		if (control?.touched) {
 			if (control.errors?.['required']) {
 				return 'Password confirmation is required.';
-			} else if (this.form.errors?.['passwordsMismatch']) {
+			} else if (this.form.errors?.['passwordsMatch']) {
 				return "Passwords doesn't match.";
 			}
 		}

@@ -1,7 +1,6 @@
 import {Component, DestroyRef, inject, Injector, model} from '@angular/core';
 import {takeUntilDestroyed, toObservable} from '@angular/core/rxjs-interop';
 import {
-	AbstractControl,
 	FormControl,
 	FormsModule,
 	ReactiveFormsModule,
@@ -13,8 +12,7 @@ import {
 	FormFieldComponent,
 	InputComponent,
 } from '@shared/components';
-import {sameAsCurrentValidator} from '@shared/lib/validators';
-import {first, map} from 'rxjs';
+import {differentFromCurrentValidator} from '@shared/lib/validators';
 
 @Component({
 	selector: 'app-username-form',
@@ -38,7 +36,7 @@ export class UsernameFormComponent {
 	});
 	readonly control = new FormControl('', {
 		validators: [Validators.required],
-		asyncValidators: [sameAsCurrentValidator(this.defaultUsername$)],
+		asyncValidators: [differentFromCurrentValidator(this.defaultUsername$)],
 		nonNullable: true,
 	});
 
@@ -55,7 +53,7 @@ export class UsernameFormComponent {
 			if (this.control?.errors?.['required']) {
 				return 'Username is required.';
 			}
-			if (this.control?.errors?.['sameAsCurrent']) {
+			if (this.control?.errors?.['differentFromCurrent']) {
 				return 'Username must be different from the current one.';
 			}
 		}

@@ -8,7 +8,7 @@ export abstract class PaginatedFetchService<
 	private readonly InitialValue = {
 		DATA: [],
 		PAGE: 1,
-		LIMIT: 10,
+		LIMIT: 5,
 		TOTAL_COUNT: 0,
 		TOTAL_PAGES: 1,
 		HAS_MORE: false,

@@ -6,22 +6,22 @@ import {
 } from '@angular/forms';
 import {first, map, Observable} from 'rxjs';
 
-const passwordsMismatchValidator =
+const passwordsMatchValidator =
 	(passwordField: string, confirmPasswordField: string): ValidatorFn =>
 	(form: AbstractControl) => {
 		const password = form.get(passwordField)?.value;
 		const confirmPassword = form.get(confirmPasswordField)?.value;
 
-		return password !== confirmPassword ? {passwordsMismatch: true} : null;
+		return password !== confirmPassword ? {passwordsMatch: true} : null;
 	};
 
-const sameAsCurrentValidator = <T>(
+const differentFromCurrentValidator = <T>(
 	currentValue$: Observable<T>,
 ): AsyncValidatorFn => {
 	return (control: AbstractControl): Observable<ValidationErrors | null> => {
 		return currentValue$.pipe(
 			map(current =>
-				current !== control.value ? null : {sameAsCurrent: true},
+				current !== control.value ? null : {differentFromCurrent: true},
 			),
 			first(),
 		);
@@ -42,7 +42,7 @@ const pastOrPresentValidator: ValidatorFn = (control: AbstractControl) => {
 };
 
 export {
-	passwordsMismatchValidator,
-	sameAsCurrentValidator,
+	passwordsMatchValidator,
+	differentFromCurrentValidator,
 	pastOrPresentValidator,
 };

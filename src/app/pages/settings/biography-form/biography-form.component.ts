@@ -1,19 +1,13 @@
 import {Component, DestroyRef, inject, Injector, model} from '@angular/core';
 import {takeUntilDestroyed, toObservable} from '@angular/core/rxjs-interop';
-import {
-	AbstractControl,
-	FormControl,
-	FormsModule,
-	ReactiveFormsModule,
-} from '@angular/forms';
+import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {UpdateBiographyService} from '@features/user/profile/update-biography';
 import {
 	ButtonComponent,
 	FormFieldComponent,
 	InputComponent,
 } from '@shared/components';
-import {sameAsCurrentValidator} from '@shared/lib/validators';
-import {first, map} from 'rxjs';
+import {differentFromCurrentValidator} from '@shared/lib/validators';
 
 @Component({
 	selector: 'app-biography-form',
@@ -36,7 +30,7 @@ export class BiographyFormComponent {
 		injector: this.injector,
 	});
 	readonly control = new FormControl('', {
-		asyncValidators: [sameAsCurrentValidator(this.defaultBiography$)],
+		asyncValidators: [differentFromCurrentValidator(this.defaultBiography$)],
 		nonNullable: true,
 	});
 
@@ -48,22 +42,9 @@ export class BiographyFormComponent {
 			});
 	}
 
-	differentFromCurrentValidator(control: AbstractControl) {
-		return toObservable(this.defaultBiography, {
-			injector: this.injector,
-		}).pipe(
-			map(value => {
-				return value !== control.value
-					? null
-					: {notDifferentFromCurrent: true};
-			}),
-			first(),
-		);
-	}
-
 	get error(): string | null {
 		if (this.control?.touched) {
-			if (this.control?.errors?.['sameAsCurrent']) {
+			if (this.control?.errors?.['differentFromCurrent']) {
 				return 'Biography must be different from the current one.';
 			}
 		}

@@ -13,7 +13,7 @@ import {
 	FormFieldComponent,
 	InputComponent,
 } from '@shared/components';
-import {passwordsMismatchValidator} from '@shared/lib/validators';
+import {passwordsMatchValidator} from '@shared/lib/validators';
 
 @Component({
 	selector: 'app-password-form',
@@ -41,7 +41,7 @@ export class PasswordFormComponent {
 				nonNullable: true,
 			}),
 		},
-		{validators: passwordsMismatchValidator('password', 'confirmPassword')},
+		{validators: passwordsMatchValidator('password', 'confirmPassword')},
 	);
 
 	get passwordError(): string | null {
@@ -66,7 +66,7 @@ export class PasswordFormComponent {
 		if (control?.touched) {
 			if (control.errors?.['required']) {
 				return 'Password confirmation is required.';
-			} else if (this.form.errors?.['passwordsMismatch']) {
+			} else if (this.form.errors?.['passwordsMatch']) {
 				return "Passwords doesn't match.";
 			}
 		}
