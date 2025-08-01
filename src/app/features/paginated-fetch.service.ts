@@ -1,5 +1,6 @@
 import {Injectable, signal} from '@angular/core';
 import {PaginationResponse} from '@shared/lib';
+import {PaginationMetadata} from '@shared/lib/api';
 
 @Injectable({providedIn: 'root'})
 export abstract class PaginatedFetchService<
@@ -35,6 +36,10 @@ export abstract class PaginatedFetchService<
 		this._data.set(value);
 	}
 
+	protected addData(value: Response['content']) {
+		this._data.update(prev => [...prev, ...value]);
+	}
+
 	protected setPage(value: number) {
 		this._page.set(value);
 	}
@@ -63,13 +68,12 @@ export abstract class PaginatedFetchService<
 		this._hasError.set(value);
 	}
 
-	protected setValues(res: Response) {
-		this._data.set(res.content);
-		this._page.set(res.page);
-		this._limit.set(res.limit);
-		this._totalCount.set(res.totalCount);
-		this._totalPages.set(res.totalPages);
-		this._hasMore.set(res.hasMore);
+	protected setMetadata(data: PaginationMetadata) {
+		this._page.set(data.page);
+		this._limit.set(data.limit);
+		this._totalCount.set(data.totalCount);
+		this._totalPages.set(data.totalPages);
+		this._hasMore.set(data.hasMore);
 	}
 
 	protected resetValues() {

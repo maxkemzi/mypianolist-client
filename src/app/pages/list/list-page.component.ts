@@ -33,6 +33,7 @@ import {
 	RemovePieceFromListButtonComponent,
 } from '@features/piece/remove-from-list';
 import {
+	ButtonComponent,
 	ContainerComponent,
 	DropdownItemComponent,
 	InputComponent,
@@ -64,6 +65,7 @@ import {ClickOutsideDirective} from '@shared/lib';
 		DropdownItemComponent,
 		InputComponent,
 		FormsModule,
+		ButtonComponent,
 	],
 })
 export class ListPageComponent implements OnInit {
@@ -79,6 +81,7 @@ export class ListPageComponent implements OnInit {
 	readonly status = input<PieceStatusType>();
 	readonly sort = input<UserPieceSort>();
 	readonly search = input<string>();
+	readonly page = signal<number>(0);
 	readonly isAuth = computed(() => this.auth.user() !== null);
 	readonly pieceToRemove = signal<Piece | null>(null);
 	readonly pieceToEdit = signal<UserPiece | null>(null);
@@ -89,6 +92,7 @@ export class ListPageComponent implements OnInit {
 		totalCount: this.fetchPieceList.totalCount,
 		totalPages: this.fetchPieceList.totalPages,
 		isLoading: this.fetchPieceList.isLoading,
+		hasMore: this.fetchPieceList.hasMore,
 		hasError: this.fetchPieceList.hasError,
 	};
 	readonly pieceStatuses = {
@@ -118,7 +122,8 @@ export class ListPageComponent implements OnInit {
 
 	onSearch() {
 		if (this.searchValue().length !== 0) {
-			this.addQueryParams({search: this.searchValue(), page: null});
+			this.page.set(0);
+			this.addQueryParams({search: this.searchValue()});
 		}
 	}
 
@@ -128,13 +133,14 @@ export class ListPageComponent implements OnInit {
 	}
 
 	onSearchClear() {
-		this.addQueryParams({search: null, page: null});
+		this.page.set(0);
 		this.searchValue.set('');
+		this.addQueryParams({search: null});
 	}
 
 	onSortClick(sort: UserPieceSort | null) {
-		this.addQueryParams({sort});
 		this.sortDropdownMenuIsOpen.set(false);
+		this.addQueryParams({sort});
 	}
 
 	openRemovePieceAlert(piece: Piece) {
@@ -176,6 +182,10 @@ export class ListPageComponent implements OnInit {
 		this.closeAddPieceModal();
 	}
 
+	onFetchMore() {
+		this.page.update(prev => prev + 1);
+	}
+
 	private fetchList() {
 		const user = this.auth.user();
 		const username = this.username();
@@ -183,12 +193,21 @@ export class ListPageComponent implements OnInit {
 			status: this.status(),
 			sort: this.sort(),
 			search: this.search(),
+			page: this.page(),
 		};
 
-		const fetch =
-			user && username === user.username
+		let fetch;
+		const isAuth = user && username === user.username;
+
+		if (this.page() === 0) {
+			fetch = isAuth
 				? this.fetchPieceList.fetchByAuth(params)
 				: this.fetchPieceList.fetchByUsername(username, params);
+		} else {
+			fetch = isAuth
+				? this.fetchPieceList.fetchMoreByAuth(params)
+				: this.fetchPieceList.fetchMoreByUsername(username, params);
+		}
 
 		fetch.pipe(takeUntilDestroyed(this.destroyRef)).subscribe();
 	}

@@ -25,7 +25,8 @@ export class FetchFavoriteComposersService extends PaginatedFetchService<Compose
 					value => this.dataCache.set(this.CACHE_PREFIX, params, value),
 				),
 				tap(res => {
-					this.setValues(res.data);
+					this.setData(res.data.content);
+					this.setMetadata(res.data);
 
 					if (res.fromCache) {
 						this.setIsLoading(false);
@@ -56,7 +57,8 @@ export class FetchFavoriteComposersService extends PaginatedFetchService<Compose
 					value => this.dataCache.set(this.CACHE_PREFIX, params, value),
 				),
 				tap(res => {
-					this.setValues(res.data);
+					this.setData(res.data.content);
+					this.setMetadata(res.data);
 
 					if (res.fromCache) {
 						this.setIsLoading(false);

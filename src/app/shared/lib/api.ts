@@ -38,13 +38,17 @@ export class Api {
 	}
 }
 
-export interface PaginationResponse<T extends object> {
-	content: T[];
+export interface PaginationMetadata {
 	page: number;
 	limit: number;
 	totalCount: number;
 	totalPages: number;
 	hasMore: boolean;
+}
+
+export interface PaginationResponse<T extends object>
+	extends PaginationMetadata {
+	content: T[];
 }
 
 export interface ApiError<C extends string = string> {

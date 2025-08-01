@@ -41,7 +41,8 @@ export class FetchFavoritePiecesService extends PaginatedFetchService<CompletePi
 							),
 					),
 					tap(res => {
-						this.setValues(res.data);
+						this.setData(res.data.content);
+						this.setMetadata(res.data);
 
 						if (res.fromCache) {
 							this.setIsLoading(false);
@@ -85,7 +86,8 @@ export class FetchFavoritePiecesService extends PaginatedFetchService<CompletePi
 							),
 					),
 					tap(res => {
-						this.setValues(res.data);
+						this.setData(res.data.content);
+						this.setMetadata(res.data);
 
 						if (res.fromCache) {
 							this.setIsLoading(false);

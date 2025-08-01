@@ -32,13 +32,35 @@ export class FetchPieceListService extends PaginatedFetchService<UserPiecesRespo
 						this.dataCache.set(this.CACHE_PREFIX, cacheParams, value),
 				),
 				tap(res => {
-					this.setValues(res.data);
+					this.setData(res.data.content);
+					this.setMetadata(res.data);
 
 					if (res.fromCache) {
 						this.setIsLoading(false);
 					}
 				}),
 				map(res => res.data),
+				catchError(() => {
+					this.setHasError(true);
+					return of();
+				}),
+				finalize(() => {
+					this.setIsLoading(false);
+				}),
+			);
+		});
+	}
+
+	fetchMoreByAuth(params: UserPiecesFetchParams = {}) {
+		return defer(() => {
+			this.setIsLoading(true);
+			this.setHasError(false);
+
+			return this.api.fetchListByAuth({limit: this.limit(), ...params}).pipe(
+				tap(res => {
+					this.addData(res.content);
+					this.setMetadata(res);
+				}),
 				catchError(() => {
 					this.setHasError(true);
 					return of();
@@ -69,13 +91,37 @@ export class FetchPieceListService extends PaginatedFetchService<UserPiecesRespo
 							this.dataCache.set(this.CACHE_PREFIX, cacheParams, value),
 					),
 					tap(res => {
-						this.setValues(res.data);
+						this.setData(res.data.content);
+						this.setMetadata(res.data);
 
 						if (res.fromCache) {
 							this.setIsLoading(false);
 						}
 					}),
 					map(res => res.data),
+					catchError(() => {
+						this.setHasError(true);
+						return of();
+					}),
+					finalize(() => {
+						this.setIsLoading(false);
+					}),
+				);
+		});
+	}
+
+	fetchMoreByUsername(username: string, params: UserPiecesFetchParams = {}) {
+		return defer(() => {
+			this.setIsLoading(true);
+			this.setHasError(false);
+
+			return this.api
+				.fetchListByUsername(username, {limit: this.limit(), ...params})
+				.pipe(
+					tap(res => {
+						this.addData(res.content);
+						this.setMetadata(res);
+					}),
 					catchError(() => {
 						this.setHasError(true);
 						return of();

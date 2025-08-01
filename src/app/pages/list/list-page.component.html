@@ -134,6 +134,18 @@
 				</tbody>
 			</table>
 		}
+
+		@if (pieceList.hasMore() && !pieceList.isLoading()) {
+			<button
+				appButton
+				class="mt-4 mx-auto"
+				variant="outline"
+				size="sm"
+				(click)="onFetchMore()"
+			>
+				Load More
+			</button>
+		}
 	</div>
 	@if (pieceToRemove(); as piece) {
 		<div appModalContainer>
