@@ -80,6 +80,7 @@ export class ListPageComponent {
 		totalCount: this.fetchPieceList.totalCount,
 		totalPages: this.fetchPieceList.totalPages,
 		isLoading: this.fetchPieceList.isLoading,
+		isLoadingMore: this.fetchPieceList.isLoadingMore,
 		hasMore: this.fetchPieceList.hasMore,
 		hasError: this.fetchPieceList.hasError,
 	};

@@ -1,4 +1,4 @@
-import {inject, Injectable} from '@angular/core';
+import {inject, Injectable, signal} from '@angular/core';
 import {AuthService} from '@features/auth';
 import {DataCacheService, withCache} from '@shared/lib';
 import {catchError, defer, finalize, map, Observable, of, tap} from 'rxjs';
@@ -15,6 +15,10 @@ export class FetchPieceListService extends PaginatedFetchService<UserPiecesRespo
 	private readonly api = inject(PiecesApi);
 	private readonly auth = inject(AuthService);
 	private readonly CACHE_PREFIX = 'piece_list';
+
+	private readonly _isLoadingMore = signal<boolean>(false);
+
+	readonly isLoadingMore = this._isLoadingMore.asReadonly();
 
 	fetchByAuth(
 		params: UserPiecesFetchParams = {},
@@ -53,7 +57,7 @@ export class FetchPieceListService extends PaginatedFetchService<UserPiecesRespo
 
 	fetchMoreByAuth(params: UserPiecesFetchParams = {}) {
 		return defer(() => {
-			this.setIsLoading(true);
+			this._isLoadingMore.set(true);
 			this.setHasError(false);
 
 			return this.api.fetchListByAuth({limit: this.limit(), ...params}).pipe(
@@ -66,7 +70,7 @@ export class FetchPieceListService extends PaginatedFetchService<UserPiecesRespo
 					return of();
 				}),
 				finalize(() => {
-					this.setIsLoading(false);
+					this._isLoadingMore.set(false);
 				}),
 			);
 		});
@@ -112,7 +116,7 @@ export class FetchPieceListService extends PaginatedFetchService<UserPiecesRespo
 
 	fetchMoreByUsername(username: string, params: UserPiecesFetchParams = {}) {
 		return defer(() => {
-			this.setIsLoading(true);
+			this._isLoadingMore.set(true);
 			this.setHasError(false);
 
 			return this.api
@@ -127,7 +131,7 @@ export class FetchPieceListService extends PaginatedFetchService<UserPiecesRespo
 						return of();
 					}),
 					finalize(() => {
-						this.setIsLoading(false);
+						this._isLoadingMore.set(false);
 					}),
 				);
 		});

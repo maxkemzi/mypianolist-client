@@ -57,15 +57,20 @@
 		}
 
 		@if (list.hasMore() && !list.isLoading()) {
-			<button
-				appButton
-				class="mt-4 mx-auto"
-				variant="outline"
-				size="sm"
-				(click)="onFetchMore()"
-			>
-				Load More
-			</button>
+			<div class="mt-4 flex justify-center">
+				@if (list.isLoadingMore()) {
+					<p>Loading...</p>
+				} @else {
+					<button
+						appButton
+						variant="outline"
+						size="sm"
+						(click)="onFetchMore()"
+					>
+						Load More
+					</button>
+				}
+			</div>
 		}
 	</div>
 
