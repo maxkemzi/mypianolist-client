@@ -19,7 +19,7 @@ export class PieceUtils {
 			[PieceStatus.CURRENTLY_LEARNING]: 'success',
 			[PieceStatus.COMPLETED]: 'info',
 			[PieceStatus.DROPPED]: 'error',
-			[PieceStatus.PLAN_TO_LEARN]: 'disabled',
+			[PieceStatus.PLAN_TO_LEARN]: 'surfaceLighter',
 		};
 		return STATUS_TO_COLOR_MAPPING[status];
 	}
