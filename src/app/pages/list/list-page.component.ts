@@ -5,18 +5,15 @@ import {
 	effect,
 	inject,
 	input,
-	OnInit,
 	signal,
 } from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {FormsModule} from '@angular/forms';
-import {ActivatedRoute, Params, Router, RouterLink} from '@angular/router';
 import {
 	Piece,
 	PieceListTableHeadComponent,
 	PieceListTableRowComponent,
 	PieceStatusType,
-	PieceUtils,
 	UserPiece,
 	UserPieceSort,
 } from '@entities/piece';
@@ -27,7 +24,6 @@ import {
 	EditPieceFormComponent,
 } from '@features/piece/edit';
 import {FetchPieceListService} from '@features/piece/fetch-list';
-import {FetchPieceStatusesService} from '@features/piece/fetch-statuses';
 import {
 	RemovePieceFromListAlertComponent,
 	RemovePieceFromListButtonComponent,
@@ -35,23 +31,20 @@ import {
 import {
 	ButtonComponent,
 	ContainerComponent,
-	DropdownItemComponent,
-	InputComponent,
 	ModalContainerComponent,
-	SortDropdownComponent,
-	TabComponent,
 	TypographyComponent,
 } from '@shared/components';
 import {ClickOutsideDirective} from '@shared/lib';
+import {ListSortDropdownComponent} from './list-sort-dropdown/list-sort-dropdown.component';
+import {SearchBarComponent} from './search-bar/search-bar.component';
+import {StatusTabsComponent} from './status-tabs/status-tabs.component';
 
 @Component({
 	selector: 'app-list-page',
 	templateUrl: './list-page.component.html',
 	imports: [
 		TypographyComponent,
-		TabComponent,
 		ContainerComponent,
-		RouterLink,
 		RemovePieceFromListButtonComponent,
 		RemovePieceFromListAlertComponent,
 		ModalContainerComponent,
@@ -61,32 +54,27 @@ import {ClickOutsideDirective} from '@shared/lib';
 		PieceListTableRowComponent,
 		PieceListTableHeadComponent,
 		AddPieceToListFormComponent,
-		SortDropdownComponent,
-		DropdownItemComponent,
-		InputComponent,
 		FormsModule,
 		ButtonComponent,
+		StatusTabsComponent,
+		SearchBarComponent,
+		ListSortDropdownComponent,
 	],
 })
-export class ListPageComponent implements OnInit {
+export class ListPageComponent {
 	private readonly auth = inject(AuthService);
 	private readonly fetchPieceList = inject(FetchPieceListService);
-	private readonly fetchPieceStatuses = inject(FetchPieceStatusesService);
-	private readonly pieceUtils = inject(PieceUtils);
 	private readonly destroyRef = inject(DestroyRef);
-	private readonly router = inject(Router);
-	private readonly route = inject(ActivatedRoute);
 
 	readonly username = input.required<string>();
 	readonly status = input<PieceStatusType>();
 	readonly sort = input<UserPieceSort>();
 	readonly search = input<string>();
-	readonly page = signal<number>(0);
-	readonly isAuth = computed(() => this.auth.user() !== null);
-	readonly pieceToRemove = signal<Piece | null>(null);
+
 	readonly pieceToEdit = signal<UserPiece | null>(null);
+	readonly pieceToRemove = signal<Piece | null>(null);
 	readonly pieceToAdd = signal<Piece | null>(null);
-	readonly pieceList = {
+	readonly list = {
 		data: this.fetchPieceList.data,
 		page: this.fetchPieceList.page,
 		totalCount: this.fetchPieceList.totalCount,
@@ -95,65 +83,17 @@ export class ListPageComponent implements OnInit {
 		hasMore: this.fetchPieceList.hasMore,
 		hasError: this.fetchPieceList.hasError,
 	};
-	readonly pieceStatuses = {
-		data: this.fetchPieceStatuses.data,
-		isLoading: this.fetchPieceStatuses.isLoading,
-		hasError: this.fetchPieceStatuses.hasError,
-	};
-	readonly sortDropdownMenuIsOpen = signal<boolean>(false);
-	readonly searchValue = signal<string>('');
 
-	ngOnInit() {
-		this.fetchPieceStatuses
-			.fetch()
-			.pipe(takeUntilDestroyed(this.destroyRef))
-			.subscribe();
-	}
+	readonly isAuth = computed(() => this.auth.user() !== null);
+	readonly isMyOwnList = computed(() => {
+		const user = this.auth.user();
+		return user && this.username() === user.username;
+	});
 
 	constructor() {
 		effect(() => {
-			this.fetchList();
+			this.fetchFirstPage();
 		});
-	}
-
-	getStatusText(status: PieceStatusType) {
-		return this.pieceUtils.statusToText(status);
-	}
-
-	onSearch() {
-		if (this.searchValue().length !== 0) {
-			this.page.set(0);
-			this.addQueryParams({search: this.searchValue()});
-		}
-	}
-
-	onSearchInput(event: Event) {
-		const value = (event.target as HTMLInputElement).value;
-		this.searchValue.set(value.trim());
-	}
-
-	onSearchClear() {
-		this.page.set(0);
-		this.searchValue.set('');
-		this.addQueryParams({search: null});
-	}
-
-	onSortClick(sort: UserPieceSort | null) {
-		this.sortDropdownMenuIsOpen.set(false);
-		this.addQueryParams({sort});
-	}
-
-	openRemovePieceAlert(piece: Piece) {
-		this.pieceToRemove.set(piece);
-	}
-
-	closeRemovePieceAlert() {
-		this.pieceToRemove.set(null);
-	}
-
-	onRemovePieceConfirm() {
-		this.fetchList();
-		this.closeRemovePieceAlert();
 	}
 
 	openEditPieceModal(piece: UserPiece) {
@@ -165,8 +105,21 @@ export class ListPageComponent implements OnInit {
 	}
 
 	onEditPieceSubmit() {
-		this.fetchList();
+		this.fetchFirstPage();
 		this.closeEditPieceModal();
+	}
+
+	openRemovePieceAlert(piece: Piece) {
+		this.pieceToRemove.set(piece);
+	}
+
+	closeRemovePieceAlert() {
+		this.pieceToRemove.set(null);
+	}
+
+	onRemovePieceConfirm() {
+		this.fetchFirstPage();
+		this.closeRemovePieceAlert();
 	}
 
 	openAddPieceModal(piece: Piece) {
@@ -178,45 +131,41 @@ export class ListPageComponent implements OnInit {
 	}
 
 	onAddPieceSubmit() {
-		this.fetchList();
+		this.fetchFirstPage();
 		this.closeAddPieceModal();
 	}
 
 	onFetchMore() {
-		this.page.update(prev => prev + 1);
+		this.fetchMore();
 	}
 
-	private fetchList() {
-		const user = this.auth.user();
-		const username = this.username();
+	private fetchFirstPage() {
 		const params = {
 			status: this.status(),
 			sort: this.sort(),
 			search: this.search(),
-			page: this.page(),
+			page: 0,
 		};
 
-		let fetch;
-		const isAuth = user && username === user.username;
-
-		if (this.page() === 0) {
-			fetch = isAuth
-				? this.fetchPieceList.fetchByAuth(params)
-				: this.fetchPieceList.fetchByUsername(username, params);
-		} else {
-			fetch = isAuth
-				? this.fetchPieceList.fetchMoreByAuth(params)
-				: this.fetchPieceList.fetchMoreByUsername(username, params);
-		}
+		const fetch = this.isMyOwnList()
+			? this.fetchPieceList.fetchByAuth(params)
+			: this.fetchPieceList.fetchByUsername(this.username(), params);
 
 		fetch.pipe(takeUntilDestroyed(this.destroyRef)).subscribe();
 	}
 
-	private addQueryParams(params: Params) {
-		this.router.navigate([], {
-			relativeTo: this.route,
-			queryParams: params,
-			queryParamsHandling: 'merge',
-		});
+	private fetchMore() {
+		const params = {
+			status: this.status(),
+			sort: this.sort(),
+			search: this.search(),
+			page: this.list.page() + 1,
+		};
+
+		const fetch = this.isMyOwnList()
+			? this.fetchPieceList.fetchMoreByAuth(params)
+			: this.fetchPieceList.fetchMoreByUsername(this.username(), params);
+
+		fetch.pipe(takeUntilDestroyed(this.destroyRef)).subscribe();
 	}
 }

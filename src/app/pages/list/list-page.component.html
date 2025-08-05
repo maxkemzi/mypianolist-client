@@ -3,111 +3,32 @@
 	<div appContainer size="md">
 		<h1 class="mb-7 text-center capitalize">MyPianoList</h1>
 
-		@if (pieceStatuses.isLoading()) {
-			<p>Loading...</p>
-		} @else if (pieceStatuses.hasError()) {
-			<p>Something went wrong.</p>
-		} @else if (pieceStatuses.data().length === 0) {
-			<p>There are no piece statuses.</p>
-		} @else {
-			<ul class="flex justify-center items-center gap-4">
-				<li>
-					<a
-						routerLink="./"
-						[queryParams]="{status: null}"
-						queryParamsHandling="merge"
-					>
-						<app-tab [isActive]="status() === undefined"
-							>All Pieces</app-tab
-						>
-					</a>
-				</li>
-				@for (statusItem of pieceStatuses.data(); track statusItem) {
-					<li>
-						<a
-							routerLink="./"
-							[queryParams]="{status: statusItem}"
-							queryParamsHandling="merge"
-						>
-							<app-tab [isActive]="status() === statusItem">{{
-								getStatusText(statusItem)
-							}}</app-tab>
-						</a>
-					</li>
-				}
-			</ul>
-		}
+		<app-status-tabs [status]="status()" />
 
 		<div class="grid grid-cols-3 items-center gap-4 mb-2 mt-7">
 			<p class="justify-self-start">
 				Pieces
 				<span weight="medium">{{
-					pieceList.isLoading() ? '...' : pieceList.totalCount()
+					list.isLoading() ? '...' : list.totalCount()
 				}}</span>
 			</p>
 
-			<form class="relative justify-self-center" (ngSubmit)="onSearch()">
-				<input
-					appInput
-					size="sm"
-					class="pr-10"
-					placeholder="Search List..."
-					[value]="searchValue()"
-					(input)="onSearchInput($event)"
-				/>
+			<app-search-bar [isDisabled]="list.isLoading()" />
 
-				<div class="absolute right-4 top-1/2 translate-y-[-50%]">
-					@if (searchValue().length !== 0) {
-						<button
-							type="button"
-							[disabled]="pieceList.isLoading()"
-							(click)="onSearchClear()"
-						>
-							<i appTypography class="ph ph-x" color="primary"></i>
-						</button>
-					} @else {
-						<i
-							appTypography
-							class="ph ph-magnifying-glass"
-							color="primary"
-						></i>
-					}
-				</div>
-			</form>
-
-			<app-sort-dropdown
-				class="justify-self-end"
-				[(menuIsOpen)]="sortDropdownMenuIsOpen"
-			>
-				<app-dropdown-item
-					[isActive]="sort() === undefined"
-					(appClick)="onSortClick(null)"
-					>Date</app-dropdown-item
-				>
-
-				<app-dropdown-item
-					[isActive]="sort() === 'score'"
-					(appClick)="onSortClick('score')"
-					>Score</app-dropdown-item
-				>
-			</app-sort-dropdown>
+			<app-list-sort-dropdown [sort]="sort()" />
 		</div>
 
-		@if (pieceList.isLoading()) {
+		@if (list.isLoading()) {
 			<p>Loading...</p>
-		} @else if (pieceList.hasError()) {
+		} @else if (list.hasError()) {
 			<p>Something went wrong.</p>
-		} @else if (pieceList.data().length === 0) {
+		} @else if (list.data().length === 0) {
 			<p>Your list is empty.</p>
 		} @else {
 			<table class="w-full">
 				<thead appPieceListTableHead></thead>
 				<tbody>
-					@for (
-						piece of pieceList.data();
-						track piece.id;
-						let i = $index
-					) {
+					@for (piece of list.data(); track piece.id; let i = $index) {
 						<tr appPieceListTableRow [number]="i + 1" [piece]="piece">
 							<div class="flex gap-2" slot="actions">
 								@if (isAuth()) {
@@ -135,7 +56,7 @@
 			</table>
 		}
 
-		@if (pieceList.hasMore() && !pieceList.isLoading()) {
+		@if (list.hasMore() && !list.isLoading()) {
 			<button
 				appButton
 				class="mt-4 mx-auto"
@@ -147,6 +68,7 @@
 			</button>
 		}
 	</div>
+
 	@if (pieceToRemove(); as piece) {
 		<div appModalContainer>
 			<app-remove-piece-from-list-alert
@@ -157,6 +79,7 @@
 			/>
 		</div>
 	}
+
 	@if (pieceToEdit(); as piece) {
 		<div appModalContainer>
 			<app-edit-piece-form

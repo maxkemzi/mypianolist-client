@@ -1,0 +1,13 @@
+<app-sort-dropdown class="justify-self-end" [(menuIsOpen)]="menuIsOpen">
+	<app-dropdown-item
+		[isActive]="sort() === undefined"
+		(appClick)="onSortClick(null)"
+		>Date</app-dropdown-item
+	>
+
+	<app-dropdown-item
+		[isActive]="sort() === 'score'"
+		(appClick)="onSortClick('score')"
+		>Score</app-dropdown-item
+	>
+</app-sort-dropdown>
