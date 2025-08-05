@@ -87,6 +87,13 @@ export class AvatarFormComponent {
 		return null;
 	}
 
+	get submitButtonIsDisabled() {
+		return (
+			(this.control.touched && this.control.invalid) ||
+			this.updateAvatar.isLoading()
+		);
+	}
+
 	onSubmit() {
 		this.control.markAsTouched();
 

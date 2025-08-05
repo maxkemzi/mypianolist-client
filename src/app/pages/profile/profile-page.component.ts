@@ -22,7 +22,7 @@ import {
 	TypographyComponent,
 } from '@shared/components';
 import {catchError, finalize, forkJoin, of} from 'rxjs';
-import {StatusLabelComponent} from './components/status-label/status-label.component';
+import {StatusLabelComponent} from './status-label/status-label.component';
 
 @Component({
 	selector: 'app-profile-page',
