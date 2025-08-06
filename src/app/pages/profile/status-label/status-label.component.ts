@@ -15,7 +15,7 @@ export class StatusLabelComponent {
 		currently_learning: 'before:bg-success',
 		completed: 'before:bg-info',
 		dropped: 'before:bg-error',
-		plan_to_learn: 'before:bg-disabled',
+		plan_to_learn: 'before:bg-surface-lighter',
 	};
 
 	readonly status = input<PieceStatusType>();

@@ -66,7 +66,8 @@ export class PasswordFormComponent {
 		if (control?.touched) {
 			if (control.errors?.['required']) {
 				return 'Password confirmation is required.';
-			} else if (this.form.errors?.['passwordsMatch']) {
+			}
+			if (this.form.errors?.['passwordsMatch']) {
 				return "Passwords doesn't match.";
 			}
 		}
@@ -75,16 +76,12 @@ export class PasswordFormComponent {
 	}
 
 	get submitButtonIsDisabled() {
-		return (
-			(this.form.touched && this.form.invalid) ||
-			this.updatePassword.isLoading()
-		);
+		return this.updatePassword.isLoading();
 	}
 
 	onSubmit() {
-		this.form.markAllAsTouched();
-
 		if (this.form.invalid) {
+			this.form.markAllAsTouched();
 			return;
 		}
 

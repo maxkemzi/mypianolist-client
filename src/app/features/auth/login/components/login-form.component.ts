@@ -82,9 +82,8 @@ export class LoginFormComponent {
 	}
 
 	onSubmit = () => {
-		this.form.markAllAsTouched();
-
 		if (this.form.invalid) {
+			this.form.markAllAsTouched();
 			return;
 		}
 

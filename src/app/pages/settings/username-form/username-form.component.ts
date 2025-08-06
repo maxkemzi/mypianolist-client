@@ -62,16 +62,12 @@ export class UsernameFormComponent {
 	}
 
 	get submitButtonIsDisabled() {
-		return (
-			(this.control.touched && this.control.invalid) ||
-			this.updateUsername.isLoading()
-		);
+		return this.updateUsername.isLoading();
 	}
 
 	onSubmit() {
-		this.control.markAsTouched();
-
 		if (this.control.invalid) {
+			this.control.markAsTouched();
 			return;
 		}
 

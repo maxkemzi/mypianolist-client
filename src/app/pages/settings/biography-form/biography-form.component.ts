@@ -53,16 +53,12 @@ export class BiographyFormComponent {
 	}
 
 	get submitButtonIsDisabled() {
-		return (
-			(this.control.touched && this.control.invalid) ||
-			this.updateBiography.isLoading()
-		);
+		return this.updateBiography.isLoading();
 	}
 
 	onSubmit() {
-		this.control.markAsTouched();
-
 		if (this.control.invalid) {
+			this.control.markAsTouched();
 			return;
 		}
 

@@ -1,4 +1,4 @@
-import {Component, DestroyRef, inject} from '@angular/core';
+import {Component, DestroyRef, inject, signal} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {
 	FormControl,
@@ -113,7 +113,8 @@ export class SignupFormComponent {
 		if (control?.touched) {
 			if (control.errors?.['required']) {
 				return 'Password confirmation is required.';
-			} else if (this.form.errors?.['passwordsMatch']) {
+			}
+			if (this.form.errors?.['passwordsMatch']) {
 				return "Passwords doesn't match.";
 			}
 		}
@@ -122,9 +123,8 @@ export class SignupFormComponent {
 	}
 
 	onSubmit = () => {
-		this.form.markAllAsTouched();
-
 		if (this.form.invalid) {
+			this.form.markAllAsTouched();
 			return;
 		}
 

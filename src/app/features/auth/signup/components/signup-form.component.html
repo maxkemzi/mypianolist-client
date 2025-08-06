@@ -27,12 +27,7 @@
 			/>
 		</app-form-field>
 	</div>
-	<button
-		appButton
-		class="mb-2 w-full"
-		type="submit"
-		[disabled]="(form.touched && form.invalid) || isLoading()"
-	>
+	<button appButton class="mb-2 w-full" type="submit" [disabled]="isLoading()">
 		Sign Up
 	</button>
 	<p>
