@@ -10,6 +10,7 @@ import {twJoin} from 'tailwind-merge';
 })
 export class HeaderComponent {
 	readonly auth = inject(AuthService);
+
 	readonly absolute = input<boolean, unknown>(false, {
 		transform: booleanAttribute,
 	});
@@ -24,14 +25,14 @@ export class HeaderComponent {
 	get flexContainerClasses() {
 		return twJoin(
 			'h-full flex justify-between items-center gap-4',
-			!this.auth.isAuth() && 'max-sm:flex-col max-sm:justify-center',
+			this.auth.user() === null && 'max-sm:flex-col max-sm:justify-center',
 		);
 	}
 
 	get leftBlockClasses() {
 		return twJoin(
 			'flex items-center gap-7 max-sm:gap-4',
-			this.auth.isAuth() && 'max-sm:flex-col max-sm:items-start',
+			this.auth.user() !== null && 'max-sm:flex-col max-sm:items-start',
 		);
 	}
 }
