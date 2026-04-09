@@ -1,7 +1,9 @@
-<app-header absolute>
-	<app-logo slot="left-1" />
-</app-header>
+<div class="min-h-screen flex flex-col">
+	<app-header>
+		<app-logo slot="left-1" />
+	</app-header>
 
-<main>
-	<router-outlet />
-</main>
+	<main class="flex-1 flex">
+		<router-outlet />
+	</main>
+</div>

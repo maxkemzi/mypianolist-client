@@ -1,4 +1,4 @@
-import {booleanAttribute, Component, inject, input} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {AuthService} from '@features/auth';
 import {ContainerComponent} from '@shared/components';
 import {twJoin} from 'tailwind-merge';
@@ -11,15 +11,8 @@ import {twJoin} from 'tailwind-merge';
 export class HeaderComponent {
 	readonly auth = inject(AuthService);
 
-	readonly absolute = input<boolean, unknown>(false, {
-		transform: booleanAttribute,
-	});
-
 	get classes() {
-		return twJoin(
-			'py-4 bg-background z-20',
-			this.absolute() && 'absolute top-0 left-0 w-full',
-		);
+		return twJoin('flex min-h-[88px] py-4 bg-background z-20');
 	}
 
 	get flexContainerClasses() {

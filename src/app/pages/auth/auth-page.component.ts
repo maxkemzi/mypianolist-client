@@ -6,5 +6,6 @@ import {ContainerComponent} from '@shared/components';
 	selector: 'app-auth-page',
 	templateUrl: './auth-page.component.html',
 	imports: [ContainerComponent, RouterOutlet],
+	host: {class: 'flex-1'},
 })
 export class AuthPageComponent {}

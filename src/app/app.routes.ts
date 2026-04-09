@@ -1,17 +1,22 @@
 import {Routes} from '@angular/router';
-import {BaseLayoutComponent} from '@core/layouts';
+import {
+	BaseLayoutComponent,
+	LogoOnlyLayoutComponent,
+	ScreenLayoutComponent,
+} from '@core/layouts';
 import {authGuard} from '@features/auth';
 import {HomePageComponent} from '@pages';
 
 export const routes: Routes = [
 	{
 		path: '',
+		component: ScreenLayoutComponent,
+		children: [{path: '', component: HomePageComponent}],
+	},
+	{
+		path: '',
 		component: BaseLayoutComponent,
 		children: [
-			{
-				path: '',
-				component: HomePageComponent,
-			},
 			{
 				path: 'catalog',
 				loadComponent: () =>
@@ -54,8 +59,7 @@ export const routes: Routes = [
 	},
 	{
 		path: '',
-		loadComponent: () =>
-			import('@core/layouts').then(m => m.LogoOnlyLayoutComponent),
+		component: LogoOnlyLayoutComponent,
 		children: [
 			{
 				path: 'auth',
