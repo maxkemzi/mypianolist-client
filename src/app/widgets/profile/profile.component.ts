@@ -1,4 +1,3 @@
-import {BreakpointObserver} from '@angular/cdk/layout';
 import {
 	Component,
 	DestroyRef,
@@ -7,7 +6,7 @@ import {
 	input,
 	signal,
 } from '@angular/core';
-import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {Router, RouterLink} from '@angular/router';
 import {LogoutService} from '@features/auth/logout';
 import {
@@ -16,8 +15,7 @@ import {
 	DropdownMenuComponent,
 	TypographyComponent,
 } from '@shared/components';
-import {ClickOutsideDirective} from '@shared/lib';
-import {map} from 'rxjs/operators';
+import {BreakpointService, ClickOutsideDirective} from '@shared/lib';
 
 @Component({
 	selector: 'app-profile',
@@ -32,22 +30,16 @@ import {map} from 'rxjs/operators';
 	],
 })
 export class ProfileComponent {
-	private readonly breakpointObserver = inject(BreakpointObserver);
 	private readonly logout = inject(LogoutService);
 	private readonly router = inject(Router);
 	private readonly destroyRef = inject(DestroyRef);
+	readonly breakpoint = inject(BreakpointService);
 
 	readonly username = input<string>('username');
 	readonly avatar = input<string | null>(null);
 	readonly imageHasError = signal<boolean>(false);
 	readonly dropdownIsOpen = signal<boolean>(false);
 	readonly isLoggingOut = this.logout.isLoading;
-	readonly isDesktop = toSignal(
-		this.breakpointObserver
-			.observe(['(min-width: 640px)'])
-			.pipe(map(result => result.matches)),
-		{initialValue: window.innerWidth >= 640},
-	);
 
 	@HostBinding('class')
 	get classes() {
