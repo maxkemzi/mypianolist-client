@@ -23,6 +23,7 @@
 	--color-error: #ef4444;
 	--color-disabled: #3c3c3c;
 	--color-warning: #cda434;
+	--breakpoint-xs: 30rem;
 }
 
 body {

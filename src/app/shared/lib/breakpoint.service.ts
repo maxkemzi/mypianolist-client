@@ -7,10 +7,11 @@ import {map} from 'rxjs';
 export class BreakpointService {
 	private readonly breakpointObserver = inject(BreakpointObserver);
 
-	readonly sm = this.createSignal('(min-width: 640px)');
-	readonly md = this.createSignal('(min-width: 768px)');
-	readonly lg = this.createSignal('(min-width: 1024px)');
-	readonly xl = this.createSignal('(min-width: 1280px)');
+	readonly maxXs = this.createSignal('(max-width: 480px)');
+	readonly maxSm = this.createSignal('(max-width: 640px)');
+	readonly maxMd = this.createSignal('(max-width: 768px)');
+	readonly maxLg = this.createSignal('(max-width: 1024px)');
+	readonly maxXl = this.createSignal('(max-width: 1280px)');
 
 	private createSignal(query: string) {
 		return toSignal(this.match(query), {
