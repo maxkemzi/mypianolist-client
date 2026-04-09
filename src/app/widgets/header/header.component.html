@@ -1,7 +1,7 @@
 <header [class]="classes">
 	<div appContainer class="h-full">
-		<div class="h-full flex justify-between items-center">
-			<div class="flex items-center gap-7">
+		<div [class]="flexContainerClasses">
+			<div [class]="leftBlockClasses">
 				<ng-content select="[slot=left-1]" />
 				<ng-content select="[slot=left-2]" />
 			</div>

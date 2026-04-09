@@ -4,7 +4,7 @@
 	<ng-container slot="right">
 		@if (auth.user(); as user) {
 			<div class="flex items-center gap-3">
-				<app-list-button [username]="user.username" />
+				<app-list-button class="max-sm:hidden" [username]="user.username" />
 				<app-profile [username]="user.username" [avatar]="user.avatar" />
 			</div>
 		}

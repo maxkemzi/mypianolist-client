@@ -49,10 +49,10 @@ export class TypographyComponent extends ClassMergeDirective {
 			inherit: 'text-[length:inherit]',
 			sm: 'text-sm',
 			base: 'text-base',
-			xl: 'text-xl',
-			'2xl': 'text-2xl',
-			'4xl': 'text-4xl',
-			'5xl': 'text-5xl',
+			xl: 'text-xl max-md:text-lg',
+			'2xl': 'text-2xl max-md:text-xl',
+			'4xl': 'text-4xl max-md:text-3xl',
+			'5xl': 'text-5xl max-md:text-4xl',
 		};
 
 		const WEIGHT_TO_CLASSES_MAPPING: Record<Weight, string> = {

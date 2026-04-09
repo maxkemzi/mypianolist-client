@@ -1,3 +1,4 @@
+import {BreakpointObserver} from '@angular/cdk/layout';
 import {
 	Component,
 	DestroyRef,
@@ -6,9 +7,8 @@ import {
 	input,
 	signal,
 } from '@angular/core';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
 import {Router, RouterLink} from '@angular/router';
-import {AuthService} from '@features/auth';
 import {LogoutService} from '@features/auth/logout';
 import {
 	AvatarComponent,
@@ -17,6 +17,7 @@ import {
 	TypographyComponent,
 } from '@shared/components';
 import {ClickOutsideDirective} from '@shared/lib';
+import {map} from 'rxjs/operators';
 
 @Component({
 	selector: 'app-profile',
@@ -31,6 +32,7 @@ import {ClickOutsideDirective} from '@shared/lib';
 	],
 })
 export class ProfileComponent {
+	private readonly breakpointObserver = inject(BreakpointObserver);
 	private readonly logout = inject(LogoutService);
 	private readonly router = inject(Router);
 	private readonly destroyRef = inject(DestroyRef);
@@ -40,6 +42,12 @@ export class ProfileComponent {
 	readonly imageHasError = signal<boolean>(false);
 	readonly dropdownIsOpen = signal<boolean>(false);
 	readonly isLoggingOut = this.logout.isLoading;
+	readonly isDesktop = toSignal(
+		this.breakpointObserver
+			.observe(['(min-width: 640px)'])
+			.pipe(map(result => result.matches)),
+		{initialValue: window.innerWidth >= 640},
+	);
 
 	@HostBinding('class')
 	get classes() {
@@ -54,6 +62,11 @@ export class ProfileComponent {
 
 	toggleDropdownIsOpen() {
 		this.dropdownIsOpen.update(value => !value);
+	}
+
+	onListClick() {
+		this.router.navigate(['/list', this.username()]);
+		this.dropdownIsOpen.set(false);
 	}
 
 	onProfileClick() {

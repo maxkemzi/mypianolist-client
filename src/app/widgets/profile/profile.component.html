@@ -1,33 +1,74 @@
-<div class="relative" (appClickOutside)="onClickOutside()">
-	<button
-		class="flex items-center gap-2"
-		type="button"
-		(click)="toggleDropdownIsOpen()"
-	>
-		<span weight="semibold">{{ username() }}</span>
-		<i class="ph-fill ph-caret-down"></i>
-	</button>
-	@if (dropdownIsOpen()) {
-		<app-dropdown-menu class="absolute top-full left-0 min-w-full pt-2">
-			<app-dropdown-item (appClick)="onProfileClick()">
-				Profile
-			</app-dropdown-item>
-			<app-dropdown-item (appClick)="onSettingsClick()">
-				Settings
-			</app-dropdown-item>
-			<app-dropdown-item
-				[isDisabled]="isLoggingOut()"
-				(appClick)="onLogoutClick()"
+@if (isDesktop()) {
+	<div class="flex items-center gap-3">
+		<div class="relative" (appClickOutside)="onClickOutside()">
+			<button
+				class="flex items-center gap-2"
+				type="button"
+				(click)="toggleDropdownIsOpen()"
 			>
-				Log out
-			</app-dropdown-item>
-		</app-dropdown-menu>
-	}
-</div>
-<a [routerLink]="['/profile', username()]">
-	<img
-		appAvatar
-		[src]="avatar() ? `/server${avatar()}` : null"
-		[alt]="`${username()} avatar`"
-	/>
-</a>
+				<span weight="semibold">{{ username() }}</span>
+				<i class="ph-fill ph-caret-down"></i>
+			</button>
+			@if (dropdownIsOpen()) {
+				<app-dropdown-menu class="absolute top-full left-0 min-w-full pt-2">
+					<app-dropdown-item (appClick)="onProfileClick()">
+						Profile
+					</app-dropdown-item>
+					<app-dropdown-item (appClick)="onSettingsClick()">
+						Settings
+					</app-dropdown-item>
+					<app-dropdown-item
+						[isDisabled]="isLoggingOut()"
+						(appClick)="onLogoutClick()"
+					>
+						Log out
+					</app-dropdown-item>
+				</app-dropdown-menu>
+			}
+		</div>
+		<a [routerLink]="['/profile', username()]">
+			<img
+				appAvatar
+				[src]="avatar() ? `/server${avatar()}` : null"
+				[alt]="`${username()} avatar`"
+			/>
+		</a>
+	</div>
+} @else {
+	<div class="relative" (appClickOutside)="onClickOutside()">
+		<button
+			class="flex items-center gap-2"
+			type="button"
+			(click)="toggleDropdownIsOpen()"
+		>
+			<img
+				appAvatar
+				[src]="avatar() ? `/server${avatar()}` : null"
+				[alt]="`${username()} avatar`"
+			/>
+			<i class="ph-fill ph-caret-down"></i>
+		</button>
+
+		@if (dropdownIsOpen()) {
+			<app-dropdown-menu
+				class="absolute top-full right-1/2 translate-x-1/2 min-w-full pt-2"
+			>
+				<app-dropdown-item (appClick)="onListClick()">
+					List
+				</app-dropdown-item>
+				<app-dropdown-item (appClick)="onProfileClick()">
+					Profile
+				</app-dropdown-item>
+				<app-dropdown-item (appClick)="onSettingsClick()">
+					Settings
+				</app-dropdown-item>
+				<app-dropdown-item
+					[isDisabled]="isLoggingOut()"
+					(appClick)="onLogoutClick()"
+				>
+					Log out
+				</app-dropdown-item>
+			</app-dropdown-menu>
+		}
+	</div>
+}
