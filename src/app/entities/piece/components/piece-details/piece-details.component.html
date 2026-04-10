@@ -1,6 +1,6 @@
 <h2>{{ piece().title }}</h2>
 <h3 class="mb-4" weight="normal">By {{ composerName() }}</h3>
-<ul class="flex gap-4 mb-4">
+<ul class="flex gap-4 mb-4 max-sm:flex-col max-sm:gap-2">
 	<li>
 		<app-info-item title="Genre" [value]="piece().genre.name" />
 	</li>
