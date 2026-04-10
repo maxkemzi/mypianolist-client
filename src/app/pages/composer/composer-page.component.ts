@@ -57,10 +57,12 @@ export class ComposerPageComponent implements OnInit {
 
 	openAddToFavoritesAlert() {
 		this.addToFavoritesAlertIsOpen.set(true);
+		document.body.classList.add('overflow-hidden');
 	}
 
 	closeAddToFavoritesAlert() {
 		this.addToFavoritesAlertIsOpen.set(false);
+		document.body.classList.remove('overflow-hidden');
 	}
 
 	onRemoveFromFavorites() {
@@ -70,10 +72,12 @@ export class ComposerPageComponent implements OnInit {
 
 	openRemoveFromFavoritesAlert() {
 		this.removeFromFavoritesAlertIsOpen.set(true);
+		document.body.classList.add('overflow-hidden');
 	}
 
 	closeRemoveFromFavoritesAlert() {
 		this.removeFromFavoritesAlertIsOpen.set(false);
+		document.body.classList.remove('overflow-hidden');
 	}
 
 	private fetch() {

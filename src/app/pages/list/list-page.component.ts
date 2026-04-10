@@ -99,10 +99,12 @@ export class ListPageComponent {
 
 	openEditPieceModal(piece: UserPiece) {
 		this.pieceToEdit.set(piece);
+		document.body.classList.add('overflow-hidden');
 	}
 
 	closeEditPieceModal() {
 		this.pieceToEdit.set(null);
+		document.body.classList.remove('overflow-hidden');
 	}
 
 	onEditPieceSubmit() {
@@ -112,10 +114,12 @@ export class ListPageComponent {
 
 	openRemovePieceAlert(piece: Piece) {
 		this.pieceToRemove.set(piece);
+		document.body.classList.add('overflow-hidden');
 	}
 
 	closeRemovePieceAlert() {
 		this.pieceToRemove.set(null);
+		document.body.classList.remove('overflow-hidden');
 	}
 
 	onRemovePieceConfirm() {
@@ -125,10 +129,12 @@ export class ListPageComponent {
 
 	openAddPieceModal(piece: Piece) {
 		this.pieceToAdd.set(piece);
+		document.body.classList.add('overflow-hidden');
 	}
 
 	closeAddPieceModal() {
 		this.pieceToAdd.set(null);
+		document.body.classList.remove('overflow-hidden');
 	}
 
 	onAddPieceSubmit() {

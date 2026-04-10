@@ -107,10 +107,12 @@ export class PiecesPageComponent {
 
 	openAddToListModal(piece: Piece) {
 		this.pieceToAddToList.set(piece);
+		document.body.classList.add('overflow-hidden');
 	}
 
 	closeAddToListModal() {
 		this.pieceToAddToList.set(null);
+		document.body.classList.remove('overflow-hidden');
 	}
 
 	onAddToListSubmit() {
