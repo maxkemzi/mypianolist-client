@@ -7,6 +7,6 @@ import {ClassMergeDirective} from '@shared/lib';
 })
 export class ModalContainerComponent extends ClassMergeDirective {
 	protected override defaultClass(): string {
-		return 'fixed top-0 left-0 bottom-0 right-0 z-50 bg-black/30 flex items-center justify-center';
+		return 'fixed inset-0 z-50 bg-black/30';
 	}
 }
