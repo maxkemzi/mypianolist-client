@@ -30,6 +30,6 @@ export class PieceListTableRowComponent {
 
 	@HostBinding('class')
 	get classes() {
-		return 'even:bg-surface capitalize *:text-left *:not-first:p-4';
+		return 'even:bg-surface capitalize *:text-left *:truncate *:not-first:p-4 max-sm:*:not-first:p-2';
 	}
 }

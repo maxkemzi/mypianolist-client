@@ -5,28 +5,30 @@
 } @else if (statuses.data().length === 0) {
 	<p>There are no piece statuses.</p>
 } @else {
-	<ul class="flex justify-center items-center gap-4">
-		<li>
-			<a
-				routerLink="./"
-				[queryParams]="{status: null}"
-				queryParamsHandling="merge"
-			>
-				<app-tab [isActive]="status() === undefined">All Pieces</app-tab>
-			</a>
-		</li>
-		@for (statusItem of statuses.data(); track statusItem) {
+	<div class="overflow-x-auto">
+		<ul class="w-max mx-auto flex items-center gap-4">
 			<li>
 				<a
 					routerLink="./"
-					[queryParams]="{status: statusItem}"
+					[queryParams]="{status: null}"
 					queryParamsHandling="merge"
 				>
-					<app-tab [isActive]="status() === statusItem">{{
-						getStatusText(statusItem)
-					}}</app-tab>
+					<app-tab [isActive]="status() === undefined">All Pieces</app-tab>
 				</a>
 			</li>
-		}
-	</ul>
+			@for (statusItem of statuses.data(); track statusItem) {
+				<li>
+					<a
+						routerLink="./"
+						[queryParams]="{status: statusItem}"
+						queryParamsHandling="merge"
+					>
+						<app-tab [isActive]="status() === statusItem">{{
+							getStatusText(statusItem)
+						}}</app-tab>
+					</a>
+				</li>
+			}
+		</ul>
+	</div>
 }

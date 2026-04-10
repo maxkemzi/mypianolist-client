@@ -4,7 +4,9 @@
 
 		<app-status-tabs [status]="status()" />
 
-		<div class="grid grid-cols-3 items-center gap-4 mb-2 mt-7">
+		<div
+			class="grid grid-cols-[auto_1fr_auto] items-center gap-4 mb-2 mt-7 max-sm:grid-cols-2"
+		>
 			<p class="justify-self-start">
 				Pieces
 				<span weight="medium">{{
@@ -12,7 +14,10 @@
 				}}</span>
 			</p>
 
-			<app-search-bar [isDisabled]="list.isLoading()" />
+			<app-search-bar
+				class="max-sm:col-span-2 max-sm:-order-1"
+				[isDisabled]="list.isLoading()"
+			/>
 
 			<app-list-sort-dropdown [sort]="sort()" />
 		</div>
@@ -24,35 +29,53 @@
 		} @else if (list.data().length === 0) {
 			<p>Your list is empty.</p>
 		} @else {
-			<table class="w-full">
-				<thead appPieceListTableHead></thead>
-				<tbody>
-					@for (piece of list.data(); track piece.id; let i = $index) {
-						<tr appPieceListTableRow [number]="i + 1" [piece]="piece">
-							<div class="flex gap-2" slot="actions">
-								@if (isAuth()) {
-									<ng-container>
-										<app-edit-piece-button
-											(appClick)="openEditPieceModal(piece)"
-										/>
-										<app-remove-piece-from-list-button
-											(appClick)="openRemovePieceAlert(piece)"
-										/>
-									</ng-container>
-								} @else if (piece.status === undefined) {
-									<button (click)="openAddPieceModal(piece)">
-										<i
-											appTypography
-											class="ph ph-plus-square"
-											color="success"
-										></i>
-									</button>
-								}
-							</div>
-						</tr>
-					}
-				</tbody>
-			</table>
+			<div class="overflow-x-auto">
+				<table class="w-full min-w-[700px] table-fixed">
+					<colgroup>
+						<col class="w-1" />
+						<!-- # -->
+						<col class="w-[8%]" />
+						<!-- Title -->
+						<col class="w-[38%]" />
+						<!-- Composer -->
+						<col class="w-[18%]" />
+						<!-- Genre -->
+						<col class="w-[18%]" />
+						<!-- Score -->
+						<col class="w-[10%]" />
+						<!-- Actions -->
+						<col class="w-[8%]" />
+					</colgroup>
+
+					<thead appPieceListTableHead></thead>
+					<tbody>
+						@for (piece of list.data(); track piece.id; let i = $index) {
+							<tr appPieceListTableRow [number]="i + 1" [piece]="piece">
+								<div class="flex gap-2" slot="actions">
+									@if (isAuth()) {
+										<ng-container>
+											<app-edit-piece-button
+												(appClick)="openEditPieceModal(piece)"
+											/>
+											<app-remove-piece-from-list-button
+												(appClick)="openRemovePieceAlert(piece)"
+											/>
+										</ng-container>
+									} @else if (piece.status === undefined) {
+										<button (click)="openAddPieceModal(piece)">
+											<i
+												appTypography
+												class="ph ph-plus-square"
+												color="success"
+											></i>
+										</button>
+									}
+								</div>
+							</tr>
+						}
+					</tbody>
+				</table>
+			</div>
 		}
 
 		@if (list.hasMore() && !list.isLoading()) {

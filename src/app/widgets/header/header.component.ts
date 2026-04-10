@@ -12,7 +12,7 @@ export class HeaderComponent {
 	readonly auth = inject(AuthService);
 
 	get classes() {
-		return twJoin('flex min-h-[88px] py-4 bg-background z-20');
+		return twJoin('flex min-h-[88px] py-4 bg-background');
 	}
 
 	get flexContainerClasses() {

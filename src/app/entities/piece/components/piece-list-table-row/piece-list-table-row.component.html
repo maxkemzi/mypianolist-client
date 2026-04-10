@@ -1,5 +1,7 @@
 <td [class]="'w-1' + ` ${statusBgColorClass()}`"></td>
-<td>{{ number() }}</td>
+<td>
+	<span>{{ number() }}</span>
+</td>
 <td>
 	<a [routerLink]="['/pieces', piece().id]">
 		<span weight="medium" color="primary">
@@ -7,12 +9,16 @@
 		</span>
 	</a>
 </td>
-<td>{{ composerName() }}</td>
-<td>{{ piece().genre.name }}</td>
 <td>
-	<p weight="medium">
+	<span>{{ composerName() }}</span>
+</td>
+<td>
+	<span>{{ piece().genre.name }}</span>
+</td>
+<td>
+	<span weight="medium">
 		{{ piece().score || '-' }}
-	</p>
+	</span>
 </td>
 <td>
 	<ng-content select="[slot=actions]" />
