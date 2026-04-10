@@ -6,8 +6,10 @@
 			<p>Something went wrong fetching the profile.</p>
 		} @else {
 			@if (profile.data(); as profile) {
-				<div class="grid grid-cols-[225px_1fr] grid-rows-[225px_1fr] gap-6">
-					<div class="bg-red">
+				<div
+					class="grid grid-cols-[225px_1fr] grid-rows-[225px_1fr] gap-6 max-sm:grid-cols-1 max-sm:grid-rows-[auto] max-sm:gap-4"
+				>
+					<div class="bg-red max-sm:order-1">
 						<img
 							appAvatar
 							size="225"
@@ -15,7 +17,7 @@
 							[alt]="`${profile.username} avatar`"
 						/>
 					</div>
-					<div class="row-span-2">
+					<div class="row-span-2 max-sm:row-span-1 max-sm:order-3">
 						<h3 class="mb-2">{{ profile.username }}</h3>
 						<p class="mb-4">
 							{{ profile.biography || 'No biography yet.' }}
@@ -73,7 +75,7 @@
 						}
 					</div>
 
-					<div>
+					<div class="max-sm:order-2 max-sm:max-w-[225px] max-sm:w-full">
 						<p class="mb-4 text-center">
 							Joined
 							<span weight="medium">{{
