@@ -7,7 +7,7 @@ import {
 	inject,
 	input,
 } from '@angular/core';
-import {ClassMergeDirective} from '@shared/lib';
+import {BreakpointService, ClassMergeDirective} from '@shared/lib';
 import {ThemeColor, ThemeUtils} from '@shared/theme';
 import {twJoin} from 'tailwind-merge';
 import {
@@ -42,6 +42,7 @@ export class ButtonComponent extends ClassMergeDirective {
 	};
 	private readonly themeUtils = inject(ThemeUtils);
 	private readonly elRef = inject<ElementRef<HTMLElement>>(ElementRef);
+	private readonly breakpoint = inject(BreakpointService);
 
 	readonly type = input<'submit'>();
 	readonly disabled = input<boolean, unknown>(false, {
@@ -50,6 +51,15 @@ export class ButtonComponent extends ClassMergeDirective {
 
 	readonly variant = input<Variant>('primary');
 	readonly size = input<Size>('md');
+	readonly finalSize = computed<Size>(() => {
+		const size = this.size();
+
+		if (size === 'md' && this.breakpoint.maxSm()) {
+			return 'sm';
+		}
+
+		return size;
+	});
 	readonly color = input<Color>();
 	readonly finalColor = computed<Color>(() => {
 		const color = this.color();
@@ -71,8 +81,8 @@ export class ButtonComponent extends ClassMergeDirective {
 
 		return twJoin(
 			'block font-semibold rounded-lg text-center',
-			this.size() === 'md' && 'py-2 px-7',
-			this.size() === 'sm' && 'py-1.5 px-4',
+			this.finalSize() === 'md' && 'py-2 px-7',
+			this.finalSize() === 'sm' && 'py-1.5 px-4',
 			this.variant() === 'primary' && bgClass,
 			this.variant() === 'outline' && bgClassWithOpacity,
 		);
@@ -105,7 +115,7 @@ export class ButtonComponent extends ClassMergeDirective {
 	}
 
 	get textSize(): TypographySize {
-		if (this.size() === 'sm') {
+		if (this.finalSize() === 'sm') {
 			return 'sm';
 		}
 
