@@ -1,18 +1,18 @@
 <app-piece-image
-	class="shrink-0"
+	class="shrink-0 max-sm:hidden"
 	[piece]="piece()"
 	[color]="isEven() ? 'background' : 'surface'"
 	width="115px"
 />
-<div class="grow flex flex-col justify-between gap-2">
+<div class="flex flex-col justify-between gap-2 overflow-hidden sm:grow">
 	<div class="flex items-start justify-between gap-4">
-		<div>
+		<div class="overflow-hidden">
 			<a [routerLink]="['/pieces', piece().id]">
-				<p class="text-nowrap" weight="bold" color="primary">
+				<p class="truncate" weight="bold" color="primary">
 					{{ piece().title }}
 				</p>
 			</a>
-			<p class="text-nowrap">
+			<p class="truncate">
 				By
 				<a [routerLink]="['/composers', piece().composer.id]">
 					<span color="primary">{{ composerName() }}</span>
